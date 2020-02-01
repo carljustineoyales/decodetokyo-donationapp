@@ -24,12 +24,13 @@
   },
   "homepage": "https://github.com/carljustineoyales/donationapp#readme",
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "@babel/register": "^7.8.3",
+    
     "nodemon": "^2.0.2"
   },
   "dependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
     "axios": "^0.19.2",
     "concurrently": "^5.1.0",
     "express": "^4.17.1",
