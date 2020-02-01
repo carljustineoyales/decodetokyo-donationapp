@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "<h1>Donation Application</h1>",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "client-install": "npm install --prefix client",
     "start": "node server.js",

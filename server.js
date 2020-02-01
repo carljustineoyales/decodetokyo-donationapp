@@ -1,27 +1,18 @@
 const express = require('express');
-const axios = require('axios');
 const path = require('path');
-// import fs from 'fs';
-// import React from 'react';
-// import ReactDOMServer from 'react-dom/server';
-// const __dirname = path.resolve();
-// import App from './client/src/App'
 
 const app = express();
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
 const port = process.env.PORT || 5000;
-
-app.use(express.static(path.join(__dirname, './client/public')));
-
-//production mode
-if(process.env.NODE_ENV === 'production') {  
-  app.use(express.static(path.join(__dirname, './client/build'))); 
-  //  
-  app.get('*', (req, res) => {    
-    res.sendfile(path.join(__dirname = './client/build/index.html'));  
-  })
-}
-app.get('*', (req, res) => {  res.sendFile(path.join(__dirname+'./client/public/index.html'));})
-
 app.get('/name',(req,res) => {
   const data = {
     username:'test',
@@ -31,6 +22,7 @@ app.get('/name',(req,res) => {
 });
 
 app.post('/pay',(req,res) => {
+  console.log('hey');
   console.log('Body:',req.body);
   res.json({
     msg:'request recieved',
