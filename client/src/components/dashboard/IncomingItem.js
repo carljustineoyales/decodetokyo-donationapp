@@ -64,7 +64,7 @@ export class IncomingItem extends Component {
             <td>
               <button onClick={this.approveItem} className='btn btn-success'>&#10004;</button>
               <button onClick={this.deleteItem} className='btn btn-danger'>&#10006;</button>
-              <Link to={`/review/campaign/${item.id}`} className='btn btn-warning'>&#9998;</Link>
+              <Link to={`/campaign/${item.id}`} className='btn btn-warning'>&#9998;</Link>
             </td>
 
           </tr>

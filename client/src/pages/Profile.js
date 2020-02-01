@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
-import {strapi} from '../components/functions';
+import {strapi, getId} from '../components/functions';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -37,7 +37,10 @@ export class Profile extends Component {
         profile_data.map(data=>(
           
           <div key={data.id}>
-          <Link to={`/profile-edit/${this.props.match.params.id}`}>Edit Profile</Link>
+          {
+            getId() !== this.props.match.params.id ? '' : <Link to={`/edit/${this.props.match.params.id}`}>Edit Profile</Link>
+          }
+          
           <h2>{data.first_name} {data.last_name}</h2>
           <h4>{data.email}</h4>
           <h4>@{data.username}</h4>

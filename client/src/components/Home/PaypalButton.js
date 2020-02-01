@@ -16,7 +16,6 @@ export class PaypalButton extends Component {
         alert("Transaction completed by " + details.payer.name.given_name);
         
         // OPTIONAL: Call your server to save the transaction
-        console.log(data)
         const bundle ={
           data,
           props:this.props

@@ -19,16 +19,13 @@ export class UserForm extends Component {
       //add image later
     }
   }
-
-  
-
-  login = async (user,pass) => {
+  login = (user,pass) => {
     const data ={
       identifier:user,
       password:pass
     }
-    console.log(data)
-    await axios.post(`${strapi}/auth/local`,data)
+    // console.log(data)
+    axios.post(`${strapi}/auth/local`,data)
     .then(res=>{
       console.log(res.data)
       if (undefined === res.data.jwt) {
@@ -39,7 +36,7 @@ export class UserForm extends Component {
       sessionStorage.setItem ('username', res.data.user.username);
       sessionStorage.setItem ('role', res.data.user.role.type   );
       sessionStorage.setItem ('id', res.data.user.id            );
-      this          .redirect(                                  )
+      this.redirect();
     })
     .catch(err=>{console.log(err.response.data.message)})
   }
@@ -52,7 +49,6 @@ export class UserForm extends Component {
   }
 
   render() {
-   
       return (
         <Fragment>
           <Registration
@@ -60,11 +56,6 @@ export class UserForm extends Component {
             />
         </Fragment>
       );
-    
-    
-    
-
-    
   }
 
 }

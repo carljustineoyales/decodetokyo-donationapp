@@ -219,9 +219,11 @@ export class SingleCard extends Component {
                     <div style={{
                       width: '70%'
                     }}>
-                      <Link
+
+                        <Link
                         to={`/donation/${this.props.match.params.id}`}
                         className="btn btn-primary w-100">Paypal</Link>
+
                     </div>
                     <div style={{
                       width: '70%'

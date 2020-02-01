@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
 import axios from 'axios';
-import {strapi} from '../components/functions'
+import {strapi,getId} from '../components/functions'
 import {Link} from 'react-router-dom'
 export class EditProfile extends Component {
 
@@ -19,14 +19,15 @@ export class EditProfile extends Component {
     this.handleOnChange = this
       .handleOnChange
       .bind(this)
-    this.handleOnSubmit = this
-      .handleOnSubmit
-      .bind(this)
+    // this.handleOnSubmit = this
+    //   .handleOnSubmit
+    //   .bind(this)
   }
 
   componentDidMount() {
+    console.log(this.props)
     axios
-      .get(`${strapi}/users/?id=${this.props.match.params.id}`)
+      .get(`${strapi}/users/?id=${getId()}`)
       .then(res => {
         console.log(res.data)
         res
@@ -56,10 +57,10 @@ export class EditProfile extends Component {
     event.preventDefault();
     const data = this.state;
     axios
-      .put(`${strapi}/users/${this.props.match.params.id}`, data)
+      .put(`${strapi}/users/${getId()}`, data)
       .then(res => {
         console.log(res.data)
-        window.parent.location = `/profile/${this.props.match.params.id}`
+        window.parent.location = `/profile/${getId()}`
       })
       .catch(err => {
         console.log(err.response.data.message)
@@ -394,7 +395,8 @@ export class EditProfile extends Component {
               </div>
 
               <button className='btn btn-primary mr-3'>Submit</button>
-              <Link to={`/profile/${this.props.match.params.id}`}>Cancel</Link>
+             
+              <Link to={`/profile/${getId()}`}>Cancel</Link>
             </form>
           </div>
         </main>

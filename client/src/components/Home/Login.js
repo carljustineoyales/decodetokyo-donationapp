@@ -28,9 +28,19 @@ export class Login extends Component {
     this.setState({
       Loading: true
     }, () => {
+      // axios('/login',
+      // {
+      //   method: "post",
+      //   headers:{
+      //     'content-type':'application/json'
+      //   },
+      //   data:loginData
+      // })
+      
       axios
         .post(`${strapi}/auth/local`, loginData)
         .then(res => {
+          console.log(res)
           if (undefined === res.data.jwt) {
             this.setState({error: res.data.message, Loading: false});
             return;
