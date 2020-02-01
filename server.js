@@ -1,26 +1,26 @@
 import express from 'express';
 import axios from 'axios';
 import path from 'path';
-import fs from 'fs';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
+// import fs from 'fs';
+// import React from 'react';
+// import ReactDOMServer from 'react-dom/server';
 const __dirname = path.resolve();
 // import App from './client/src/App'
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(express.static(path.join(__dirname, '/client/public')));
+app.use(express.static(path.join(__dirname, './client/public')));
 
 //production mode
 if(process.env.NODE_ENV === 'production') {  
-  app.use(express.static(path.join(__dirname, '/client/build'))); 
+  app.use(express.static(path.join(__dirname, './client/build'))); 
   //  
   app.get('*', (req, res) => {    
-    res.sendfile(path.join(__dirname = '/client/build/index.html'));  
+    res.sendfile(path.join(__dirname = './client/build/index.html'));  
   })
 }
-app.get('*', (req, res) => {  res.sendFile(path.join(__dirname+'/client/public/index.html'));})
+app.get('*', (req, res) => {  res.sendFile(path.join(__dirname+'./client/public/index.html'));})
 
 app.get('/name',(req,res) => {
   const data = {
