@@ -1,10 +1,10 @@
-import express from 'express';
-import axios from 'axios';
-import path from 'path';
+const express = require('express');
+const axios = require('axios');
+const path = require('path');
 // import fs from 'fs';
 // import React from 'react';
 // import ReactDOMServer from 'react-dom/server';
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 // import App from './client/src/App'
 
 const app = express();
