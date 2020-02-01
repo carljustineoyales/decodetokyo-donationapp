@@ -1,0 +1,48 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body nav {
+  padding: 0.5rem 0 !important;
+}
+
+body nav .form-inline {
+  -webkit-box-align: baseline !important;
+      -ms-flex-align: baseline !important;
+          align-items: baseline !important;
+}
+
+body nav .form-inline .col-sm-5, body nav .form-inline .col-sm {
+  padding: 0.3em !important;
+}
+
+body main {
+  margin-top: 100px;
+  margin-bottom: 40px;
+}
+
+body main .container .row .col-sm form .row .col-sm {
+  padding-top: 0.5em;
+}
+
+@media (max-width: 768px) {
+  body nav .form-inline .col-sm {
+    padding: 0.3em !important;
+  }
+  body nav .form-inline .col-sm .btn {
+    width: 100%;
+  }
+  body main {
+    margin-top: 100px;
+    margin-bottom: 40px;
+  }
+  body main .container .row .col-sm form .row .col-sm {
+    padding: 0.5em;
+  }
+  body main .container .row .col-sm form .row .col-sm .btn {
+    width: 100%;
+  }
+}
+/*# sourceMappingURL=style.css.map */

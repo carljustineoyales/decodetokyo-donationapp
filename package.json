@@ -1,0 +1,39 @@
+{
+  "name": "donationapp",
+  "version": "1.0.0",
+  "description": "<h1>Donation Application</h1>",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "ssr": "node index.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carljustineoyales/donationapp.git"
+  },
+  "author": "cjoyales",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carljustineoyales/donationapp/issues"
+  },
+  "homepage": "https://github.com/carljustineoyales/donationapp#readme",
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "concurrently": "^5.1.0",
+    "express": "^4.17.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
