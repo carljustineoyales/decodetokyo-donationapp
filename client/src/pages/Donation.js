@@ -38,7 +38,8 @@ export class Donation extends Component {
     this.setState({
       name: this.state.first_name + ' ' + this.state.last_name,
       payerID: data.payerID,
-      orderID: data.orderID
+      orderID: data.orderID,
+      donation:this.state.amount
     })
     console.log(this.state)
     const body = this.state
