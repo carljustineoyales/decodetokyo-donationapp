@@ -39,7 +39,38 @@ export class Registration extends Component {
     }
   }
 
+  checkCountry = () => {
+    if (this.state.country === 'Philippines') {
+      this.removeItem('Enter Paypal Email')
+      if (this.state.gcash.length <= 0) {
+        if (!this.state.errors.includes('Enter Gcash Number')) {
+          this
+            .state
+            .errors
+            .push('Enter Gcash Number')
+        }
+        this.setState({isLoading: false})
+      } else {
+        this.removeItem('Enter Gcash Number')
+      }
+    } else {
+      this.removeItem('Enter Gcash Number')
+      if (this.state.paypalEmail.length <= 0) {
+        if (!this.state.errors.includes('Enter Paypal Email')) {
+          this
+            .state
+            .errors
+            .push('Enter Paypal Email')
+        }
+        this.setState({isLoading: false})
+      } else {
+        this.removeItem('Enter Paypal Email')
+      }
+    }
+  }
+
   continue = (e) => {
+    console.log(this.state)
     e.preventDefault();
     if (this.state.first_name.length > 0 && this.state.last_name.length > 0 && this.state.email.length > 0 && this.state.address.length > 0 && this.state.city.length > 0 && this.state.zipcode.length > 0 && this.state.country.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
       
@@ -137,6 +168,7 @@ export class Registration extends Component {
         }
         this.setState({isLoading: false})
       } else {
+        this.checkCountry();
         this.removeItem('Enter Country')
       }
       if (this.state.country.length <= 0) {
