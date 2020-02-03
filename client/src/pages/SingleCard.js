@@ -16,7 +16,8 @@ export class SingleCard extends Component {
       author: [],
       error: '',
       deleted: false,
-      verified: false
+      verified: false,
+      supporters:[]
     }
   }
 
@@ -34,9 +35,9 @@ export class SingleCard extends Component {
           author: res.data.author,
           username: res.data.author.username,
           deleted: res.data.deleted,
-          verified: res.data.verified
+          verified: res.data.verified,
+          supporters:res.data.supporters
         })
-        console.log(this.state)
       })
       .catch(err => console.log(err))
 
@@ -108,6 +109,7 @@ export class SingleCard extends Component {
   }
 
   render() {
+    console.log(this.state)
     const {
       editMode,
       title,
@@ -115,8 +117,9 @@ export class SingleCard extends Component {
       description,
       deleted,
       verified,
-      // author,
+      author:{first_name, last_name},
       username,
+      supporters
       // id
     } = this.state
     return (
@@ -301,11 +304,11 @@ export class SingleCard extends Component {
                                 <h6
                                   style={{
                                   margin: '0px'
-                                }}>Author Name</h6>
+                                }}>{first_name} {last_name}</h6>
                                 <p
                                   style={{
                                   margin: '0px'
-                                }}>$XXX</p>
+                                }}>{username}</p>
                               </div>
                             </div>
                           </div>
@@ -321,13 +324,15 @@ export class SingleCard extends Component {
                   }}>
                     <h4>Supporters</h4>
                     <ul
-                      style={{
+                    style={{
                       listStyle: 'none',
                       padding: '0px',
                       marginBottom: '0px'
-                    }}>
-                      <li>
-                        <div
+                    }}
+                    >
+                    {supporters.map(supporter=>(
+                      <li key={supporter.id}>
+                      <div
                           style={{
                           display: 'flex',
                           flexFlow: 'column wrap',
@@ -336,7 +341,7 @@ export class SingleCard extends Component {
                           width: 'auto',
                           padding: '10px'
                         }}>
-                          <div className='row'>
+                        <div className='row'>
                             <div className='col-4'>
                               <div
                                 style={{
@@ -369,85 +374,23 @@ export class SingleCard extends Component {
                                 <h6
                                   style={{
                                   margin: '0px'
-                                }}>Supporter Name</h6>
+                                }}>{supporter.name}</h6>
                                 <p
                                   style={{
                                   margin: '0px'
-                                }}>$XXX</p>
+                                }}>${supporter.donation}</p>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div
-                          style={{
-                          display: 'flex',
-                          flexFlow: 'column wrap',
-                          justifyContent: 'space-around',
-                          alignItems: 'center',
-                          width: 'auto',
-                          padding: '10px'
-                        }}>
-                          <div className='row'>
-                            <div className='col-4'>
-                              <div
-                                style={{
-                                display: 'flex',
-                                alignContent: 'center',
-                                justifyContent: 'center'
-                              }}>
-                                <img
-                                  src='https://picsum.photos/seed/picsum/300'
-                                  width="65px"
-                                  style={{
-                                  borderRadius: '100%'
-                                }}/>
-                              </div>
-                            </div>
-                            <div
-                              className='col-8'
-                              style={{
-                              display: 'flex',
-                              alignContent: 'center'
-                            }}>
-                              <div
-                                style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignContent: 'center',
-                                justifyContent: 'center',
-                                width: '160px'
-                              }}>
-                                <h6
-                                  style={{
-                                  margin: '0px'
-                                }}>Anonymous</h6>
-                                <p
-                                  style={{
-                                  margin: '0px'
-                                }}>$XXX</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
+                          </div></div>
+                    </li>))}
                     </ul>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </main>
-
-        {/* <aside>
-        <img src={`/`} />
-          <h4>{author.first_name} {author.last_name}</h4>
-          <h6>{author.username}</h6>
-        </aside> */}
       </div>
-
     );
   }
 }
