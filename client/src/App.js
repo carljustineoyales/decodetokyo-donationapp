@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
@@ -9,7 +9,7 @@ import SingleCard from './pages/SingleCard';
 import Profile from './pages/Profile';
 import Donation from './pages/Donation';
 import EditProfile from './pages/EditProfile';
-import {getRole,getId,withToken} from './components/functions';
+import {getRole,withToken} from './components/functions';
 
 const NoMatchPage = () => {
   return (

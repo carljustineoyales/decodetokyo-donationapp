@@ -114,7 +114,7 @@ const data = {
             <form onSubmit={this.onFormSubmit}>
               <div className='form-row '>
                 <div className="col-md-12 mb-3">
-                <label for='Title'>Title <img src="https://img.icons8.com/material-rounded/18/000000/help.png"/></label>
+                <label for='Title'>Title <img src="https://img.icons8.com/material-rounded/18/000000/help.png" alt='help-icon'/></label>
                     <input
                       className='form-control form-control-sm'
                       type='text'
@@ -127,7 +127,7 @@ const data = {
               </div>
               <div className='form-row'>
                 <div className="col-md-12 mb-3">
-                <label for='Description'>Description <img src="https://img.icons8.com/material-rounded/18/000000/help.png"/></label>
+                <label for='Description'>Description <img src="https://img.icons8.com/material-rounded/18/000000/help.png" alt='help-icon'/></label>
                     {/* <h6>Description:</h6> */}
                     <textarea
                       className="form-control form-control-sm"
@@ -141,7 +141,7 @@ const data = {
               </div>
               <div className='form-row'>
                 <div className="col-md-12 mb-3">
-                <label for='Goal'>Funding Goal Amount <img src="https://img.icons8.com/material-rounded/18/000000/help.png"/></label>
+                <label for='Goal'>Funding Goal Amount <img src="https://img.icons8.com/material-rounded/18/000000/help.png" alt='help-icon'/></label>
                     <input
                       type='number'
                       className="form-control form-control-sm"
@@ -154,7 +154,7 @@ const data = {
               </div>
               <div className='form-row'>
                 <div className="col-md-12 mb-3">
-                <label for='image'>Image <img src="https://img.icons8.com/material-rounded/18/000000/help.png"/></label>
+                <label for='image'>Image <img src="https://img.icons8.com/material-rounded/18/000000/help.png" alt='help-icon'/></label>
                     <input
                       type='file'
                       className="form-control-file form-control-sm"

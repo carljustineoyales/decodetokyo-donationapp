@@ -60,7 +60,7 @@ export class Registration extends Component {
             <div className="col-sm">
               
               
-                <label for='paypalEmail'>Paypal: <img src="https://img.icons8.com/material-rounded/18/000000/help.png"/></label>
+                <label for='paypalEmail'>Paypal: <img src="https://img.icons8.com/material-rounded/18/000000/help.png" alt='help-icon'/></label>
                 <input
                   className='form-control form-control-sm'
                   type='text'
@@ -72,7 +72,7 @@ export class Registration extends Component {
             </div>
             <div className="col-sm">
               
-                <label for='gcash'>Gcash No.: <img src="https://img.icons8.com/material-rounded/18/000000/help.png"/></label>
+                <label for='gcash'>Gcash No.: <img src="https://img.icons8.com/material-rounded/18/000000/help.png" alt='help-icon'/></label>
                 <input
                   className='form-control form-control-sm'
                   type='text'

@@ -18,7 +18,8 @@ app.get('/name',(req,res) => {
     username:'test',
     age:5
   };
-  res.json(data);
+  // res.json(data);
+  res.json('this is working')
 });
 
 app.post('/pay',(req,res) => {

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { PayPalButton } from "react-paypal-button-v2";
-import axios from 'axios';
-import {strapi} from '../functions'
 export class PaypalButton extends Component {
 
   render() {
@@ -14,22 +12,7 @@ export class PaypalButton extends Component {
       shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
       onSuccess={(details, data) => {
         alert("Transaction completed by " + details.payer.name.given_name);
-        
-        // OPTIONAL: Call your server to save the transaction
-        const bundle ={
-          data,
-          props:this.props
-          
-        }
-        console.log(this.props)
-        axios(`/pay`, {
-          method: "post",
-          headers:{
-            'content-type':'application/json'
-          },
-          data:bundle
-          
-        }).then(res=>{console.log(res.data)}).catch(err=>{console.log(err.response.data.message)});
+        this.props.saveTransaction(data);
       }}
       onError={(details,data)=>{
         return console.log(this.props.data.amount)

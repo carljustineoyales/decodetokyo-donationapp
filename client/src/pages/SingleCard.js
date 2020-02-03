@@ -80,6 +80,16 @@ export class SingleCard extends Component {
     window.parent.location = window.parent.location.href
   }
 
+  gcashInstructions = (event) => {
+    event.preventDefault();
+    alert('this is triggered using gcash button implement modal for gcash instruction')
+  }
+
+  cashPickUpInstrustions = (event) => {
+    event.preventDefault();
+    alert('this is triggered using cash pick up button implement modal for cash pick up instruction')
+  }
+
   deleteCampaign = (event) => {
     const data = {
       verified: false,
@@ -228,12 +238,12 @@ export class SingleCard extends Component {
                     <div style={{
                       width: '70%'
                     }}>
-                      <button className="btn btn-primary w-100">Gcash</button>
+                      <button onClick={this.gcashInstructions} className="btn btn-primary w-100">Gcash</button>
                     </div>
                     <div style={{
                       width: '70%'
                     }}>
-                      <button className="btn btn-primary w-100">Bank Trasfer</button>
+                      <button onClick={this.cashPickUpInstrustions} className="btn btn-primary w-100">Cash on Pick Up</button>
                     </div>
                   </div>
                   <div

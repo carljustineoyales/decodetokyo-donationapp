@@ -24,6 +24,7 @@ export class Card extends Component {
                 <img
                   src='https://picsum.photos/seed/picsum/300'
                   width="65px"
+                  alt={`${title}-${id}`}
                   style={{
                   borderRadius: '100%'
                 }}/>
