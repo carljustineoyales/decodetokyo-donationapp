@@ -118,7 +118,7 @@ const data = {
                     <input
                       className='form-control form-control-sm'
                       type='text'
-                     
+
                       onChange={this.handleChange('title')}
                       value={values.title}/>
                   

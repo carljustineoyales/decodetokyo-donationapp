@@ -262,7 +262,7 @@ export class Registration extends Component {
               <input
                 className='form-control form-control-sm'
                 type='text'
-                placeholder='Username'
+                placeholder='johndoe'
                 name="username"
                 onChange={this.handleOnChange}/>
 
@@ -273,7 +273,7 @@ export class Registration extends Component {
               <input
                 className='form-control form-control-sm'
                 type='password'
-                placeholder='Password'
+                placeholder='********'
                 name="password"
                 onChange={this.handleOnChange}/>
 
@@ -288,7 +288,7 @@ export class Registration extends Component {
                 className='form-control form-control-sm'
                 type='email'
                 placeholder='Email'
-                name="email"
+                name="johndoe@email.com"
                 onChange={this.handleOnChange}/>
 
             </div>
@@ -302,7 +302,7 @@ export class Registration extends Component {
                 className='form-control form-control-sm'
                 type='text'
                 placeholder='First Name'
-                name="first_name"
+                name="John"
                 onChange={this.handleOnChange}/>
 
             </div>
@@ -312,7 +312,7 @@ export class Registration extends Component {
               <input
                 className='form-control form-control-sm'
                 type='text'
-                placeholder='Last Name'
+                placeholder='Doe'
                 name="last_name"
                 onChange={this.handleOnChange}/>
 
@@ -326,7 +326,7 @@ export class Registration extends Component {
               <input
                 className='form-control form-control-sm'
                 type='text'
-                placeholder='Address'
+                placeholder='123 Street Rd'
                 name="address"
                 onChange={this.handleOnChange}/>
 
@@ -351,7 +351,7 @@ export class Registration extends Component {
               <input
                 className='form-control form-control-sm'
                 type='number'
-                placeholder='Zip Code'
+                placeholder='1234'
                 name="zipcode"
                 onChange={this.handleOnChange}/>
 
