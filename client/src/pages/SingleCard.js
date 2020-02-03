@@ -198,7 +198,7 @@ export class SingleCard extends Component {
                             value={description}
                             onChange={this.handleOnChange('description')}></textarea><br/>
                         </Fragment>
-                      : <p className="text">{description}</p>
+                      : <p className="text" style={{wordBreak: 'break-all'}}>{description}</p>
 }
 
                     {editMode
