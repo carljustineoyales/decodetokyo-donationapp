@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import axios from 'axios';
 import {strapi, getUserName,withToken} from '../components/functions'
 import Navbar from '../components/Home/Navbar';
@@ -80,7 +80,7 @@ const data = {
        }
       })
       .then(function (response) {
-          //handle success
+        window.location.href = "/success";
           console.log(response);
       })
       .catch(function (response) {

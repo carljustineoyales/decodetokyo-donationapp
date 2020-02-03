@@ -287,8 +287,8 @@ export class Registration extends Component {
               <input
                 className='form-control form-control-sm'
                 type='email'
-                placeholder='Email'
-                name="johndoe@email.com"
+                placeholder='johndoe@email.com'
+                name="email"
                 onChange={this.handleOnChange}/>
 
             </div>
@@ -301,8 +301,8 @@ export class Registration extends Component {
               <input
                 className='form-control form-control-sm'
                 type='text'
-                placeholder='First Name'
-                name="John"
+                placeholder='John'
+                name="first_name"
                 onChange={this.handleOnChange}/>
 
             </div>

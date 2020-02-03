@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import Donation from './pages/Donation';
 import EditProfile from './pages/EditProfile';
 import {getRole,withToken} from './components/functions';
+import Success from './pages/Success';
 
 const NoMatchPage = () => {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route       path="/campaign/:id"        component={SingleCard    }/>      
         <Route       path="/donation/:id"        component={Donation      }/>
         <Route       path="/profile/:id"         component={Profile       }/>
+        <Route       path="/success"         component={Success       }/>
 
         {/* PROTECTED ROUTES */}
         {/* ADMIN ROUTES */}
