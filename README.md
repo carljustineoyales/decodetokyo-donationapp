@@ -10,6 +10,13 @@
   <li>Bootstrap Framework</li>
 </ul>
 
+<h2>Feb 03 2020</h2>
+<ul>
+  <li>added Alerts</li>
+  <li>Form validation</li>
+  <li>Paypal form validation</li>
+  <li>Gcash and Cash pick up functions</li>
+</ul>
 <h2>Jan 31 2020</h2>
 <ul>
   <li>Integrate Reactjs to serverjs</li>
