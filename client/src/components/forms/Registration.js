@@ -159,6 +159,29 @@ export class Registration extends Component {
       } else {
         this.removeItem('Enter Zip Code')
       }
+      
+      if (this.state.username.length <= 0) {
+        if (!this.state.errors.includes('Enter Username')) {
+          this
+            .state
+            .errors
+            .push('Enter Username')
+        }
+        this.setState({isLoading: false})
+      } else {
+        this.removeItem('Enter Username')
+      }
+      if (this.state.password.length <= 0) {
+        if (!this.state.errors.includes('Enter Password')) {
+          this
+            .state
+            .errors
+            .push('Enter Password')
+        }
+        this.setState({isLoading: false})
+      } else {
+        this.removeItem('Enter Password')
+      }
       if (this.state.country.length <= 0) {
         if (!this.state.errors.includes('Enter Country')) {
           this
@@ -170,28 +193,6 @@ export class Registration extends Component {
       } else {
         this.checkCountry();
         this.removeItem('Enter Country')
-      }
-      if (this.state.country.length <= 0) {
-        if (!this.state.errors.includes('Enter Username')) {
-          this
-            .state
-            .errors
-            .push('Enter Username')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Username')
-      }
-      if (this.state.country.length <= 0) {
-        if (!this.state.errors.includes('Enter Password')) {
-          this
-            .state
-            .errors
-            .push('Enter Password')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Password')
       }
     }
 
@@ -219,7 +220,6 @@ export class Registration extends Component {
                       <div key={error.id}>{error}</div>
                     ))}</div>
               : ''}
-
         <form>
           <div className='row'>
             <div className="col-sm">
