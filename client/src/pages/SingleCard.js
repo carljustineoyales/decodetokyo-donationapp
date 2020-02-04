@@ -245,7 +245,8 @@ export class SingleCard extends Component {
                       : <p
                         className="text"
                         style={{
-                          whiteSpace: 'pre-wrap'
+                          whiteSpace: 'pre-wrap',
+                          wordBreak:'break-word'
                       }}>{description}</p>
 }
 
