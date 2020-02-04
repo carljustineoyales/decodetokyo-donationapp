@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import {getUserName, withToken, getRole,getId} from '../functions.js'
+import {getUserName, withToken, getRole,getId,strapi} from '../functions.js'
 import {Link} from 'react-router-dom';
-
 import Login from './Login';
 
 // import { delete_cookie } from 'sfcookies';
@@ -11,6 +10,8 @@ export class Navbar extends Component {
   handleLogout = () => {
     sessionStorage.removeItem('JWT');
     sessionStorage.removeItem('role');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('id');
     window.location.href = '/'
   }
 
@@ -39,11 +40,21 @@ export class Navbar extends Component {
             <ul className="navbar-nav ml-auto">
             
             {
-              (getRole() === 'admin') ? '' :(
+              (getRole() === 'admin' || window.location.href === `http://localhost:3000/feed`) ? '' :(
                 <li className="nav-item">
                 <Link className="nav-link" to={'/feed'}>Support</Link>
               </li>
               )
+            }
+            {
+              window.location.href === `http://localhost:3000/feed` ? (
+                <Fragment><form className='form-inline'>
+                <div className='col-sm-12'>
+                <input className='form-control form-control-sm w-100' placeholder='Search' type='text'/>
+                </div>
+                
+                </form></Fragment>
+                ) : ''
             }
               
               {withToken()

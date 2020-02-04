@@ -5,7 +5,7 @@ import Navbar from '../components/Home/Navbar';
 
 export class Feed extends Component {
   componentDidMount(){
-    window.scrollTo(0, 0)
+    
   }
   render() {
     return (
@@ -13,11 +13,10 @@ export class Feed extends Component {
       <Navbar/>
       <main>
         <div className='container'>
-            <CardList/>
+        <CardList/>
         </div>
         </main>
       </div>
-
     );
   }
 }

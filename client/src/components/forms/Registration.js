@@ -21,7 +21,7 @@ export class Registration extends Component {
       errors: [],
       isLoading: false,
       noErrors: false,
-      axiosError:''
+      axiosError: ''
     }
     this.handleOnChange = this
       .handleOnChange
@@ -73,13 +73,12 @@ export class Registration extends Component {
     console.log(this.state)
     e.preventDefault();
     if (this.state.first_name.length > 0 && this.state.last_name.length > 0 && this.state.email.length > 0 && this.state.address.length > 0 && this.state.city.length > 0 && this.state.zipcode.length > 0 && this.state.country.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
-      
+
       const data = this.state
-      
+
       axios
         .post(`${strapi}/users`, data)
         .then(res => {
-          
 
           this
             .props
@@ -87,10 +86,8 @@ export class Registration extends Component {
 
         })
         .catch(err => {
-          
-          this.setState({
-            axiosError:err.response.data.message[0].messages[0].message
-          })
+
+          this.setState({axiosError: err.response.data.message[0].messages[0].message})
         })
     } else {
       if (this.state.first_name.length <= 0) {
@@ -159,7 +156,7 @@ export class Registration extends Component {
       } else {
         this.removeItem('Enter Zip Code')
       }
-      
+
       if (this.state.username.length <= 0) {
         if (!this.state.errors.includes('Enter Username')) {
           this
@@ -211,151 +208,19 @@ export class Registration extends Component {
         <h1>Sign Up</h1>
         {/* <h4>Step {values.step} of 3</h4> */}
         <p>Register to create a campaign</p>
-        {(this.state.axiosError.length > 0) ? <div className="alert alert-warning" role="alert">{this.state.axiosError}</div> : ''}
+        {(this.state.axiosError.length > 0)
+          ? <div className="alert alert-warning" role="alert">{this.state.axiosError}</div>
+          : ''}
         {(this.state.errors.length > 0)
-              ? <div className="alert alert-danger" role="alert">{this
-                    .state
-                    .errors
-                    .map(error => (
-                      <div key={error.id}>{error}</div>
-                    ))}</div>
-              : ''}
+          ? <div className="alert alert-danger" role="alert">{this
+                .state
+                .errors
+                .map(error => (
+                  <div key={error.id}>{error}</div>
+                ))}</div>
+          : ''}
         <form>
           <div className='row'>
-            <div className="col-sm">
-
-              <label htmlFor='paypalEmail'>Paypal:
-                <img
-                  src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                  alt='help-icon'/></label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='johndoe@email.com'
-                name="paypalEmail"
-                onChange={this.handleOnChange}/>
-
-            </div>
-            <div className="col-sm">
-
-              <label htmlFor='gcash'>Gcash No.:
-                <img
-                  src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                  alt='help-icon'/></label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='+639XXXXXXXXX'
-                name="gcash"
-                onChange={this.handleOnChange}/>
-              <small className="form-text text-muted">
-                If you lived in the Philippines, you only need GCASH Number
-              </small>
-
-            </div>
-          </div>
-
-          <div className='row'>
-            <div className="col-sm">
-              <label htmlFor='username'>Username</label>
-
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='johndoe'
-                name="username"
-                onChange={this.handleOnChange}/>
-
-            </div>
-            <div className="col-sm">
-
-              <label htmlFor='password'>Password</label>
-              <input
-                className='form-control form-control-sm'
-                type='password'
-                placeholder='********'
-                name="password"
-                onChange={this.handleOnChange}/>
-
-            </div>
-
-          </div>
-          <div className='row'>
-            <div className="col-sm">
-
-              <label htmlFor='email'>Email</label>
-              <input
-                className='form-control form-control-sm'
-                type='email'
-                placeholder='johndoe@email.com'
-                name="email"
-                onChange={this.handleOnChange}/>
-
-            </div>
-
-          </div>
-
-          <div className='row'>
-            <div className="col-sm">
-              <label htmlFor='first_name'>First Name</label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='John'
-                name="first_name"
-                onChange={this.handleOnChange}/>
-
-            </div>
-            <div className="col-sm">
-
-              <label htmlFor='last_name'>Last Name:</label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='Doe'
-                name="last_name"
-                onChange={this.handleOnChange}/>
-
-            </div>
-
-          </div>
-          <div className='row'>
-            <div className="col-sm">
-
-              <label htmlFor='address'>Address:</label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='123 Street Rd'
-                name="address"
-                onChange={this.handleOnChange}/>
-
-            </div>
-
-          </div>
-          <div className='row'>
-            <div className="col-sm">
-
-              <label htmlFor='city'>City/State:</label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='City/State'
-                name="city"
-                onChange={this.handleOnChange}/>
-
-            </div>
-            <div className="col-sm">
-
-              <label htmlFor='zipcode'>Zip Code:</label>
-              <input
-                className='form-control form-control-sm'
-                type='number'
-                placeholder='1234'
-                name="zipcode"
-                onChange={this.handleOnChange}/>
-
-            </div>
             <div className="col-sm">
 
               <label htmlFor='country'>Country:</label>
@@ -610,6 +475,157 @@ export class Registration extends Component {
                 <option value="Zambia">Zambia</option>
                 <option value="Zimbabwe">Zimbabwe</option>
               </select>
+
+            </div>
+          </div>
+          <div className='row'>
+
+            <div className="col-sm">
+
+              <label htmlFor='paypalEmail'>Paypal:
+                <span
+                  class="d-inline-block"
+                  tabindex="0"
+                  data-toggle="tooltip"
+                  title="Insert Paypal tooltip">
+                  <img
+                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
+                    alt='help-icon'/>
+                </span>
+              </label>
+              <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='johndoe@email.com'
+                name="paypalEmail"
+                onChange={this.handleOnChange}/>
+
+            </div>
+            <div className="col-sm">
+
+              <label htmlFor='gcash'>Gcash No.:
+                <span
+                  class="d-inline-block"
+                  tabindex="0"
+                  data-toggle="tooltip"
+                  title="Insert GCASH tooltip">
+                  <img
+                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
+                    alt='help-icon'/>
+                </span>
+              </label>
+              <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='+639XXXXXXXXX'
+                name="gcash"
+                onChange={this.handleOnChange}/>
+              <small className="form-text text-muted">
+                If you lived in the Philippines, you only need GCASH Number
+              </small>
+
+            </div>
+          </div>
+
+          <div className='row'>
+            <div className="col-sm">
+              <label htmlFor='username'>Username</label>
+
+              <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='johndoe'
+                name="username"
+                onChange={this.handleOnChange}/>
+
+            </div>
+            <div className="col-sm">
+
+              <label htmlFor='password'>Password</label>
+              <input
+                className='form-control form-control-sm'
+                type='password'
+                placeholder='********'
+                name="password"
+                onChange={this.handleOnChange}/>
+
+            </div>
+
+          </div>
+          <div className='row'>
+            <div className="col-sm">
+
+              <label htmlFor='email'>Email</label>
+              <input
+                className='form-control form-control-sm'
+                type='email'
+                placeholder='johndoe@email.com'
+                name="email"
+                onChange={this.handleOnChange}/>
+
+            </div>
+
+          </div>
+
+          <div className='row'>
+            <div className="col-sm">
+              <label htmlFor='first_name'>First Name</label>
+              <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='John'
+                name="first_name"
+                onChange={this.handleOnChange}/>
+
+            </div>
+            <div className="col-sm">
+
+              <label htmlFor='last_name'>Last Name:</label>
+              <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='Doe'
+                name="last_name"
+                onChange={this.handleOnChange}/>
+
+            </div>
+
+          </div>
+          <div className='row'>
+            <div className="col-sm">
+
+              <label htmlFor='address'>Address:</label>
+              <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='123 Street Rd'
+                name="address"
+                onChange={this.handleOnChange}/>
+
+            </div>
+
+          </div>
+          <div className='row'>
+            <div className="col-sm">
+
+              <label htmlFor='city'>City/State:</label>
+              <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='City/State'
+                name="city"
+                onChange={this.handleOnChange}/>
+
+            </div>
+            <div className="col-sm">
+
+              <label htmlFor='zipcode'>Zip Code:</label>
+              <input
+                className='form-control form-control-sm'
+                type='number'
+                placeholder='1234'
+                name="zipcode"
+                onChange={this.handleOnChange}/>
 
             </div>
 

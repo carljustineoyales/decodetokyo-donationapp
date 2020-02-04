@@ -19,11 +19,7 @@ export class IncomingItem extends Component {
       verified: true,
     }
     axios
-      .put(`${strapi}/campaigns/${this.props.item.id}`,{
-        headers:{
-          'Authorization':`Bearer ${withToken()}`
-        }
-      }, data)
+      .put(`${strapi}/campaigns/${this.props.item.id}`, data)
       .then(res => {
         console.log(res.data)
         this.setState({clicked: !this.state.clicked})

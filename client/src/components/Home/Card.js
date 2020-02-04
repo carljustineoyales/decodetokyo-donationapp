@@ -5,14 +5,15 @@ import Moment from 'react-moment'
 export class Card extends Component {
 
   render() {
-
+    console.log(this.props.card)
     const {
       title,
       description,
       id,
       author,
       goal,
-      created_at
+      created_at,
+      currency
     } = this.props.card;
 
     return (
@@ -21,13 +22,28 @@ export class Card extends Component {
           <div className="card-body">
             <div className='row'>
               <div className='col-lg-1'>
-                <img
-                  src='https://picsum.photos/seed/picsum/300'
+              {
+                author.avatar === null ? (
+                  <img
+                  src={`https://upload.wikimedia.org/wikipedia/commons/2/24/Missing_avatar.svg`}
                   width="65px"
+                  height="65px"
                   alt={`${title}-${id}`}
                   style={{
                   borderRadius: '100%'
                 }}/>
+                ) : (
+                  <img
+                  src={`${strapi}${author.avatar.url}`}
+                  width="65px"
+                  height="65px"
+                  alt={`${title}-${id}`}
+                  style={{
+                  borderRadius: '100%'
+                }}/>
+                )
+              }
+                
               </div>
               <div className='col-sm-10'>
                 <Link to={`/campaign/${id}`} className="card-link">
@@ -48,7 +64,7 @@ export class Card extends Component {
             }}></section>
           </Link>
           <div className="card-body">
-            <h5>Fund Goal: {goal}</h5>
+            <h5>Fund Goal: <strong>{currency} {goal}</strong></h5>
             {(description.length > 50)
               ? (
                 <p className="card-text">{description

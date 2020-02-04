@@ -76,7 +76,7 @@ export class Login extends Component {
 
     const {username, password} = this.state;
     if (withToken()) {
-      return (<Redirect to={`/`}/>)
+      return (<Redirect to={`/feed`}/>)
     } else {
       return (
         <Fragment>

@@ -19,7 +19,7 @@ export class Donation extends Component {
         id: this.props.match.params.id
       },
       donation_ref: 'donation' + Math.floor(Math.random() * 31415926),
-
+      currency:'USD',
       access_token: '',
       orderID: '',
       payerID: '',
@@ -32,6 +32,14 @@ export class Donation extends Component {
       .handleOnChange
       .bind(this)
 
+  }
+
+  componentDidMount(){
+    axios.get(`${strapi}/campaigns/${this.props.match.params.id}`).then(res=>{
+      this.setState({
+        currency:res.data.currency
+      })
+    }).catch(err=>{console.log(err)})
   }
 
   saveTransaction = (data) => {
@@ -47,6 +55,7 @@ export class Donation extends Component {
       .post(`${strapi}/supporters`, body)
       .then(res => {
         console.log(res.data)
+        window.location.href=`/campaign/${this.props.match.params.id}`
       })
       .catch(err => {
         console.log(err.response.data.message)

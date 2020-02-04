@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
 import axios from 'axios';
-import {strapi,getId} from '../components/functions'
+import {strapi,getId,withToken} from '../components/functions'
 import {Link} from 'react-router-dom'
 export class EditProfile extends Component {
 
@@ -14,7 +14,10 @@ export class EditProfile extends Component {
       city: '',
       country: '',
       zipcode: '',
-      error: ''
+      gcash_number: '',
+      paypal_email: '',
+      error: '',
+      avatar: ''
     }
     this.handleOnChange = this
       .handleOnChange
@@ -30,17 +33,27 @@ export class EditProfile extends Component {
       .get(`${strapi}/users/?id=${getId()}`)
       .then(res => {
         console.log(res.data)
-        res
-          .data
-          .map(data => (this.setState({
+        console.log(this.state)
+        if(res.data[0].avatar === null){
+          this.setState({
+            avatar:'https://upload.wikimedia.org/wikipedia/commons/2/24/Missing_avatar.svg'
+          })
+        }else{
+          this.setState({
+            avatar:`${strapi}${res.data[0].avatar.url}`
+          })
+        }
+        res.data.map(data => (
+            this.setState({
             first_name: data.first_name,
             last_name: data.last_name,
             address: data.address,
             city: data.city,
             country: data.country,
-            zipcode: data.zipcode
-          })))
-
+            zipcode: data.zipcode,
+          })
+          )
+          )
       })
       .catch(err => {
         console.log(err.response.data.message)
@@ -53,27 +66,38 @@ export class EditProfile extends Component {
     })
   }
 
+  preview = (event) => {
+    this.setState({
+      avatar: URL.createObjectURL(event.target.files[0])
+    })
+  }
+
   handleOnSubmit = (event) => {
+    const {first_name,last_name,address,city,country,zipcode,avatar} = this.state
     event.preventDefault();
-    const data = this.state;
-    axios
-      .put(`${strapi}/users/${getId()}`, data)
-      .then(res => {
-        console.log(res.data)
-        window.parent.location = `/profile/${getId()}`
-      })
-      .catch(err => {
-        console.log(err.response.data.message)
-      })
+    const data = {
+      first_name,
+      last_name,
+      address,
+      city,
+      country,
+      zipcode,
+      
+    };
+    
+    
   }
   render() {
+    console.log(this.state)
     const {
       first_name,
       last_name,
       address,
       city,
       country,
-      zipcode
+      zipcode,
+      gcash_number,
+      paypal_email
     } = this.state
     return (
       <Fragment>
@@ -82,6 +106,37 @@ export class EditProfile extends Component {
           <div className='container'>
           <h2>Edit Profile</h2>
             <form onSubmit={this.handleOnSubmit}>
+            <div className='row mb-3'>
+            <img src={this.state.avatar} width="100px" height="100px" style={{borderRadius:'50%'}}/>
+            <div className='col-sm-auto  '>
+            
+            <label htmlFor='avatar' >Avatar</label>
+            <input type='file' className='form-control-file' onChange={this.preview} name='avatar'/>
+            </div>
+            
+            </div>
+              <div className='row mb-3'>
+                <div className='col-sm-6 mb-3'>
+                <label htmlFor='gcash_number'>GCASH Number</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    name='gcash_number'
+                    value={gcash_number}
+                    onChange={this.handleOnChange}
+                    placeholder='+639XXXXXXXXX'/>
+                </div>
+                <div className='col-sm-6 mb-3'>
+                <label htmlFor='paypal_email'>Paypal Email</label>
+                  <input
+                    type='text'
+                    name='paypal_email'
+                    className='form-control'
+                    value={paypal_email}
+                    onChange={this.handleOnChange}
+                    placeholder='johndoe@email.com'/>
+                </div>
+              </div>
               <div className='row'>
                 <div className='col-sm-6 mb-3'>
                 <label htmlFor='first_name'>First Name</label>

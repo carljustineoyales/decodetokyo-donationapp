@@ -10,6 +10,16 @@
   <li>Bootstrap Framework</li>
 </ul>
 
+<h2>Feb 05 2020</h2>
+<ul>
+  <li>Resolve paragraph Issue</li>
+  <li>Added Currency for paypal</li>
+  <li>Fixed Request Issues</li>
+  <li>Fixed some router restrictions</li>
+  <li>Added Checkout Page</li>
+  <li>Added Tooltips</li>
+  <li>Fixed Form Validation Issues</li>
+</ul>
 <h2>Feb 03 2020</h2>
 <ul>
   <li>added Alerts</li>

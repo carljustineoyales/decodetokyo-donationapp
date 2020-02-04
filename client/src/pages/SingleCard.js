@@ -1,8 +1,9 @@
-import  React  , {Component, Fragment}           from 'react'            ;
-import  axios                                    from 'axios'            ;
-import {strapi, getRole, getUserName, withToken} from '../components/functions'     ;
-import {Link   }                                 from 'react-router-dom' ;
-import  Navbar                                   from '../components/Home/Navbar'   ;
+import React, {Component, Fragment} from 'react';
+import axios from 'axios';
+import {strapi, getRole, getUserName, withToken} from '../components/functions';
+import {Link} from 'react-router-dom';
+import Navbar from '../components/Home/Navbar';
+
 export class SingleCard extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +11,7 @@ export class SingleCard extends Component {
       editMode: false,
       title: '',
       goal: '',
+      raised:0,
       description: '',
       username: '',
       id: '',
@@ -17,7 +19,10 @@ export class SingleCard extends Component {
       error: '',
       deleted: false,
       verified: false,
-      supporters:[]
+      supporters: [],
+      currency:'',
+      avatar:null,
+      image:null
     }
   }
 
@@ -26,7 +31,15 @@ export class SingleCard extends Component {
     axios
       .get(`${strapi}/campaigns/${this.props.match.params.id}`)
       .then(res => {
-        console.log(res.data)
+        res.data.supporters.map(supporter=>{
+          this.state.raised += supporter.donation
+        })
+        if(res.data.author.avatar !== null || res.data.author.avatar === ''){
+          this.setState({
+            avatar:res.data.author.avatar.url,
+          })
+        }
+        
         this.setState({
           id: res.data.id,
           title: res.data.title,
@@ -36,8 +49,12 @@ export class SingleCard extends Component {
           username: res.data.author.username,
           deleted: res.data.deleted,
           verified: res.data.verified,
-          supporters:res.data.supporters
+          supporters: res.data.supporters,
+          currency:res.data.currency,
+          // avatar:res.data.author.avatar.url,
+          image:res.data.image[0].url
         })
+        console.log(res.data)
       })
       .catch(err => console.log(err))
 
@@ -88,7 +105,8 @@ export class SingleCard extends Component {
 
   cashPickUpInstrustions = (event) => {
     event.preventDefault();
-    alert('this is triggered using cash pick up button implement modal for cash pick up instruction')
+    alert('this is triggered using cash pick up button implement modal for cash pick up ins' +
+        'truction')
   }
 
   deleteCampaign = (event) => {
@@ -108,22 +126,33 @@ export class SingleCard extends Component {
     window.location.href = '/'
   }
 
+  
+
   render() {
     console.log(this.state)
     const {
       editMode,
       title,
       goal,
+      raised,
       description,
       deleted,
       verified,
-      author:{first_name, last_name},
+      author: {
+        first_name,
+        last_name,
+        gcash_number,
+        id,
+      },
       username,
-      supporters
-      // id
+      currency,
+      avatar,
+      image
     } = this.state
     return (
+
       <div>
+
         <Navbar/>
         <main>
           <div className='container'>
@@ -137,7 +166,7 @@ export class SingleCard extends Component {
               : ''
 }
             <div>
-              <Link to={'/'} style={{
+              <Link to={'/feed'} style={{
                 display: "block"
               }}>Go back</Link>
               <div className="row">
@@ -146,17 +175,30 @@ export class SingleCard extends Component {
                   style={{
                   padding: "10px"
                 }}>
+                {(image === null || image === '') ? (
                   <section
                     style={{
-                    backgroundImage: "url('https://picsum.photos/seed/picsum/720/300')",
+                    backgroundImage: "url(https://picsum.photos/seed/picsum/1000)",
                     height: "20em",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "50% 50%",
                     backgroundSize: "cover"
                   }}></section>
+                ) : (
+                  <section
+                    style={{
+                    backgroundImage: "url(" + strapi + image + ")",
+                    height: "20em",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "50% 50%",
+                    backgroundSize: "cover"
+                  }}></section>
+                  
+                )}
+                 
                   <div
                     style={{
-                    backgroundColor: ' #eee',
+                    backgroundColor: ' #fff',
                     padding: "16px"
                   }}>
                     {editMode
@@ -175,8 +217,10 @@ export class SingleCard extends Component {
                           className='form-control w-25'
                           value={goal}
                           onChange={this.handleOnChange('goal')}/>
-                      : <h2 className="text">{goal}</h2>
+                      : <em><h6 className="text">Fund Goal: {currency} {goal}</h6></em>
 }
+                  
+                    <h5 className="text">Fund Raised: <strong>{currency} {raised}</strong></h5>
                     {(deleted)
                       ? <h6>Status: Deleted</h6>
                       : (verified)
@@ -187,7 +231,7 @@ export class SingleCard extends Component {
                   <br/>
                   <div
                     style={{
-                    backgroundColor: ' #eee',
+                    backgroundColor: ' #fff',
                     padding: "16px"
                   }}>
                     {editMode
@@ -198,7 +242,11 @@ export class SingleCard extends Component {
                             value={description}
                             onChange={this.handleOnChange('description')}></textarea><br/>
                         </Fragment>
-                      : <p className="text" style={{wordBreak: 'break-all'}}>{description}</p>
+                      : <p
+                        className="text"
+                        style={{
+                          whiteSpace: 'pre-wrap'
+                      }}>{description}</p>
 }
 
                     {editMode
@@ -226,32 +274,30 @@ export class SingleCard extends Component {
                     alignContent: 'center',
                     alignItems: 'center',
                     height: '170px',
-                    backgroundColor: '#eee',
+                    backgroundColor: '#fff',
                     marginBottom: '10px'
                   }}>
                     <div style={{
                       width: '70%'
                     }}>
-
-                        <Link
+                      <Link
                         to={`/donation/${this.props.match.params.id}`}
                         className="btn btn-primary w-100">Paypal</Link>
-
+                        
                     </div>
-                    <div style={{
+                    {
+                      (gcash_number === null) ? '' : (
+                        <div style={{
                       width: '70%'
                     }}>
-                      <button onClick={this.gcashInstructions} className="btn btn-primary w-100">Gcash</button>
+                    <p style={{margin:'0'}}>GCASH: {gcash_number}</p>
                     </div>
-                    <div style={{
-                      width: '70%'
-                    }}>
-                      <button onClick={this.cashPickUpInstrustions} className="btn btn-primary w-100">Cash on Pick Up</button>
-                    </div>
+                      )
+                    }
                   </div>
                   <div
                     style={{
-                    backgroundColor: ' #eee',
+                    backgroundColor: ' #fff',
                     padding: '10px',
                     marginBottom: '10px'
                   }}>
@@ -279,12 +325,24 @@ export class SingleCard extends Component {
                                 alignContent: 'center',
                                 justifyContent: 'center'
                               }}>
+                              { (avatar === '' || avatar === null ) ? (
                                 <img
-                                  src='https://picsum.photos/seed/picsum/300'
+                                  src={'https://upload.wikimedia.org/wikipedia/commons/2/24/Missing_avatar.svg'}
                                   width="65px"
+                                  height="65px"
                                   style={{
                                   borderRadius: '100%'
                                 }}/>
+                              ) : (
+                                <img
+                                  src={`${strapi}${avatar}`}
+                                  width="65px"
+                                  height="65px"
+                                  style={{
+                                  borderRadius: '100%'
+                                }}/>
+                              )}
+                                
                               </div>
                             </div>
                             <div
@@ -301,88 +359,20 @@ export class SingleCard extends Component {
                                 justifyContent: 'center',
                                 width: '160px'
                               }}>
+                              
                                 <h6
                                   style={{
                                   margin: '0px'
-                                }}>{first_name} {last_name}</h6>
+                                }}><Link to={`/profile/${id}`}>{first_name} {last_name}</Link></h6>
                                 <p
                                   style={{
                                   margin: '0px'
-                                }}>{username}</p>
+                                }}>@{username}</p>
                               </div>
                             </div>
                           </div>
                         </div>
                       </li>
-                    </ul>
-                  </div>
-                  <div
-                    style={{
-                    backgroundColor: ' #eee',
-                    padding: '10px',
-                    marginBottom: '10px'
-                  }}>
-                    <h4>Supporters</h4>
-                    <ul
-                    style={{
-                      listStyle: 'none',
-                      padding: '0px',
-                      marginBottom: '0px'
-                    }}
-                    >
-                    {supporters.map(supporter=>(
-                      <li key={supporter.id}>
-                      <div
-                          style={{
-                          display: 'flex',
-                          flexFlow: 'column wrap',
-                          justifyContent: 'space-around',
-                          alignItems: 'center',
-                          width: 'auto',
-                          padding: '10px'
-                        }}>
-                        <div className='row'>
-                            <div className='col-4'>
-                              <div
-                                style={{
-                                display: 'flex',
-                                alignContent: 'center',
-                                justifyContent: 'center'
-                              }}>
-                                <img
-                                  src='https://picsum.photos/seed/picsum/300'
-                                  width="65px"
-                                  style={{
-                                  borderRadius: '100%'
-                                }}/>
-                              </div>
-                            </div>
-                            <div
-                              className='col-8'
-                              style={{
-                              display: 'flex',
-                              alignContent: 'center'
-                            }}>
-                              <div
-                                style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignContent: 'center',
-                                justifyContent: 'center',
-                                width: '160px'
-                              }}>
-                                <h6
-                                  style={{
-                                  margin: '0px'
-                                }}>{supporter.name}</h6>
-                                <p
-                                  style={{
-                                  margin: '0px'
-                                }}>${supporter.donation}</p>
-                              </div>
-                            </div>
-                          </div></div>
-                    </li>))}
                     </ul>
                   </div>
                 </div>

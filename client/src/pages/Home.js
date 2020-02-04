@@ -16,30 +16,30 @@ export class Home extends Component {
   }
 
   render() {
-    if (withToken()) {
-      return (
-        <Fragment>
-          <Feed/>
-        </Fragment>
-      );
-
-    } else {
-      return (
-        <Fragment>
-          <Navbar/>
-          <main>
-            <div className='container'>
-              <div className="row">
-                <div className='col-sm'><About/></div>
-                <div className='col-sm'><UserForm/></div>
-              </div>
+  if(withToken()){
+    return (
+      <Feed/>
+    )
+  }else{
+    return (
+      <Fragment>
+        <Navbar/>
+        <main>
+          <div className='container'>
+            <div className="row">
+              <div className='col-sm'><About/></div>
+              <div className='col-sm'><UserForm/></div>
             </div>
-          </main>
-          <Footer/>
+          </div>
+        </main>
+        <Footer/>
 
-        </Fragment>
+      </Fragment>
       );
-    }
+  }
+      
+      
+    
   }
 }
 
