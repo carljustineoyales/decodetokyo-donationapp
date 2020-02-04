@@ -13,6 +13,7 @@ import {getRole,withToken,strapi,getId} from './components/functions';
 import Success from './pages/Success';
 import CheckOut from './pages/CheckOut';
 import axios from 'axios';
+import Navbar from './components/Home/Navbar';
 
 const NoMatchPage = () => {
   return (
@@ -52,6 +53,7 @@ class App extends Component {
             {/* PUBLIC ROUTES */}
               <Route exact path="/"                    component={Home          }/>      
               <Route       path="/feed"                component={Feed          }/>
+              <Route       path="/feed"                component={Navbar        }/>
               <Route       path="/create-campaign"     component={CreateCampaign}/>
               <Route       path="/campaign/:id"        component={SingleCard    }/>      
               <Route       path="/donation/:id"        component={Donation      }/>

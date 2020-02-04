@@ -16,6 +16,7 @@ export class Navbar extends Component {
   }
 
   render() {
+    console.log(this.props)
     const id = (getId())
       ? getId()
       : '';
@@ -40,14 +41,14 @@ export class Navbar extends Component {
             <ul className="navbar-nav ml-auto">
             
             {
-              (getRole() === 'admin' || window.location.href === `${strapi}/feed`) ? '' :(
+              (getRole() === 'admin' || window.location.pathname === `/feed`) ? '' :(
                 <li className="nav-item">
                 <Link className="nav-link" to={'/feed'}>Support</Link>
               </li>
               )
             }
             {
-              window.location.href === `${strapi}/feed` ? (
+              window.location.pathname === `/feed` ? (
                 <Fragment><form className='form-inline'>
                 <div className='col-sm-12'>
                 <input className='form-control form-control-sm w-100' placeholder='Search' type='text'/>
