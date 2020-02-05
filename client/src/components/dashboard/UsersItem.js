@@ -33,9 +33,10 @@ export class UsersItem extends Component {
         <tr>
           <td>{item.username}</td>
           <td>{item.first_name} {item.last_name}</td>
+          <td>{item.email}</td>
           <td>{item.address} {item.city} {item.zipcode} {item.country}</td>
           <td>{campaigns.length}</td>
-          <td><a href={`/profile/${item.id}` } target='_blank' rel="noopener noreferrer">Profile</a></td>
+          <td><a href={`/profile/${item.username}` } target='_blank' rel="noopener noreferrer">Profile</a></td>
         </tr>
       </Fragment>
     );

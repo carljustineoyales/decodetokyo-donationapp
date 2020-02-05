@@ -27,19 +27,6 @@ export class DeletedTable extends Component {
       .catch(err=>{console.log(err.response.data.message)})
   }
 
-  // componentDidUpdate(){
-  //   axios
-  //     .get(`${strapi}/campaigns?deleted=true`)
-  //     .then(res => {
-  //       if (this._isMounted) {
-  //         this.setState({items: res.data})
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log(err.response.data.message)
-  //     })
-  // }
-
   componentWillUnmount() {
     this._isMounted = false;
   }
@@ -54,6 +41,7 @@ export class DeletedTable extends Component {
       <div>
         <h2>Deleted</h2>
         <p>This table shows deleted campaigns</p>
+        <input type='text' placeholder='search'/>
         <table className="table table-hover">
 
           <thead>

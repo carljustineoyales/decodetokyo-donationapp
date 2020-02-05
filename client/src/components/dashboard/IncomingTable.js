@@ -38,6 +38,7 @@ export class IncomingTable extends Component {
       <div>
         <h2>Incoming Campaigns</h2>
         <p>This table shows campaigns for approval</p>
+        <input type='text' placeholder='search'/>
         <table className="table table-hover">
 
           <thead>

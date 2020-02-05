@@ -25,7 +25,8 @@ export class Donation extends Component {
       payerID: '',
       noError: false,
       errors: [],
-      isLoading: false
+      isLoading: false,
+      raised:0
     }
 
     this.handleOnChange = this
@@ -36,8 +37,10 @@ export class Donation extends Component {
 
   componentDidMount(){
     axios.get(`${strapi}/campaigns/${this.props.match.params.id}`).then(res=>{
+      console.log(res.data)
       this.setState({
-        currency:res.data.currency
+        currency:res.data.currency,
+        raised:Number(res.data.raised)
       })
     }).catch(err=>{console.log(err)})
   }
@@ -50,16 +53,23 @@ export class Donation extends Component {
       donation:this.state.amount
     })
     console.log(this.state)
-    const body = this.state
-    axios
+    const {name,payerID,orderID,donation} = this.state
+    const body = {name,payerID,orderID,donation}
+    const supporters = axios
       .post(`${strapi}/supporters`, body)
-      .then(res => {
-        console.log(res.data)
-        window.location.href=`/campaign/${this.props.match.params.id}`
-      })
-      .catch(err => {
-        console.log(err.response.data.message)
-      })
+      // .then(res => {
+      //   console.log(res.data)
+      //   // window.location.href=`/campaign/${this.props.match.params.id}`
+      // })
+      // .catch(err => {
+      //   console.log(err.response.data.message)
+      // })
+    const raised = {
+      raised:Number(this.state.raised) + Number(donation)
+    }
+    const campaigns = axios.put(`${strapi}/campaigns/${this.props.match.params.id}`,raised)
+    // .then(res=>{console.log(res)}).catch(err=>{console.log(err)})
+    Promise.all([supporters,campaigns]).then(res=>{console.log(res)})
   }
 
   handleOnChange = event => {

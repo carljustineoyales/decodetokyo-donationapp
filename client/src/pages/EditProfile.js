@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
 import axios from 'axios';
-import {strapi,getId,withToken} from '../components/functions'
+import {strapi,getId,getUserName,withToken} from '../components/functions'
 import {Link} from 'react-router-dom'
 export class EditProfile extends Component {
 
@@ -17,7 +17,7 @@ export class EditProfile extends Component {
       gcash_number: '',
       paypal_email: '',
       error: '',
-      avatar: ''
+      avatar: {}
     }
     this.handleOnChange = this
       .handleOnChange
@@ -61,15 +61,18 @@ export class EditProfile extends Component {
   }
 
   handleOnChange = (event) => {
+    if (event.target.type === 'file') {
+      this.setState({avatar: event.target.files[0]})
+      console.log(event.target.files[0])
+    }
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
   preview = (event) => {
-    this.setState({
-      avatar: URL.createObjectURL(event.target.files[0])
-    })
+    this.setState({avatar: event.target.files[0]})
+    console.log(event.target.files[0])
   }
 
   handleOnSubmit = (event) => {
@@ -82,8 +85,30 @@ export class EditProfile extends Component {
       city,
       country,
       zipcode,
-      
     };
+    axios.put(`${strapi}/users/${getId()}`,data).then(res=>{
+      console.log(res.data)
+      let bodyFormData = new FormData();
+
+      bodyFormData.append('files', this.state.avatar, this.state.avatar.name)
+      bodyFormData.append('ref', 'user')
+      bodyFormData.append('refId', getId())
+      bodyFormData.append('field', 'avatar')
+      bodyFormData.append('source', 'users-permmissions')
+  
+      axios({
+        method: 'post',
+        url: `${strapi}/upload`,
+        
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${withToken()}`,
+          
+          },
+          data: bodyFormData,
+      }).then(res=>console.log(res.data)).catch(err=>{console.log(err.response.data.message)})
+    }).catch(err=>{console.log(err)})
+    
     
     
   }
@@ -451,7 +476,7 @@ export class EditProfile extends Component {
 
               <button className='btn btn-primary mr-3'>Submit</button>
              
-              <Link to={`/profile/${getId()}`}>Cancel</Link>
+              <Link to={`/profile/${getUserName()}`}>Cancel</Link>
             </form>
           </div>
         </main>

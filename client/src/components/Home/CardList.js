@@ -1,45 +1,35 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import Card from './Card';
-
-import {strapi} from '../functions';
-import axios from 'axios';
-
+import {CardListContext} from '../../contexts/CardListContext'
 export class CardList extends Component {
-  constructor(props) {
-    super(props);
-    this.state={
-      cards:[],
-      isLoaded:false,
-      error: ''
-    }
-  }
 
-  componentDidMount() {
-    axios.get(`${strapi}/campaigns?verified=true`)
-    .then(res=>{
-      console.log(res.data)
-      this.setState({
-        cards:res.data,
-        isLoaded:true
-      })
-    })
-    .catch(err=>console.log(err.response.data.message))
-  }
-
-  
   render() {
-    const {cards, isLoaded} = this.state;
-    console.log(cards)
-    if (isLoaded) {
-      return (
-        <div>
-        {cards.reverse().map(card => (<Card key={card.id} card={card}/>))}
-        </div>
-      );
-    } else {
-      return (<div>Loading ...</div>)
-    }
     
+    return (
+      <CardListContext.Consumer>{(context) => {
+        const {isLoaded, filteredCard} = context
+          if (isLoaded) {
+            if(filteredCard.length > 0){
+              return (
+              <div>
+                {context
+                  .filteredCard
+                  .reverse()
+                  .map(card => (<Card key={card.id} card={card}/>))}
+              </div>
+            );
+            }else{
+              return(<h1>No Result Found</h1>)
+            }
+            
+          } else {
+            return (
+              <div>Loading ...</div>
+            )
+          }
+        }}</CardListContext.Consumer>
+    )
+
   }
 }
 

@@ -2,18 +2,18 @@ import React, {Component, Fragment} from 'react';
 import axios from 'axios';
 import {Redirect, Link} from 'react-router-dom';
 import {strapi, withToken} from '../functions'
+
 // import { bake_cookie } from 'sfcookies';
 
 
 export class Login extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       username: '',
       password: '',
-      userEmail: '',
+      email: '',
       isLoggedIn: false,
       Loading: false,
       error: ''
@@ -28,14 +28,7 @@ export class Login extends Component {
     this.setState({
       Loading: true
     }, () => {
-      // axios('/login',
-      // {
-      //   method: "post",
-      //   headers:{
-      //     'content-type':'application/json'
-      //   },
-      //   data:loginData
-      // })
+      
       
       axios
         .post(`${strapi}/auth/local`, loginData)
@@ -46,12 +39,12 @@ export class Login extends Component {
             return;
           }
 
-          sessionStorage.setItem('JWT', res.data.jwt);
-          sessionStorage.setItem('username', res.data.user.username);
-          sessionStorage.setItem('role', res.data.user.role.type);
-          sessionStorage.setItem('id', res.data.user.id);
+          localStorage.setItem('JWT', res.data.jwt);
+          localStorage.setItem('username', res.data.user.username);
+          localStorage.setItem('role', res.data.user.role.type);
+          localStorage.setItem('id', res.data.user.id);
 
-          this.setState({Loading: false, token: res.data.jwt, username: res.data.user.username, userEmail: res.data.user.email, isLoggedIn: true});
+          this.setState({Loading: false, token: res.data.jwt, username: res.data.user.username, email: res.data.user.email, isLoggedIn: true});
           // window.location.href = '/';
         })
         .catch(err => {
@@ -72,8 +65,9 @@ export class Login extends Component {
       [event.target.name]: event.target.value
     })
   }
+  
   render() {
-
+  
     const {username, password} = this.state;
     if (withToken()) {
       return (<Redirect to={`/feed`}/>)
@@ -103,11 +97,6 @@ export class Login extends Component {
           <div className="col-sm">
           <button className='btn btn-primary btn-sm w-100' type='submit'>Login</button>
           </div>
-                  
-
-                  
-
-                
           </form>
         </Fragment>
       );

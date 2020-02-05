@@ -1,8 +1,8 @@
-import React          , {Component} from 'react'            ;
-import IncomingTable                from './IncomingTable'  ;
-import DeletedTable                 from './DeletedTable'   ;
-import SupporterTable               from './SupporterTable' ;
-import UsersTable                   from './UsersTable'     ;
+import React, {Component} from 'react';
+import IncomingTable from './IncomingTable';
+import DeletedTable from './DeletedTable';
+import SupporterTable from './SupporterTable';
+import UsersTable from './UsersTable';
 
 export class CampaignTable extends Component {
   constructor(props) {
@@ -13,11 +13,11 @@ export class CampaignTable extends Component {
     }
   }
 
-  incoming =(event) => {
+  incoming = (event) => {
     event.preventDefault();
     this.setState({table: 'incoming'})
   }
-  deleted =(event) => {
+  deleted = (event) => {
     event.preventDefault();
     this.setState({table: 'deleted'})
   }
@@ -40,7 +40,7 @@ export class CampaignTable extends Component {
 
       case 'users':
         return (<UsersTable/>)
-        
+
       case 'supporter':
         return (<SupporterTable/>)
       default:
@@ -54,21 +54,26 @@ export class CampaignTable extends Component {
     const {table} = this.state
     return (
       <div>
-      <div className="btn-group btn-group-toggle" data-toggle="buttons">
-  <label className="btn btn-primary active" onClick={this.incoming}>
-    <input type="radio" name="options" id="option1"  defaultChecked/> Incoming
-  </label>
-  <label className="btn btn-primary" onClick={this.deleted}>
-    <input type="radio" name="options" id="option2" /> Deleted
-  </label>
-  <label className="btn btn-primary" onClick={this.users}>
-    <input type="radio" name="options" id="option2" /> Users
-  </label>
-  <label className="btn btn-primary" onClick={this.supporter}>
-    <input type="radio" name="options" id="option3"/> Supporters
-  </label>
-</div>
         
+        <div className="btn-group btn-group-toggle" data-toggle="buttons">
+          <label className="btn btn-primary active" onClick={this.incoming}>
+            <input type="radio" name="options" id="option1" defaultChecked/>
+            Incoming
+          </label>
+          <label className="btn btn-primary" onClick={this.deleted}>
+            <input type="radio" name="options" id="option2"/>
+            Deleted
+          </label>
+          <label className="btn btn-primary" onClick={this.users}>
+            <input type="radio" name="options" id="option2"/>
+            Users
+          </label>
+          <label className="btn btn-primary" onClick={this.supporter}>
+            <input type="radio" name="options" id="option3"/>
+            Supporters
+          </label>
+        </div>
+
         {this.renderSwitch(table)}
       </div>
     );

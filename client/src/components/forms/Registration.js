@@ -15,7 +15,7 @@ export class Registration extends Component {
       address: '',
       city: '',
       zipcode: '',
-      country: '',
+      country: 'Philippines',
       username: '',
       password: '',
       errors: [],
@@ -229,7 +229,7 @@ export class Registration extends Component {
                 placeholder='Country'
                 name="country"
                 onChange={this.handleOnChange}>
-                <option value="">Country</option>
+                <option value="Philippines">Philippines</option>
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Åland Islands">Åland Islands</option>
                 <option value="Albania">Albania</option>

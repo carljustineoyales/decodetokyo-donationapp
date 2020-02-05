@@ -1,28 +1,30 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
 import Footer from '../components/Home/Footer';
-
 import UserForm from './UserForm';
 import Feed from './Feed';
 import {withToken} from '../components/functions'
 import About from '../components/Home/About';
+import CardListContextProvider from '../contexts/CardListContext';
+import { Redirect } from 'react-router-dom';
+
 
 export class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: ''
-    }
-  }
 
   render() {
+    
   if(withToken()){
     return (
-      <Feed/>
+      <CardListContextProvider>
+        
+        <Redirect to={`/feed`}>
+        <Feed/>
+        </Redirect>
+        </CardListContextProvider>
     )
   }else{
     return (
-      <Fragment>
+      <CardListContextProvider>
         <Navbar/>
         <main>
           <div className='container'>
@@ -33,9 +35,9 @@ export class Home extends Component {
           </div>
         </main>
         <Footer/>
-
-      </Fragment>
+      </CardListContextProvider>
       );
+     
   }
       
       

@@ -40,12 +40,14 @@ export class UsersTable extends Component {
       <div>
         <h2>Users</h2>
         <p>This table shows users that are registered in the database</p>
+        <input type='text' placeholder='search'/>
         <table className="table table-hover">
 
           <thead>
             <tr>
               <th>Username</th>
               <th>Name</th>
+              <th>Email</th>
               <th>Address</th>
               <th>Campaigns</th>
               <th>Action</th>

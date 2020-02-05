@@ -31,9 +31,7 @@ export class SingleCard extends Component {
     axios
       .get(`${strapi}/campaigns/${this.props.match.params.id}`)
       .then(res => {
-        res.data.supporters.map(supporter=>{
-          this.state.raised += supporter.donation
-        })
+        
         if(res.data.author.avatar !== null || res.data.author.avatar === ''){
           this.setState({
             avatar:res.data.author.avatar.url,
@@ -51,6 +49,7 @@ export class SingleCard extends Component {
           verified: res.data.verified,
           supporters: res.data.supporters,
           currency:res.data.currency,
+          raised:res.data.raised,
           // avatar:res.data.author.avatar.url,
           image:res.data.image[0].url
         })
@@ -64,7 +63,6 @@ export class SingleCard extends Component {
     event.preventDefault();
     this.setState({
       editMode: !this.state.editMode,
-
       title: this.state.title,
       goal: this.state.goal,
       description: this.state.description
@@ -364,7 +362,7 @@ export class SingleCard extends Component {
                                 <h6
                                   style={{
                                   margin: '0px'
-                                }}><Link to={`/profile/${id}`}>{first_name} {last_name}</Link></h6>
+                                }}><Link to={`/profile/${username}`}>{first_name} {last_name}</Link></h6>
                                 <p
                                   style={{
                                   margin: '0px'

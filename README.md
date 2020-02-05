@@ -10,8 +10,19 @@
   <li>Bootstrap Framework</li>
 </ul>
 
+<h2>Feb 06 2020</h2>
+<ul>
+  <li>Implement State Management - Context API</li>
+  <li>State Management for Cards(<em>testing</em>)</li>
+  <p>Added</p>
+  <li>Feed Search Functionality</li>
+  <p>Fixed</p>
+  <li>Fixed Can't call setState on an unmounted component.</li>
+</ul>
 <h2>Feb 05 2020</h2>
 <ul>
+  <li>Fixed Donation and Raised Value Number to String</li>
+  <li>Added 404 Page</li>
   <li>Resolve paragraph Issue</li>
   <li>Added Currency for paypal</li>
   <li>Fixed Request Issues</li>

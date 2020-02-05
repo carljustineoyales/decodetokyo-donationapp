@@ -33,6 +33,7 @@ export class supporterTable extends Component {
       <div>
         <h2>Supporter</h2>
         <p>This table shows supporters of a campaign</p>
+        <input type='text' placeholder='search'/>
         <table className="table table-hover">
           <thead>
             <tr>
@@ -40,7 +41,6 @@ export class supporterTable extends Component {
               <th>Email</th>
               <th>Campaigns Supported</th>
               <th>Amount</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>

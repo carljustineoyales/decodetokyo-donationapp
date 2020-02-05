@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
-import {strapi, getId, withToken} from '../components/functions';
+import {strapi, getId, withToken,getUserName} from '../components/functions';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
@@ -14,13 +14,15 @@ export class Profile extends Component {
     }
   }
 
+
   componentDidMount() {
 
     axios
-      .get(`${strapi}/users/?id=${this.props.match.params.id}`)
+      .get(`${strapi}/users/?username=${this.props.match.params.username}`)
       .then(res => {
         console.log(res.data)
         this.setState({profile_data: res.data})
+
       })
       .catch(err => {
         console.log(err.response.data.message)
@@ -40,7 +42,7 @@ export class Profile extends Component {
             {profile_data.map(data => (
 
               <div key={data.id}>
-                {getId() !== this.props.match.params.id
+                {getUserName() !== this.props.match.params.username
                   ? <Link to={'/feed'}  style={{
                     display: 'block'
                   }}>Go Back</Link>
@@ -49,7 +51,7 @@ export class Profile extends Component {
                     display: 'block'
                   }}>Go Back</Link>
                     <Link
-                    to={`/edit/${this.props.match.params.id}`}
+                    to={`/edit/${this.props.match.params.username}`}
                     style={{
                     display: 'block'
                   }}>Edit Profile</Link>
@@ -85,7 +87,11 @@ export class Profile extends Component {
                     <div key={campaign.id}>
                       <hr/>
                       {
-                        (withToken() && getId() === this.props.match.params.id) ? <Link to={`/checkout/${campaign.id}`}>Checkout</Link> : ''
+                        (withToken() && getUserName() === this.props.match.params.username) ? (
+                          <Fragment>
+                          <Link to={`/checkout/${campaign.id}`}>Checkout</Link>
+                          </Fragment>
+                          ) : ''
                       }
                       
                       <h3>{campaign.title}</h3>
