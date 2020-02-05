@@ -14,11 +14,16 @@
 <ul>
   <li>Implement State Management - Context API</li>
   <li>State Management for Cards(<em>testing</em>)</li>
-  <p>Added</p>
+</ul>
+<p><strong>Added</strong></p>
+<ul>
   <li>Feed Search Functionality</li>
-  <p>Fixed</p>
+</ul>
+<p><strong>Fixed</strong></p>
+<ul>
   <li>Fixed Can't call setState on an unmounted component.</li>
 </ul>
+
 <h2>Feb 05 2020</h2>
 <ul>
   <li>Fixed Donation and Raised Value Number to String</li>
