@@ -25,37 +25,57 @@
 </ul>
 
 <h2>Feb 05 2020</h2>
+<p><strong>Added</strong></p>
 <ul>
-  <li>Fixed Donation and Raised Value Number to String</li>
   <li>Added 404 Page</li>
-  <li>Resolve paragraph Issue</li>
   <li>Added Currency for paypal</li>
-  <li>Fixed Request Issues</li>
-  <li>Fixed some router restrictions</li>
   <li>Added Checkout Page</li>
   <li>Added Tooltips</li>
-  <li>Fixed Form Validation Issues</li>
 </ul>
+<p><strong>Fixed</strong></p>
+<ul>
+  <li>Fixed Donation and Raised Value Number to String</li>
+  <li>Fixed Request Issues</li>
+  <li>Fixed some router restrictions</li>
+  <li>Fixed Form Validation Issues</li>
+  <li>Resolve paragraph Issue</li>
+</ul>
+
 <h2>Feb 03 2020</h2>
 <ul>
-  <li>added Alerts</li>
   <li>Form validation</li>
   <li>Paypal form validation</li>
   <li>Gcash and Cash pick up functions</li>
 </ul>
+<p><strong>Added</strong></p>
+<ul>
+  <li>added Alerts</li>
+</ul>
+
 <h2>Jan 31 2020</h2>
 <ul>
   <li>Integrate Reactjs to serverjs</li>
+</ul>
+<p><strong>Added</strong></p>
+<ul>
   <li>create server.js</li>
+</ul>
+<p><strong>Removed</strong></p>
+<ul>
   <li>Remove node_paypal</li>
   <li>Uninstall Unused dependencies</li>
 </ul>
+
 <h2>Jan 30 2020</h2>
 <ul>
   <li>Deployed strapi backend to heroku</li>
-  <li>fixed strapi backend issues</li>
   <li>reconfigure strapi for deployment</li>
 </ul>
+<p><strong>Fixed</strong></p>
+<ul>
+  <li>fixed strapi backend issues</li>
+</ul>
+
 <h2>Jan 29 2020</h2>
 <ul>
   <li>Initial Commit</li>
