@@ -21,6 +21,8 @@
 <p><strong>Fixed</strong></p>
 <ul>
   <li>Redirect Issues</li>
+  <li>Profile Picture upload returns 400 error [Empty Files]</li>
+  <li>Profile Picture upload returns 500 error [Internal Server Error]</li>
 </ul>
 <p><strong>Removed</strong></p>
 <ul>

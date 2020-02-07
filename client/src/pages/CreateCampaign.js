@@ -199,10 +199,8 @@ export class CreateCampaign extends Component {
                         onChange={this.handleChange('goalFund')}
                         value={values.goalFund}/>
                     </div>
-  
                   </div>
-  
-         
+
                 <div className='row'>
                   <div className="col-md-12 mb-3">
                   <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Image tooltip">

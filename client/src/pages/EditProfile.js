@@ -19,9 +19,20 @@ export class EditProfile extends Component {
       error: '',
       avatars: {}
     }
-    this.handleOnChange = this
-      .handleOnChange
-      .bind(this)
+    this.handleOnChange = this.handleOnChange.bind(this)
+  }
+  
+  handleOnChange = input => (event) => {
+    if (event.target.type === 'file') {
+      this.setState({avatars: event.target.files[0]})
+      console.log(event.target.files[0])
+    }
+     
+      this.setState({
+        [event.target.name]: event.target.value
+      })
+    
+      console.log(event.target.name)
   }
 
   componentDidMount() {
@@ -29,10 +40,10 @@ export class EditProfile extends Component {
     axios
       .get(`${strapi}/users/?id=${getId()}`)
       .then(res => {
-        console.log(res.data)
-        console.log(this.state)
         res.data.map(data => (
             this.setState({
+              gcash_number: data.gcash_number,
+              paypal_email: data.paypal_email,
             first_name: data.first_name,
             last_name: data.last_name,
             address: data.address,
@@ -48,13 +59,7 @@ export class EditProfile extends Component {
       })
   }
 
-  handleOnChange = input => event => {
-    if (event.target.type === 'file') {
-      this.setState({avatars: event.target.files[0]})
-      console.log(event.target.files[0])
-    }
-    this.setState({[input]: event.target.value})
-  }
+  
 
 
   handleOnSubmit = (event) => {
@@ -70,16 +75,13 @@ export class EditProfile extends Component {
     };
 
     axios.put(`${strapi}/users/${getId()}`,data).then(res=>{
-      console.log(res.data)
       let bodyFormData = new FormData();
 
-      
-      bodyFormData.append('ref', 'user')
-      bodyFormData.append('refId', getId())
-      bodyFormData.append('field', 'avatar')
-      bodyFormData.append('source', 'users-permmissions')
-      bodyFormData.append('files.avatar', this.state.avatars, this.state.avatars.name)
-      console.log(bodyFormData)
+      bodyFormData.append("files", this.state.avatars, this.state.avatars.name)
+      bodyFormData.append("ref", "user")
+      bodyFormData.append("refId", getId())
+      bodyFormData.append("field", "avatar")
+      bodyFormData.append("source", "users-permissions")
       axios({
         method: 'post',
         url: `${strapi}/upload`,
@@ -87,7 +89,7 @@ export class EditProfile extends Component {
         headers: {
           'Content-Type': 'multipart/form-data',
           }
-      }).then(res=>console.log(res)).catch(err=>{console.log(err.response.data.message)})
+      }).then(res=>window.location.href=`/profile/${getUserName()}`).catch(err=>{console.log(err.response.data.message)})
     }).catch(err=>{console.log(err)})
   }
   render() {
@@ -101,7 +103,6 @@ export class EditProfile extends Component {
       gcash_number,
       paypal_email,
     } = this.state
-    
     return (
       <Fragment>
         <Navbar/>
@@ -130,7 +131,7 @@ export class EditProfile extends Component {
                     className='form-control'
                     name='gcash_number'
                     value={gcash_number}
-                    onChange={this.handleOnChange}
+                    onChange={this.handleOnChange()}
                     placeholder='+639XXXXXXXXX'/>
                 </div>
                 <div className='col-sm-6 mb-3'>
@@ -140,7 +141,7 @@ export class EditProfile extends Component {
                     name='paypal_email'
                     className='form-control'
                     value={paypal_email}
-                    onChange={this.handleOnChange}
+                    onChange={this.handleOnChange()}
                     placeholder='johndoe@email.com'/>
                 </div>
               </div>
@@ -151,8 +152,8 @@ export class EditProfile extends Component {
                     type='text'
                     className='form-control'
                     name='first_name'
+                    onChange={this.handleOnChange()}
                     value={first_name}
-                    onChange={this.handleOnChange}
                     placeholder='First Name'/>
                 </div>
                 <div className='col-sm-6 mb-3'>
@@ -162,7 +163,7 @@ export class EditProfile extends Component {
                     name='last_name'
                     className='form-control'
                     value={last_name}
-                    onChange={this.handleOnChange}
+                    onChange={this.handleOnChange()}
                     placeholder='Last Name'/>
                 </div>
               </div>
@@ -174,7 +175,7 @@ export class EditProfile extends Component {
                     name='address'
                     className='form-control'
                     value={address}
-                    onChange={this.handleOnChange}
+                    onChange={this.handleOnChange()}
                     placeholder='Address'/>
                 </div>
                 <div className='col-sm-6 mb-3'>
@@ -184,7 +185,7 @@ export class EditProfile extends Component {
                     name='city'
                     className='form-control'
                     value={city}
-                    onChange={this.handleOnChange}
+                    onChange={this.handleOnChange()}
                     placeholder='City/State'/>
                 </div>
               </div>
@@ -196,7 +197,7 @@ export class EditProfile extends Component {
                     name='zipcode'
                     className='form-control'
                     value={zipcode}
-                    onChange={this.handleOnChange}
+                    onChange={this.handleOnChange()}
                     placeholder='Zip Code'/>
                 </div>
                 <div className='col-sm-6 mb-3'>
@@ -206,7 +207,7 @@ export class EditProfile extends Component {
                     className='form-control'
                     name="country"
                     value={country}
-                    onChange={this.handleOnChange}>
+                    onChange={this.handleOnChange()}>
                     <option value="">Country</option>
                     <option value="Afghanistan">Afghanistan</option>
                     <option value="Åland Islands">Åland Islands</option>
