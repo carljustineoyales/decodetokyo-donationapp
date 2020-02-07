@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import Moment from 'react-moment';
-import {strapi,withToken} from '../functions'
+import {strapi} from '../functions'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 

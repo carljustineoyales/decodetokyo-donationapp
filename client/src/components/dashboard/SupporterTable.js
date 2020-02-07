@@ -12,6 +12,22 @@ export class supporterTable extends Component {
     }
   }
 
+  removeSupporters = () => {
+    this.state.items.map(item=>{
+      if(item.campaigns.length <= 0 ){
+        axios.delete(`${strapi}/supporters/?id=${item.id}`)
+        .then(res=>{
+          console.log(res.data)
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      }else{
+        return
+      }
+    })
+  }
+
   componentDidMount(){
     axios.get(`${strapi}/supporters`,{
       headers:{
@@ -22,6 +38,8 @@ export class supporterTable extends Component {
       this.setState({
         items:res.data
       })
+      console.log(this.state.items)
+      this.removeSupporters();
     })
     .catch(err=>{console.log(err.response.data.message)})
   }

@@ -1,7 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import {Link} from 'react-router-dom';
-// import axios from 'axios'
-// import {strapi} from '../functions'
 export class SupporterItem extends Component {
 constructor(props) {
   super(props);
@@ -12,19 +9,21 @@ constructor(props) {
 } 
   render() {
     
-    const {item} = this.props
-    console.log(item)
+    const {id,name,email,campaigns,donation} = this.props.item
+    
+    console.log(this.props.item)
     return (
       <Fragment>
         <tr>
-          <td>{item.name}</td>
-          <td>{item.email}</td>
+          <td>{name}</td>
+          <td>{email}</td>
           
-              {item.campaigns.map(campaign=>(<td key={campaign.id}>{campaign.title} by {campaign.username}</td>))}
-          <td>{item.campaigns[0].currency} {item.donation}</td>
-          <td>
-          </td>
-
+          {campaigns.map(campaign=>(
+            <Fragment key={id}>
+            <td >{campaign.title} by {campaign.username}</td>
+            <td>{campaign.currency} {donation}</td>
+            </Fragment>))
+            }
         </tr>
       </Fragment>
     );

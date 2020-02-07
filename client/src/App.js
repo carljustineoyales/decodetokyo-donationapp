@@ -10,26 +10,22 @@ import Profile from './pages/Profile';
 import Donation from './pages/Donation';
 import EditProfile from './pages/EditProfile';
 import {getRole, withToken} from './components/functions';
-import Success from './pages/Success';
 import CheckOut from './pages/CheckOut';
 import NotFound from './pages/NotFound';
-
+import {CardListContextProvider} from './contexts/CardListContext'
 class App extends Component {
 
   render() {
     return (
       <Fragment>
-
+      <CardListContextProvider>
         <Router>
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route path="/feed" component={Feed}/>
-            <Route path="/create-campaign" component={CreateCampaign}/>
             <Route path="/campaign/:id" component={SingleCard}/>
             <Route path="/donation/:id" component={Donation}/>
             <Route path="/profile/:username" component={Profile}/>
-            <Route path="/success" component={Success}/>
-            
             <Route
               path="/dashboard/:username"
               render={() => getRole() === 'admin'
@@ -40,12 +36,16 @@ class App extends Component {
               render={() => !withToken()
               ? <Route component={NotFound}/>
               : <EditProfile/>}/>
+            <Route
+              path="/create-campaign"
+              render={() => !withToken()
+              ? <Route component={NotFound}/>
+              : <CreateCampaign/>}/>
             <Route path="/checkout/:id" component={CheckOut}/>
             <Route component={NotFound}/>
           </Switch>
-
         </Router>
-
+      </CardListContextProvider>
       </Fragment>
     );
   }

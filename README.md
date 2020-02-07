@@ -10,6 +10,20 @@
   <li>Bootstrap Framework</li>
 </ul>
 
+<h2>Feb 07 2020</h2>
+<ul>
+  <li>Approve/Decline Checkout Request</li>
+  <li>Delete Checkout Request</li>
+</ul>
+<p><strong>Fixed</strong></p>
+<ul>
+  <li>Redirect Issues</li>
+</ul>
+<p><strong>Removed</strong></p>
+<ul>
+  <li>Unused variables</li>
+</ul>
+
 <h2>Feb 06 2020</h2>
 <ul>
   <li>Implement State Management - Context API</li>
@@ -18,10 +32,15 @@
 <p><strong>Added</strong></p>
 <ul>
   <li>Feed Search Functionality</li>
+  <li>Added Checkout Table</li>
 </ul>
 <p><strong>Fixed</strong></p>
 <ul>
   <li>Fixed Can't call setState on an unmounted component.</li>
+</ul>
+<p><strong>Issues</strong></p>
+<ul>
+  <li>Profile Picture upload returns 400 error [Empty Files]</li>
 </ul>
 
 <h2>Feb 05 2020</h2>

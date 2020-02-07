@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
-import {strapi, getId, withToken,getUserName} from '../components/functions';
+import {strapi, withToken,getUserName} from '../components/functions';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
@@ -87,10 +87,10 @@ export class Profile extends Component {
                     <div key={campaign.id}>
                       <hr/>
                       {
-                        (withToken() && getUserName() === this.props.match.params.username) ? (
-                          <Fragment>
+                        (withToken() && getUserName() === this.props.match.params.username) ? ((campaign.requested) ? 
+                         '':( <Fragment>
                           <Link to={`/checkout/${campaign.id}`}>Checkout</Link>
-                          </Fragment>
+                          </Fragment>) 
                           ) : ''
                       }
                       
@@ -120,11 +120,10 @@ export class Profile extends Component {
 }
                       {(campaign.deleted)
                         ? <h5>Deleted</h5>
-                        : (campaign.verified
+                        : (campaign.requested) ? <h5>Checked Out</h5> : (campaign.verified
                           ? <h5>Verified</h5>
                           : <h5>Pending</h5>)
 }
-
                       <Link to={`/campaign/${campaign.id}`}>Read More..</Link>
                     </div>
                   ))

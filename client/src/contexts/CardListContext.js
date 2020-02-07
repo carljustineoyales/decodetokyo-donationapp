@@ -5,32 +5,48 @@ export const CardListContext = createContext();
 
 export class CardListContextProvider extends Component {
   _isMounted=false
+  query = ''
   constructor(props) {
     super(props);
     this.state={
       cards:[],
       isLoaded:false,
       query:'',
-      
     }
-    
+    this.handleOnChange = this.handleOnChange.bind(this)
   }
+
+  handleOnChange = (event) => {
+      this.query = event.target.value
+    }
   
 
   handleOnSearch = (event) => {
-    this.setState({
-      query:event.target.value
-    })
-    // const card = this.state.cards.map(card=>(card.title))
-    
+  
+    event.preventDefault();
+      if(this.query.length > 0){
+        axios.get(`${strapi}/campaigns?verified=true&title=${this.query}`)
+        .then(res=>{
+            this.query=''
+            this.setState({
+              cards:res.data,
+              isLoaded: true,
+            })
+        })
+        .catch(err=>{
+          console.log(err.response.data.message)
+        })
+      }else{
+        this.componentDidMount();
+      }
   }
 
   componentDidMount(){
     this._isMounted=true
     
-      axios.get(`${strapi}/campaigns?verified=true`)
+      axios.get(`${strapi}/campaigns?verified=true&requested=false`)
       .then(res=>{
-        // console.log(res.data)
+        console.log(res.data)
         if(this._isMounted){
           this.setState({
             cards:res.data,
@@ -49,12 +65,8 @@ export class CardListContextProvider extends Component {
   }
   
   render() {
-    console.log(this.state.cards)
-    const filteredCard = this.state.cards.filter(card=>{
-      return card.title.toLowerCase().includes(this.state.query.toLocaleLowerCase())       
-    })
     return (
-      <CardListContext.Provider value={{...this.state, handleOnSearch:this.handleOnSearch,filteredCard}}>
+      <CardListContext.Provider value={{...this.state, handleOnSearch:this.handleOnSearch, handleOnChange:this.handleOnChange}}>
         {this.props.children}
       </CardListContext.Provider>
     );

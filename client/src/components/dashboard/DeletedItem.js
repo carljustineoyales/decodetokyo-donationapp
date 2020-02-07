@@ -1,7 +1,7 @@
-import  React , {Component, Fragment} from 'react'       ;
-import  Moment                        from 'react-moment';
-import  axios                         from 'axios'       ;
-import {strapi,withToken}             from '../functions';
+import React, {Component, Fragment} from 'react';
+import Moment from 'react-moment';
+import axios from 'axios';
+import {strapi} from '../functions';
 
 export class DeletedItem extends Component {
   constructor(props) {
@@ -12,29 +12,33 @@ export class DeletedItem extends Component {
     }
   }
 
-  restoreItem =(event)  =>{
+  restoreItem = (event) => {
     event.preventDefault();
     const data = {
-      deleted: false,
+      deleted: false
     }
     axios
       .put(`${strapi}/campaigns/${this.props.item.id}`, data)
       .then(res => {
         console.log(res.data)
-        this.setState({clicked: !this.state.clicked})
+        this.setState({
+          clicked: !this.state.clicked
+        })
       })
       .catch(err => {
         console.log(err.response.data.message)
       });
   }
 
-  deleteItem =(event)=>  {
+  deleteItem = (event) => {
     event.preventDefault();
     axios
       .delete(`${strapi}/campaigns/${this.props.item.id}`)
       .then(res => {
         console.log(res.data)
-        this.setState({clicked: !this.state.clicked})
+        this.setState({
+          clicked: !this.state.clicked
+        })
       })
       .catch(err => {
         console.log(err.response.data.message)

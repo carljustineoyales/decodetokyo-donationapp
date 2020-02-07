@@ -5,7 +5,6 @@ import UserForm from './UserForm';
 import Feed from './Feed';
 import {withToken} from '../components/functions'
 import About from '../components/Home/About';
-import CardListContextProvider from '../contexts/CardListContext';
 import { Redirect } from 'react-router-dom';
 
 
@@ -15,16 +14,13 @@ export class Home extends Component {
     
   if(withToken()){
     return (
-      <CardListContextProvider>
-        
         <Redirect to={`/feed`}>
         <Feed/>
         </Redirect>
-        </CardListContextProvider>
     )
   }else{
     return (
-      <CardListContextProvider>
+      <Fragment>
         <Navbar/>
         <main>
           <div className='container'>
@@ -35,7 +31,7 @@ export class Home extends Component {
           </div>
         </main>
         <Footer/>
-      </CardListContextProvider>
+        </Fragment>
       );
      
   }

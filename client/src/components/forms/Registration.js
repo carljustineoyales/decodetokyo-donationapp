@@ -73,20 +73,18 @@ export class Registration extends Component {
     console.log(this.state)
     e.preventDefault();
     if (this.state.first_name.length > 0 && this.state.last_name.length > 0 && this.state.email.length > 0 && this.state.address.length > 0 && this.state.city.length > 0 && this.state.zipcode.length > 0 && this.state.country.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
-
       const data = this.state
-
+      this.setState({
+        errors:[]
+      })
       axios
         .post(`${strapi}/users`, data)
         .then(res => {
-
           this
             .props
             .login(this.state.username, this.state.password);
-
         })
         .catch(err => {
-
           this.setState({axiosError: err.response.data.message[0].messages[0].message})
         })
     } else {

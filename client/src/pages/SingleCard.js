@@ -19,6 +19,7 @@ export class SingleCard extends Component {
       error: '',
       deleted: false,
       verified: false,
+      requested:false,
       supporters: [],
       currency:'',
       avatar:null,
@@ -47,6 +48,7 @@ export class SingleCard extends Component {
           username: res.data.author.username,
           deleted: res.data.deleted,
           verified: res.data.verified,
+          requested:res.data.requested,
           supporters: res.data.supporters,
           currency:res.data.currency,
           raised:res.data.raised,
@@ -136,11 +138,11 @@ export class SingleCard extends Component {
       description,
       deleted,
       verified,
+      requested,
       author: {
         first_name,
         last_name,
         gcash_number,
-        id,
       },
       username,
       currency,
@@ -160,7 +162,7 @@ export class SingleCard extends Component {
                 ? (
                   <button className='btn btn-secondary' onClick={this.refreshPage}>Cancel</button>
                 )
-                : <button onClick={this.toggleEditMode} className='btn btn-primary'>Edit</button>)
+                : ((requested) ? '' : <button onClick={this.toggleEditMode} className='btn btn-primary'>Edit</button>))
               : ''
 }
             <div>
@@ -219,11 +221,7 @@ export class SingleCard extends Component {
 }
                   
                     <h5 className="text">Fund Raised: <strong>{currency} {raised}</strong></h5>
-                    {(deleted)
-                      ? <h6>Status: Deleted</h6>
-                      : (verified)
-                        ? <h6>Status: Active</h6>
-                        : <h6>Status: Pending</h6>
+                    {(deleted) ? <h6>Status: Deleted</h6> : (requested) ? <h6>Status: Checkout Requested</h6> : (verified) ? <h6>Status: Active</h6>  : <h6>Status: Pending</h6>
 }
                   </div>
                   <br/>
@@ -265,6 +263,8 @@ export class SingleCard extends Component {
                   style={{
                   padding: "10px"
                 }}>
+                {(requested) ? '' : 
+                (
                   <div
                     style={{
                     display: 'flex',
@@ -294,6 +294,9 @@ export class SingleCard extends Component {
                       )
                     }
                   </div>
+                )
+                }
+                  
                   <div
                     style={{
                     backgroundColor: ' #fff',

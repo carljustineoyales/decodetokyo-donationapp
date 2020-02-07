@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import Card from './Card';
 import {CardListContext} from '../../contexts/CardListContext'
 export class CardList extends Component {
@@ -7,13 +7,12 @@ export class CardList extends Component {
     
     return (
       <CardListContext.Consumer>{(context) => {
-        const {isLoaded, filteredCard} = context
+        const {isLoaded,cards} = context
           if (isLoaded) {
-            if(filteredCard.length > 0){
+            if(cards.length > 0){
               return (
               <div>
-                {context
-                  .filteredCard
+                {cards
                   .reverse()
                   .map(card => (<Card key={card.id} card={card}/>))}
               </div>

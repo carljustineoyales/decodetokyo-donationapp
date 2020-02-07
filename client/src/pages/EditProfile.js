@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
 import axios from 'axios';
-import {strapi,getId,getUserName,withToken} from '../components/functions'
+import {strapi,getId,getUserName} from '../components/functions'
 import {Link} from 'react-router-dom'
 export class EditProfile extends Component {
 
@@ -17,14 +17,11 @@ export class EditProfile extends Component {
       gcash_number: '',
       paypal_email: '',
       error: '',
-      avatar: {}
+      avatars: {}
     }
     this.handleOnChange = this
       .handleOnChange
       .bind(this)
-    // this.handleOnSubmit = this
-    //   .handleOnSubmit
-    //   .bind(this)
   }
 
   componentDidMount() {
@@ -34,15 +31,6 @@ export class EditProfile extends Component {
       .then(res => {
         console.log(res.data)
         console.log(this.state)
-        if(res.data[0].avatar === null){
-          this.setState({
-            avatar:'https://upload.wikimedia.org/wikipedia/commons/2/24/Missing_avatar.svg'
-          })
-        }else{
-          this.setState({
-            avatar:`${strapi}${res.data[0].avatar.url}`
-          })
-        }
         res.data.map(data => (
             this.setState({
             first_name: data.first_name,
@@ -60,23 +48,17 @@ export class EditProfile extends Component {
       })
   }
 
-  handleOnChange = (event) => {
+  handleOnChange = input => event => {
     if (event.target.type === 'file') {
-      this.setState({avatar: event.target.files[0]})
+      this.setState({avatars: event.target.files[0]})
       console.log(event.target.files[0])
     }
-    this.setState({
-      [event.target.name]: event.target.value
-    })
+    this.setState({[input]: event.target.value})
   }
 
-  preview = (event) => {
-    this.setState({avatar: event.target.files[0]})
-    console.log(event.target.files[0])
-  }
 
   handleOnSubmit = (event) => {
-    const {first_name,last_name,address,city,country,zipcode,avatar} = this.state
+    const {first_name,last_name,address,city,country,zipcode} = this.state
     event.preventDefault();
     const data = {
       first_name,
@@ -86,34 +68,29 @@ export class EditProfile extends Component {
       country,
       zipcode,
     };
+
     axios.put(`${strapi}/users/${getId()}`,data).then(res=>{
       console.log(res.data)
       let bodyFormData = new FormData();
 
-      bodyFormData.append('files', this.state.avatar, this.state.avatar.name)
+      
       bodyFormData.append('ref', 'user')
       bodyFormData.append('refId', getId())
       bodyFormData.append('field', 'avatar')
       bodyFormData.append('source', 'users-permmissions')
-  
+      bodyFormData.append('files.avatar', this.state.avatars, this.state.avatars.name)
+      console.log(bodyFormData)
       axios({
         method: 'post',
         url: `${strapi}/upload`,
-        
+        data: bodyFormData,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${withToken()}`,
-          
-          },
-          data: bodyFormData,
-      }).then(res=>console.log(res.data)).catch(err=>{console.log(err.response.data.message)})
+          }
+      }).then(res=>console.log(res)).catch(err=>{console.log(err.response.data.message)})
     }).catch(err=>{console.log(err)})
-    
-    
-    
   }
   render() {
-    console.log(this.state)
     const {
       first_name,
       last_name,
@@ -122,8 +99,9 @@ export class EditProfile extends Component {
       country,
       zipcode,
       gcash_number,
-      paypal_email
+      paypal_email,
     } = this.state
+    
     return (
       <Fragment>
         <Navbar/>
@@ -132,11 +110,15 @@ export class EditProfile extends Component {
           <h2>Edit Profile</h2>
             <form onSubmit={this.handleOnSubmit}>
             <div className='row mb-3'>
-            <img src={this.state.avatar} width="100px" height="100px" style={{borderRadius:'50%'}}/>
+            {/* <img src={this.state.avatar} width="100px" height="100px" style={{borderRadius:'50%'}}/> */}
             <div className='col-sm-auto  '>
             
             <label htmlFor='avatar' >Avatar</label>
-            <input type='file' className='form-control-file' onChange={this.preview} name='avatar'/>
+                  <input
+                    type='file'
+                    className="form-control-file form-control-sm"
+                    onChange={this.handleOnChange('avatar')}
+                    />            
             </div>
             
             </div>

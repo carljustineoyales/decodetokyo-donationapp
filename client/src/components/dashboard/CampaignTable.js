@@ -3,6 +3,7 @@ import IncomingTable from './IncomingTable';
 import DeletedTable from './DeletedTable';
 import SupporterTable from './SupporterTable';
 import UsersTable from './UsersTable';
+import CheckOutTable from './CheckOutTable';
 
 export class CampaignTable extends Component {
   constructor(props) {
@@ -29,6 +30,10 @@ export class CampaignTable extends Component {
     event.preventDefault();
     this.setState({table: 'supporter'})
   }
+  checkout = (event) => {
+    event.preventDefault();
+    this.setState({table: 'checkout'})
+  }
 
   renderSwitch = (table) => {
     switch (table) {
@@ -43,6 +48,9 @@ export class CampaignTable extends Component {
 
       case 'supporter':
         return (<SupporterTable/>)
+
+      case 'checkout':
+        return (<CheckOutTable/>)
       default:
         return (
           <h1>Something went Wrong</h1>
@@ -71,6 +79,10 @@ export class CampaignTable extends Component {
           <label className="btn btn-primary" onClick={this.supporter}>
             <input type="radio" name="options" id="option3"/>
             Supporters
+          </label>
+          <label className="btn btn-primary" onClick={this.checkout}>
+            <input type="radio" name="options" id="option3"/>
+            Checkout
           </label>
         </div>
 

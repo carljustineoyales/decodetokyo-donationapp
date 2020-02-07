@@ -19,7 +19,7 @@ export class Donation extends Component {
         id: this.props.match.params.id
       },
       donation_ref: 'donation' + Math.floor(Math.random() * 31415926),
-      currency:'USD',
+      currency:'',
       access_token: '',
       orderID: '',
       payerID: '',
@@ -50,26 +50,20 @@ export class Donation extends Component {
       name: this.state.first_name + ' ' + this.state.last_name,
       payerID: data.payerID,
       orderID: data.orderID,
-      donation:this.state.amount
+      donation:this.state.amount,
+      
     })
     console.log(this.state)
-    const {name,payerID,orderID,donation} = this.state
-    const body = {name,payerID,orderID,donation}
-    const supporters = axios
-      .post(`${strapi}/supporters`, body)
-      // .then(res => {
-      //   console.log(res.data)
-      //   // window.location.href=`/campaign/${this.props.match.params.id}`
-      // })
-      // .catch(err => {
-      //   console.log(err.response.data.message)
-      // })
-    const raised = {
-      raised:Number(this.state.raised) + Number(donation)
-    }
-    const campaigns = axios.put(`${strapi}/campaigns/${this.props.match.params.id}`,raised)
+    const {name,payerID,orderID,donation,email,campaigns} = this.state
+    const body = {name,payerID,orderID,donation,email,campaigns}
+    const supporters = axios.post(`${strapi}/supporters`, body)
+    const raised = {raised:Number(this.state.raised) + Number(donation)}
+    const updateCampaigns = axios.put(`${strapi}/campaigns/${this.props.match.params.id}`,raised)
     // .then(res=>{console.log(res)}).catch(err=>{console.log(err)})
-    Promise.all([supporters,campaigns]).then(res=>{console.log(res)})
+    Promise.all([supporters,updateCampaigns]).then(res=>{
+      console.log(res)
+      window.parent.location=`/campaign/${this.props.match.params.id}`
+    }).catch(err=>{console.log(err)})
   }
 
   handleOnChange = event => {

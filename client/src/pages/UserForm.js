@@ -1,44 +1,52 @@
-import  React       , {Component, Fragment} from 'react'                ;
-import  Registration                        from '../components/forms/Registration';
-import  axios                               from 'axios'                ;
-import {strapi      ,withToken}             from '../components/functions'         ;
+import React, {Component, Fragment} from 'react';
+import Registration from '../components/forms/Registration';
+import axios from 'axios';
+import {strapi, withToken} from '../components/functions';
 
 export class UserForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading:true,
+      loading: true,
       title: '',
       description: '',
       goalFund: '',
-      currency:'',
-      id:'',
-      username:'',
-      password:'',
-      error: ''
+      currency: '',
+      id: '',
+      username: '',
+      password: '',
+      error: '',
+      isSuccess:false
       //add image later
     }
+    this.redirect = this.redirect.bind(this)
   }
-  login = (user,pass) => {
-    const data ={
-      identifier:user,
-      password:pass
+  login = (user, pass) => {
+    const data = {
+      identifier: user,
+      password: pass
     }
     // console.log(data)
-    axios.post(`${strapi}/auth/local`,data)
-    .then(res=>{
-      console.log(res.data)
-      if (undefined === res.data.jwt) {
-        this.setState({error: res.data.message, loading: false});
-        return;
-      }
-      sessionStorage.setItem ('JWT', res.data.jwt               );
-      sessionStorage.setItem ('username', res.data.user.username);
-      sessionStorage.setItem ('role', res.data.user.role.type   );
-      sessionStorage.setItem ('id', res.data.user.id            );
-      this.redirect();
-    })
-    .catch(err=>{console.log(err.response.data.message)})
+    axios
+      .post(`${strapi}/auth/local`, data)
+      .then(res => {
+        console.log(res.data)
+        if (undefined === res.data.jwt) {
+          this.setState({error: res.data.message, loading: false});
+          return;
+        }
+        localStorage.setItem('JWT', res.data.jwt);
+        localStorage.setItem('username', res.data.user.username);
+        localStorage.setItem('role', res.data.user.role.type);
+        localStorage.setItem('id', res.data.user.id);
+        
+        this.setState({loading: false,});
+
+        this.redirect();
+      })
+      .catch(err => {
+        console.log(err.response.data.message)
+      })
   }
 
   redirect = () => {
@@ -49,13 +57,11 @@ export class UserForm extends Component {
   }
 
   render() {
-      return (
-        <Fragment>
-          <Registration
-            login={this.login}
-            />
-        </Fragment>
-      );
+    return (
+      <Fragment>
+        <Registration login={this.login}/>
+      </Fragment>
+    );
   }
 
 }

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {getUserName, withToken, getRole, getId, strapi} from '../functions.js'
+import {getUserName, withToken, getRole} from '../functions.js'
 import {Link} from 'react-router-dom';
 import Login from './Login';
 import {CardListContext} from '../../contexts/CardListContext'
@@ -15,8 +15,8 @@ export class Navbar extends Component {
   }
 
   render() {
-    const id = (getId())
-      ? getId()
+    const username = (getUserName())
+      ? getUserName()
       : '';
     return (
       <CardListContext.Consumer>{(context) => {
@@ -52,12 +52,12 @@ export class Navbar extends Component {
                       {window.location.pathname === `/feed`
                         ? (
                           <Fragment>
-                            <form className='form-inline'>
+                            <form className='form-inline' onSubmit={context.handleOnSearch}>
                               <div className='col-sm-12'>
                                 <input
                                   className='form-control form-control-sm w-100'
                                   placeholder='Search by Title'
-                                  onChange={context.handleOnSearch}
+                                  onChange={context.handleOnChange}
                                   type='text'/>
                               </div>
 
@@ -77,14 +77,14 @@ export class Navbar extends Component {
                               ? (
                                 <Fragment>
                                   <li className="nav-item">
-                                    <Link className="nav-link" to={`/dashboard/${getUserName()}`}>Dashboard</Link>
+                                    <Link className="nav-link" to={`/dashboard/${username}`}>Dashboard</Link>
                                   </li>
                                 </Fragment>
                               )
                               : ''
 }
                             <li className="nav-item">
-                              <Link className="nav-link" to={`/profile/${getUserName()}`}>Profile</Link>
+                              <Link className="nav-link" to={`/profile/${username}`}>Profile</Link>
                             </li>
                             <li className="nav-item">
                               <button onClick={this.handleLogout} className='btn btn-secondary'>Logout</button>

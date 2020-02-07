@@ -65,9 +65,7 @@ export class Card extends Component {
             }}></section>
           </Link>
           <div className="card-body">
-            <h5>Fund Goal:
-              <strong>{currency} {goal}</strong>
-            </h5>
+            <h5> Fund Goal: <strong>{currency} {goal}</strong> </h5>
             {(description.length > 50)
               ? (
                 <p className="card-text">{description
@@ -85,9 +83,7 @@ export class Card extends Component {
             <Link to={`/campaign/${id}`} className="card-link">Read More..</Link>
           </div>
           <div className="card-footer text-muted">
-            <span>Created
-              <Moment fromNow>{created_at}</Moment>
-            </span>
+            <span>Created <Moment fromNow>{created_at}</Moment> </span>
           </div>
         </div>
       </div>
