@@ -14,6 +14,9 @@
 <ul>
   <li>Approve/Decline Checkout Request</li>
   <li>Delete Checkout Request</li>
+  <li>Redesign Registration Form</li>
+  <li>Checkout Page Design</li>
+  <li>Checkout Page Basic Form Validation</li>
 </ul>
 <p><strong>Fixed</strong></p>
 <ul>
@@ -23,7 +26,7 @@
 <ul>
   <li>Unused variables</li>
 </ul>
-
+<hr/>
 <h2>Feb 06 2020</h2>
 <ul>
   <li>Implement State Management - Context API</li>
@@ -42,7 +45,7 @@
 <ul>
   <li>Profile Picture upload returns 400 error [Empty Files]</li>
 </ul>
-
+<hr/>
 <h2>Feb 05 2020</h2>
 <p><strong>Added</strong></p>
 <ul>
@@ -59,7 +62,7 @@
   <li>Fixed Form Validation Issues</li>
   <li>Resolve paragraph Issue</li>
 </ul>
-
+<hr/>
 <h2>Feb 03 2020</h2>
 <ul>
   <li>Form validation</li>
@@ -70,7 +73,7 @@
 <ul>
   <li>added Alerts</li>
 </ul>
-
+<hr/>
 <h2>Jan 31 2020</h2>
 <ul>
   <li>Integrate Reactjs to serverjs</li>
@@ -84,7 +87,7 @@
   <li>Remove node_paypal</li>
   <li>Uninstall Unused dependencies</li>
 </ul>
-
+<hr/>
 <h2>Jan 30 2020</h2>
 <ul>
   <li>Deployed strapi backend to heroku</li>
@@ -94,7 +97,7 @@
 <ul>
   <li>fixed strapi backend issues</li>
 </ul>
-
+<hr/>
 <h2>Jan 29 2020</h2>
 <ul>
   <li>Initial Commit</li>

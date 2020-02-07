@@ -21,7 +21,8 @@ export class Registration extends Component {
       errors: [],
       isLoading: false,
       noErrors: false,
-      axiosError: ''
+      axiosError: '',
+      modeOfPayment:'gcash'
     }
     this.handleOnChange = this
       .handleOnChange
@@ -193,6 +194,40 @@ export class Registration extends Component {
 
   }
 
+  modeOfPayment = (event) => {
+    this.setState({
+      modeOfPayment:event.target.value
+    })
+  }
+  showInputs = () => {
+    switch (this.state.modeOfPayment) {
+      case 'gcash':
+        return (
+          <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='+639XXXXXXXXX'
+                name="gcash"
+                value={this.state.gcash}
+                onChange={this.handleOnChange}/>
+        )
+      case 'paypal':
+        return (
+          <input
+                className='form-control form-control-sm'
+                type='text'
+                placeholder='johndoe@email.com'
+                name="paypalEmail"
+                value={this.state.paypalEmail}
+                onChange={this.handleOnChange}/>
+        )
+      
+    
+      default:
+        break;
+    }
+  }
+
   handleOnChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
@@ -204,7 +239,6 @@ export class Registration extends Component {
     return (
       <Fragment>
         <h1>Sign Up</h1>
-        {/* <h4>Step {values.step} of 3</h4> */}
         <p>Register to create a campaign</p>
         {(this.state.axiosError.length > 0)
           ? <div className="alert alert-warning" role="alert">{this.state.axiosError}</div>
@@ -224,7 +258,6 @@ export class Registration extends Component {
               <label htmlFor='country'>Country:</label>
               <select
                 className="form-control form-control-sm"
-                placeholder='Country'
                 name="country"
                 onChange={this.handleOnChange}>
                 <option value="Philippines">Philippines</option>
@@ -477,52 +510,31 @@ export class Registration extends Component {
             </div>
           </div>
           <div className='row'>
-
-            <div className="col-sm">
-
-              <label htmlFor='paypalEmail'>Paypal:
-                <span
+              
+              <div className='col-sm'>
+              <label htmlFor='country'>Payment:</label>
+              <span
                   class="d-inline-block"
                   tabindex="0"
                   data-toggle="tooltip"
-                  title="Insert Paypal tooltip">
+                  title={(this.state.modeOfPayment === 'gcash') ? 'insert tooltip for gcash' : 'insert tooltip for paypal'}>
                   <img
                     src="https://img.icons8.com/material-rounded/18/000000/help.png"
                     alt='help-icon'/>
                 </span>
-              </label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='johndoe@email.com'
-                name="paypalEmail"
-                onChange={this.handleOnChange}/>
-
-            </div>
-            <div className="col-sm">
-
-              <label htmlFor='gcash'>Gcash No.:
-                <span
-                  class="d-inline-block"
-                  tabindex="0"
-                  data-toggle="tooltip"
-                  title="Insert GCASH tooltip">
-                  <img
-                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                    alt='help-icon'/>
-                </span>
-              </label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='+639XXXXXXXXX'
-                name="gcash"
-                onChange={this.handleOnChange}/>
-              <small className="form-text text-muted">
+                <select 
+                className="form-control form-control-sm"
+                onChange={this.modeOfPayment}>
+                  <option value='gcash'>Gcash</option>
+                  <option value='paypal'>Paypal</option>
+                </select>
+                {this.showInputs()}
+                {(this.state.modeOfPayment === 'gcash') ? (
+                  <small className="form-text text-muted">
                 If you lived in the Philippines, you only need GCASH Number
               </small>
-
-            </div>
+                ): ''}
+              </div>
           </div>
 
           <div className='row'>
