@@ -1,14 +1,28 @@
-<h1>Donation Application</h1>
+<h1>Donation Application (Prototype v1.0.0)</h1>
 
 <h2>Technologies Used</h2>
 <ul>
-  <li>ReactJS</li>
-  <li>NodeJS</li>
-  <li>ExpressJS</li>
-  <li>Strapi.io</li>
-  <li>MySQL</li>
-  <li>Bootstrap Framework</li>
+  <li>ReactJS - <a href='https://reactjs.org/'>https://reactjs.org/</a></li>
+  <li>NodeJS - <a href='https://nodejs.org/en/'>https://nodejs.org/en/</a></li>
+  <li>ExpressJS - <a href='https://expressjs.com/'>https://expressjs.com/</a></li>
+  <li>Strapi.io - <a href='https://strapi.io/'>https://strapi.io/</a></li>
+  <li>MySQL - <a href='https://www.mysql.com/'>https://www.mysql.com/</a></li>
+  <li>Bootstrap Framework - <a href='https://getbootstrap.com/'>https://getbootstrap.com/</a></li>
 </ul>
+
+<h2>Feb 10 2020</h2>
+<p><strong>Added</strong></p>
+<ul>
+  <li>Checkout Form Validation</li>
+  <li>Error message</li>
+  <li>Temporary Success Page</li>
+</ul>
+<p><strong>Removed</strong></p>
+<ul>
+  <li>Checkout Alertbox placeholder</li>
+</ul>
+<hr/>
+
 
 <h2>Feb 07 2020</h2>
 <ul>
@@ -29,6 +43,8 @@
   <li>Unused variables</li>
 </ul>
 <hr/>
+
+
 <h2>Feb 06 2020</h2>
 <ul>
   <li>Implement State Management - Context API</li>
@@ -48,6 +64,8 @@
   <li>Profile Picture upload returns 400 error [Empty Files]</li>
 </ul>
 <hr/>
+
+
 <h2>Feb 05 2020</h2>
 <p><strong>Added</strong></p>
 <ul>
@@ -65,6 +83,8 @@
   <li>Resolve paragraph Issue</li>
 </ul>
 <hr/>
+
+
 <h2>Feb 03 2020</h2>
 <ul>
   <li>Form validation</li>
@@ -76,6 +96,8 @@
   <li>added Alerts</li>
 </ul>
 <hr/>
+
+
 <h2>Jan 31 2020</h2>
 <ul>
   <li>Integrate Reactjs to serverjs</li>
@@ -90,6 +112,8 @@
   <li>Uninstall Unused dependencies</li>
 </ul>
 <hr/>
+
+
 <h2>Jan 30 2020</h2>
 <ul>
   <li>Deployed strapi backend to heroku</li>
@@ -100,6 +124,8 @@
   <li>fixed strapi backend issues</li>
 </ul>
 <hr/>
+
+
 <h2>Jan 29 2020</h2>
 <ul>
   <li>Initial Commit</li>

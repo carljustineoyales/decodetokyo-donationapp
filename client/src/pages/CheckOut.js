@@ -3,7 +3,8 @@ import Navbar from '../components/Home/Navbar';
 import { Link} from 'react-router-dom';
 import axios from 'axios';
 import {strapi, getUserName,getId} from '../components/functions';
-import NotFound from './NotFound'
+import NotFound from './NotFound';
+import Success from './Success';
 export class CheckOut extends Component {
   //AFTER SENDING THE REQUEST DELETE THE CAMPAIGN
   constructor(props) {
@@ -22,7 +23,10 @@ export class CheckOut extends Component {
       email:'',
       name:'',
       user_id:'',
-      requested:false
+      requested:false,
+      errors:[],
+      reload:false,
+      isSuccess:false
       
     }
     this.handeOnSubmit = this.handeOnSubmit.bind(this)
@@ -46,7 +50,10 @@ export class CheckOut extends Component {
       currency,}
     axios.post(`${strapi}/checkout-requests`,data)
     .then(res=>{
-      console.log(res.data)
+      // console.log(res.data)
+      this.setState({
+        isSuccess:true
+      })
     })
     .catch(err=>{
       alert('You Already Requested a Checkout')
@@ -62,18 +69,19 @@ export class CheckOut extends Component {
 
   handleOnChange =  event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      errors:[]
     })
   }
 
   showInput = () => {
     switch(this.state.modeOfPayment){
       case 'gcash':
-        return(<input type='text' name='gcash' className='form-control form-control-sm' value={this.state.gcash} onChange={this.handleOnChange} placeholder='gcash'/>);
+        return(<input type='text' name='gcash' className='form-control form-control-sm' value={this.state.gcash} onChange={this.handleOnChange} placeholder='GCASH no.'/>);
       case 'paypal':
-        return(<input type='email' name='paypal' className='form-control form-control-sm' value={this.state.paypal} onChange={this.handleOnChange} placeholder='paypal'/>);
+        return(<input type='email' name='paypal' className='form-control form-control-sm' value={this.state.paypal} onChange={this.handleOnChange} placeholder='Paypal Email'/>);
       case 'smartpadala':
-        return(<input type='text' name='smartpadala' className='form-control form-control-sm' value={this.state.smartpadala} onChange={this.handleOnChange} placeholder='smartpadala'/>);
+        return(<input type='text' name='smartpadala' className='form-control form-control-sm' value={this.state.smartpadala} onChange={this.handleOnChange} placeholder='Smart Padala Agent no.'/>);
       default:
         return('');
     }
@@ -81,25 +89,64 @@ export class CheckOut extends Component {
 
   formValidation = (event) => {
     event.preventDefault();
+    
     switch (this.state.modeOfPayment) {
       case 'gcash':
+        this.setState({
+          reload:!this.state.reload,
+        })
         if (this.state.gcash.length <= 0) {
-          alert('input gcash')
+          if (!this.state.errors.includes('Enter GCASH no.')) {
+            this
+              .state
+              .errors
+              .push('Enter GCASH no.')
+          }
+         
         } else {
+          this.setState({
+            errors:[]
+          })
           this.handeOnSubmit()
         }
         break;
       case 'paypal':
+      
         if (this.state.paypal.length <= 0) {
-          alert('input paypal')
+          if (!this.state.errors.includes('Enter Paypal Email')) {
+            this
+              .state
+              .errors
+              .push('Enter Paypal Email')
+            
+          }
+          this.setState({
+            reload:!this.state.reload
+          })
         } else {
+          this.setState({
+            errors:[]
+          })
           this.handeOnSubmit()
         }
         break;
       case 'smartpadala':
-        if (this.state.smartpadala.length <= 0) {
-          alert('input smart padala')
+        
+        if (this.state.paypal.length <= 0) {
+          if (!this.state.errors.includes('Enter Smart Padala Agent no.')) {
+            this
+              .state
+              .errors
+              .push('Enter Smart Padala Agent no.')
+            
+          }
+          this.setState({
+            reload:!this.state.reload
+          })
         } else {
+          this.setState({
+            errors:[]
+          })
           this.handeOnSubmit()
         }
         break;
@@ -141,50 +188,62 @@ export class CheckOut extends Component {
   }
   
   render() {
-    const {id,raised,title,currency,author} = this.state
+    const {id,raised,title,currency,author,isSuccess} = this.state
     if(author === getUserName()){
-      return (
-        <div>
-          <Navbar/>
-          <main>
-            <div className='container'>
-            
-            <Link to={`/campaign/${id}`}>Go Back</Link>
-              <h1>Checkout</h1>
-              <h4>Campaign Title: {title}</h4>
-              <h4>Amount: {currency} {raised}</h4>
-              <form onSubmit={this.formValidation}>
-              <div className='row my-3'>
-              <div className='col-sm-5'>
-              <label htmlFor='country'>Mode of Payment:</label>
-                <select 
-                className="form-control form-control-sm"
-                name='modeOfPayment' onChange={this.handleOnChange}>
-                  <option value='gcash'>GCASH</option>
-                  <option value='paypal'>PayPal</option>
-                  <option value='smartpadala'>Smart Padala</option>
-                </select>
+      if (isSuccess) {
+        return <Success/>
+      } else {
+        return (
+          <div>
+            <Navbar/>
+            <main>
+              <div className='container'>
+              
+              <Link to={`/campaign/${id}`}>Go Back</Link>
+                <h1>Checkout</h1>
+                <h4>Campaign Title: {title}</h4>
+                <h4>Amount: {currency} {raised}</h4>
+                {(this.state.errors.length > 0)
+            ? <div className="alert alert-danger" role="alert">{this
+                  .state
+                  .errors
+                  .map(error => (
+                    <div key={error.id}>{error}</div>
+                  ))}</div>
+            : ''}
+                <form onSubmit={this.formValidation}>
+                <div className='row my-3'>
+                <div className='col-sm-5'>
+                <label htmlFor='country'>Mode of Payment:</label>
+                  <select 
+                  className="form-control form-control-sm"
+                  name='modeOfPayment' onChange={this.handleOnChange}>
+                    <option value='gcash'>GCASH</option>
+                    <option value='paypal'>PayPal</option>
+                    <option value='smartpadala'>Smart Padala</option>
+                  </select>
+                </div>
+                </div>
+                <div className='row mb-3'>
+                <div className='col-sm-12'>
+                {this.showInput()}
+                </div>
+                </div>
+                <div className='row'>
+                <div className='col'>
+                <button className='btn btn-primary'>Request Check Out</button>
+                </div>
+                </div>
+                </form>
+                <p>
+                <strong>Important:</strong> You can checkout the funds raised by your campaign in this page.<br/>
+                Your campaign will unable to gather more funds if you check out now.
+                </p>
               </div>
-              </div>
-              <div className='row mb-3'>
-              <div className='col-sm-12'>
-              {this.showInput()}
-              </div>
-              </div>
-              <div className='row'>
-              <div className='col'>
-              <button className='btn btn-primary'>Request Check Out</button>
-              </div>
-              </div>
-              </form>
-              <p>
-              <strong>Important:</strong> You can checkout the funds raised by your campaign in this page.<br/>
-              Your campaign will unable to gather more funds if you check out now.
-              </p>
-            </div>
-          </main>
-        </div>
-      );
+            </main>
+          </div>
+        );
+      }
     }else{
       return(
         <NotFound/>
