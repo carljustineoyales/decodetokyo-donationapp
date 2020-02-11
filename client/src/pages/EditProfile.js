@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
 import axios from 'axios';
-import {strapi,getId,getUserName} from '../components/functions'
+import {strapi, getId, getUserName, withToken} from '../components/functions'
 import {Link} from 'react-router-dom'
 export class EditProfile extends Component {
 
@@ -11,59 +11,69 @@ export class EditProfile extends Component {
       first_name: '',
       last_name: '',
       address: '',
+      email: '',
       city: '',
       country: '',
       zipcode: '',
       gcash_number: '',
       paypal_email: '',
       error: '',
+      bank_account: '',
+      bank_name: '',
       avatars: {}
     }
-    this.handleOnChange = this.handleOnChange.bind(this)
+    this.handleOnChange = this
+      .handleOnChange
+      .bind(this)
   }
-  
+
   handleOnChange = input => (event) => {
     if (event.target.type === 'file') {
       this.setState({avatars: event.target.files[0]})
-      console.log(event.target.files[0])
     }
-     
-      this.setState({
-        [event.target.name]: event.target.value
-      })
-    
-      console.log(event.target.name)
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   componentDidMount() {
-    console.log(this.props)
-    axios
-      .get(`${strapi}/users/?id=${getId()}`)
-      .then(res => {
-        res.data.map(data => (
-            this.setState({
-              gcash_number: data.gcash_number,
-              paypal_email: data.paypal_email,
-            first_name: data.first_name,
-            last_name: data.last_name,
-            address: data.address,
-            city: data.city,
-            country: data.country,
-            zipcode: data.zipcode,
-          })
-          )
-          )
+    axios.get(`${strapi}/users/${getId()}`, {
+      headers: {
+        'Authorization': `Bearer ${withToken()}`
+      }
+    }).then(res => {
+      console.log(res)
+      this.setState({
+        email: res.data.email,
+        gcash_number: res.data.gcash_number,
+        paypal_email: res.data.paypal_email,
+        first_name: res.data.first_name,
+        last_name: res.data.last_name,
+        address: res.data.address,
+        city: res.data.city,
+        country: res.data.country,
+        zipcode: res.data.zipcode,
+        bank_name: res.data.bank_name,
+        bank_account: res.data.bank_account
       })
-      .catch(err => {
-        console.log(err.response.data.message)
-      })
+    }).catch(err => {
+      console.log(err.response.data.message)
+    })
   }
 
-  
-
-
   handleOnSubmit = (event) => {
-    const {first_name,last_name,address,city,country,zipcode} = this.state
+    const {
+      first_name,
+      last_name,
+      address,
+      city,
+      country,
+      zipcode,
+      gcash_number,
+      paypal_email,
+      bank_account,
+      bank_name
+    } = this.state
     event.preventDefault();
     const data = {
       first_name,
@@ -72,11 +82,20 @@ export class EditProfile extends Component {
       city,
       country,
       zipcode,
+      gcash_number,
+      paypal_email,
+      bank_account,
+      bank_name
     };
 
-    axios.put(`${strapi}/users/${getId()}`,data).then(res=>{
+    axios.put(`${strapi}/users/${getId()}`, {
+      headers: {
+        'Content-type': 'application/json',
+        // 'Authorization':`Bearer ${withToken()}`
+      }
+    }, {data}).then(res => {
+      console.log(res)
       let bodyFormData = new FormData();
-
       bodyFormData.append("files", this.state.avatars, this.state.avatars.name)
       bodyFormData.append("ref", "user")
       bodyFormData.append("refId", getId())
@@ -88,9 +107,17 @@ export class EditProfile extends Component {
         data: bodyFormData,
         headers: {
           'Content-Type': 'multipart/form-data',
-          }
-      }).then(res=>window.location.href=`/profile/${getUserName()}`).catch(err=>{console.log(err.response.data.message)})
-    }).catch(err=>{console.log(err)})
+          'Authorization': `Bearer ${withToken()}`
+        }
+      }).then(res => {
+        console.log(res.data)
+        window.location.href = `/profile/${getUserName()}`
+      }).catch(err => {
+        console.log(err.response.data.message)
+      })
+    }).catch(err => {
+      console.log(err)
+    })
   }
   render() {
     const {
@@ -102,30 +129,29 @@ export class EditProfile extends Component {
       zipcode,
       gcash_number,
       paypal_email,
+      bank_account,
+      bank_name
     } = this.state
     return (
       <Fragment>
         <Navbar/>
         <main>
           <div className='container'>
-          <h2>Edit Profile</h2>
+            <h2>Edit Profile</h2>
             <form onSubmit={this.handleOnSubmit}>
-            <div className='row mb-3'>
-            {/* <img src={this.state.avatar} width="100px" height="100px" style={{borderRadius:'50%'}}/> */}
-            <div className='col-sm-auto  '>
-            
-            <label htmlFor='avatar' >Avatar</label>
+              <div className='row mb-3'>
+                <div className='col-sm-auto'>
+                  <label htmlFor='avatar'>Avatar</label>
                   <input
                     type='file'
+                    name="avatar"
                     className="form-control-file form-control-sm"
-                    onChange={this.handleOnChange('avatar')}
-                    />            
-            </div>
-            
-            </div>
+                    onChange={this.handleOnChange('avatar')}/>
+                </div>
+              </div>
               <div className='row mb-3'>
                 <div className='col-sm-6 mb-3'>
-                <label htmlFor='gcash_number'>GCASH Number</label>
+                  <label htmlFor='gcash_number'>GCASH Number</label>
                   <input
                     type='text'
                     className='form-control'
@@ -135,7 +161,7 @@ export class EditProfile extends Component {
                     placeholder='+639XXXXXXXXX'/>
                 </div>
                 <div className='col-sm-6 mb-3'>
-                <label htmlFor='paypal_email'>Paypal Email</label>
+                  <label htmlFor='paypal_email'>Paypal Email</label>
                   <input
                     type='text'
                     name='paypal_email'
@@ -145,9 +171,31 @@ export class EditProfile extends Component {
                     placeholder='johndoe@email.com'/>
                 </div>
               </div>
+              <div className='row mb-3'>
+                <div className='col-sm-6 mb-3'>
+                  <label htmlFor='bank_name'>Bank Name</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    name='bank_name'
+                    value={bank_name}
+                    onChange={this.handleOnChange()}
+                    placeholder=''/>
+                </div>
+                <div className='col-sm-6 mb-3'>
+                  <label htmlFor='bank_account'>Bank Account</label>
+                  <input
+                    type='text'
+                    name='bank_account'
+                    className='form-control'
+                    value={bank_account}
+                    onChange={this.handleOnChange()}
+                    placeholder=''/>
+                </div>
+              </div>
               <div className='row'>
                 <div className='col-sm-6 mb-3'>
-                <label htmlFor='first_name'>First Name</label>
+                  <label htmlFor='first_name'>First Name</label>
                   <input
                     type='text'
                     className='form-control'
@@ -157,7 +205,7 @@ export class EditProfile extends Component {
                     placeholder='First Name'/>
                 </div>
                 <div className='col-sm-6 mb-3'>
-                <label htmlFor='last_name'>Last Name</label>
+                  <label htmlFor='last_name'>Last Name</label>
                   <input
                     type='text'
                     name='last_name'
@@ -169,7 +217,7 @@ export class EditProfile extends Component {
               </div>
               <div className='row'>
                 <div className='col-sm-6 mb-3'>
-                <label htmlFor='address'>Address</label>
+                  <label htmlFor='address'>Address</label>
                   <input
                     type='text'
                     name='address'
@@ -179,7 +227,7 @@ export class EditProfile extends Component {
                     placeholder='Address'/>
                 </div>
                 <div className='col-sm-6 mb-3'>
-                <label htmlFor='city'>City / State</label>
+                  <label htmlFor='city'>City / State</label>
                   <input
                     type='text'
                     name='city'
@@ -191,7 +239,7 @@ export class EditProfile extends Component {
               </div>
               <div className='row'>
                 <div className='col-sm-6 mb-3'>
-                <label htmlFor='zipcode'>Zip Code</label>
+                  <label htmlFor='zipcode'>Zip Code</label>
                   <input
                     type='number'
                     name='zipcode'
@@ -201,9 +249,8 @@ export class EditProfile extends Component {
                     placeholder='Zip Code'/>
                 </div>
                 <div className='col-sm-6 mb-3'>
-                <label htmlFor='country'>Country</label>
+                  <label htmlFor='country'>Country</label>
                   <select
-                    
                     className='form-control'
                     name="country"
                     value={country}
@@ -458,7 +505,7 @@ export class EditProfile extends Component {
               </div>
 
               <button className='btn btn-primary mr-3'>Submit</button>
-             
+
               <Link to={`/profile/${getUserName()}`}>Cancel</Link>
             </form>
           </div>

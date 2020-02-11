@@ -19,14 +19,14 @@ export class Donation extends Component {
         id: this.props.match.params.id
       },
       donation_ref: 'donation' + Math.floor(Math.random() * 31415926),
-      currency:'',
+      currency: '',
       access_token: '',
       orderID: '',
       payerID: '',
       noError: false,
       errors: [],
       isLoading: false,
-      raised:0
+      raised: 0
     }
 
     this.handleOnChange = this
@@ -35,14 +35,19 @@ export class Donation extends Component {
 
   }
 
-  componentDidMount(){
-    axios.get(`${strapi}/campaigns/${this.props.match.params.id}`).then(res=>{
-      console.log(res.data)
-      this.setState({
-        currency:res.data.currency,
-        raised:Number(res.data.raised)
+  componentDidMount() {
+    axios
+      .get(`${strapi}/campaigns/${this.props.match.params.id}`)
+      .then(res => {
+        console.log(res.data)
+        this.setState({
+          currency: res.data.currency,
+          raised: Number(res.data.raised)
+        })
       })
-    }).catch(err=>{console.log(err)})
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   saveTransaction = (data) => {
@@ -50,20 +55,40 @@ export class Donation extends Component {
       name: this.state.first_name + ' ' + this.state.last_name,
       payerID: data.payerID,
       orderID: data.orderID,
-      donation:this.state.amount,
-      
+      donation: this.state.amount
     })
     console.log(this.state)
-    const {name,payerID,orderID,donation,email,campaigns} = this.state
-    const body = {name,payerID,orderID,donation,email,campaigns}
+    const {
+      name,
+      payerID,
+      orderID,
+      donation,
+      email,
+      campaigns
+    } = this.state
+    const body = {
+      name,
+      payerID,
+      orderID,
+      donation,
+      email,
+      campaigns
+    }
     const supporters = axios.post(`${strapi}/supporters`, body)
-    const raised = {raised:Number(this.state.raised) + Number(donation)}
-    const updateCampaigns = axios.put(`${strapi}/campaigns/${this.props.match.params.id}`,raised)
+    const raised = {
+      raised: Number(this.state.raised) + Number(donation)
+    }
+    const updateCampaigns = axios.put(`${strapi}/campaigns/${this.props.match.params.id}`, raised)
     // .then(res=>{console.log(res)}).catch(err=>{console.log(err)})
-    Promise.all([supporters,updateCampaigns]).then(res=>{
-      console.log(res)
-      window.parent.location=`/campaign/${this.props.match.params.id}`
-    }).catch(err=>{console.log(err)})
+    Promise
+      .all([supporters, updateCampaigns])
+      .then(res => {
+        console.log(res)
+        window.parent.location = `/campaign/${this.props.match.params.id}`
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   handleOnChange = event => {
@@ -181,13 +206,19 @@ export class Donation extends Component {
                   </div>
                   <div className='col-sm-12 mb-3'>
                     <h4>Donate Amount</h4>
-                    <input
-                      type='number'
-                      name='amount'
-                      value={this.state.amount}
-                      className='form-control'
-                      placeholder='Amount'
-                      onChange={this.handleOnChange}/>
+                    <div className="input-group">
+                      <div className="input-group-prepend">
+                        <label className="input-group-text" for="amount">{this.state.currency}</label>
+                      </div>
+                      <input
+                        id='amount'
+                        type='number'
+                        name='amount'
+                        value={this.state.amount}
+                        className='form-control'
+                        placeholder='Amount'
+                        onChange={this.handleOnChange}/>
+                    </div>
                   </div>
                   <div className='col-sm-12 mb-3'>
                     <input

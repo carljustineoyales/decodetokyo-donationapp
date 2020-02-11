@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import axios from 'axios'
 import {strapi} from '../functions'
+import { Link } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 export class UsersItem extends Component {
 
@@ -36,7 +37,7 @@ export class UsersItem extends Component {
           <td>{item.email}</td>
           <td>{item.address} {item.city} {item.zipcode} {item.country}</td>
           <td>{campaigns.length}</td>
-          <td><a href={`/profile/${item.username}` } target='_blank' rel="noopener noreferrer">Profile</a></td>
+          <td><Link to={`/profile/${item.username}`}>Profile</Link></td>
         </tr>
       </Fragment>
     );

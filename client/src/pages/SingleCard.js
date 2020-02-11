@@ -88,7 +88,12 @@ export class SingleCard extends Component {
       verified: false
     }
     axios
-      .put(`${strapi}/campaigns/${this.props.match.params.id}`, data)
+      .put(`${strapi}/campaigns/${this.props.match.params.id}`,{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${withToken()}`
+          }
+      }, {data})
       .then(res => {
         console.log(res.data)
       })
@@ -289,7 +294,7 @@ export class SingleCard extends Component {
                         <div style={{
                       width: '70%'
                     }}>
-                    <p style={{margin:'0'}}>GCASH: {gcash_number}</p>
+                    <p style={{margin:'0'}}>Gcash: {gcash_number}</p>
                     </div>
                       )
                     }

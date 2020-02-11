@@ -11,15 +11,21 @@
 </ul>
 
 <h2>Feb 10 2020</h2>
+<ul>
+  <li>Testing Strapi.io Permission</li>
+  <li>Update Registration Input</li>
+</ul>
 <p><strong>Added</strong></p>
 <ul>
   <li>Checkout Form Validation</li>
   <li>Error message</li>
   <li>Temporary Success Page</li>
+  <li>Input type list for country selection</li>
 </ul>
 <p><strong>Removed</strong></p>
 <ul>
   <li>Checkout Alertbox placeholder</li>
+  <li>dropdown Country Selection</li>
 </ul>
 <hr/>
 
