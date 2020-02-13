@@ -7,12 +7,17 @@ export class DeletedTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      filter:'',
       items: [],
       error: ''
     }
     this.reRender = this.reRender.bind(this)
   }
   
+  handleOnchange = (event) => {
+    this.setState({filter: event.target.value})
+  }
+
 
   componentDidMount() {
     this._isMounted = true;
@@ -36,14 +41,16 @@ export class DeletedTable extends Component {
   
   }
   render() {
-    const {items} = this.state
+    const {filter} = this.state;
+    const filteredItems = this.state.items.filter(item => {
+      return item.reference.includes(filter.toLowerCase())
+    })
     return (
       <div>
         <h2>Deleted</h2>
         <p>This table shows deleted campaigns</p>
-        <input type='text' placeholder='search'/>
+        <input type='text' onChange={this.handleOnchange} placeholder='search'/>
         <table className="table table-hover">
-
           <thead>
             <tr>
               <th >Ref. ID</th>
@@ -55,7 +62,7 @@ export class DeletedTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {items.map(item => (<DeletedItem key={item.id} item={item} reRender={this.reRender}/>))}
+            {filteredItems.map(item => (<DeletedItem key={item.id} item={item} reRender={this.reRender}/>))}
           </tbody>
           <tfoot></tfoot>
         </table>

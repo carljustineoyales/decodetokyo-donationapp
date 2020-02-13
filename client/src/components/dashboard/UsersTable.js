@@ -6,10 +6,16 @@ export class UsersTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      filter:'',
       items: [],
       error: ''
     }
   }
+  
+  handleOnchange = (event) => {
+    this.setState({filter: event.target.value})
+  }
+
   componentDidMount() {
     this._isMounted = true;
     axios
@@ -35,12 +41,15 @@ export class UsersTable extends Component {
   }
 
   render() {
-    const {items} = this.state
+    const {filter} = this.state
+    const filteredItems = this.state.items.filter(item => {
+      return item.username.toLowerCase().includes(filter.toLowerCase())
+    })
     return (
       <div>
         <h2>Users</h2>
         <p>This table shows users that are registered in the database</p>
-        <input type='text' placeholder='search'/>
+        <input type='text' onChange={this.handleOnchange} placeholder='search'/>
         <table className="table table-hover">
 
           <thead>
@@ -54,7 +63,7 @@ export class UsersTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {items.map(item => (<UsersItem key={item.id} item={item}/>))}
+            {filteredItems.map(item => (<UsersItem key={item.id} item={item}/>))}
           </tbody>
           <tfoot></tfoot>
         </table>

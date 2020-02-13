@@ -6,9 +6,11 @@ export class IncomingTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      filter:'',
       items: [],
       error: ''
     }
+    this.handleOnchange = this.handleOnchange.bind(this)
   }
 
   componentDidMount() {
@@ -28,17 +30,26 @@ export class IncomingTable extends Component {
 
   }
 
+  handleOnchange = (event) => {
+    this.setState({filter: event.target.value})
+  }
+
+
+
   componentWillUnmount() {
     this._isMounted = false;
   }
 
   render() {
-    const {items} = this.state
+    const {filter} = this.state;
+    const filteredItems = this.state.items.filter(item => {
+      return item.reference.includes(filter.toLowerCase())
+    })
     return (
       <div>
         <h2>Incoming Campaigns</h2>
         <p>This table shows campaigns for approval</p>
-        <input type='text' placeholder='search'/>
+        <input type='text' onChange={this.handleOnchange} placeholder='search'/>
         <table className="table table-hover">
 
           <thead>
@@ -52,7 +63,7 @@ export class IncomingTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {items.map(item => (<IncomingItem key={item.id} item={item}/>))}
+            {filteredItems.map(item => (<IncomingItem key={item.id} item={item}/>))}
           </tbody>
           <tfoot></tfoot>
         </table>

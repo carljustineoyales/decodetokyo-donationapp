@@ -10,6 +10,17 @@
   <li>Bootstrap Framework - <a href='https://getbootstrap.com/'>https://getbootstrap.com/</a></li>
 </ul>
 
+<h2>Feb 13 2020</h2>
+<ul>
+  <li>Dashboard Search Functionality</li>
+  <li>Strapi Email Functionality</li>
+</ul>
+<p><strong>Added</strong></p>
+<ul>
+  <li>Change Password Page</li>
+</ul>
+<hr/>
+
 <h2>Feb 10 2020</h2>
 <ul>
   <li>Testing Strapi.io Permission</li>
