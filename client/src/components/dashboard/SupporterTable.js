@@ -59,7 +59,7 @@ export class supporterTable extends Component {
       <div>
         <h2>Supporter</h2>
         <p>This table shows supporters of a campaign</p>
-        <input type='text' onChange={this.handleOnchange} placeholder='search'/>
+        <input type='text' onChange={this.handleOnchange} placeholder='Filter by order ID'/>
         <table className="table table-hover">
           <thead>
             <tr>

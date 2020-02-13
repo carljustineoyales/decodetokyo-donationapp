@@ -49,7 +49,7 @@ export class IncomingTable extends Component {
       <div>
         <h2>Incoming Campaigns</h2>
         <p>This table shows campaigns for approval</p>
-        <input type='text' onChange={this.handleOnchange} placeholder='search'/>
+        <input type='text' onChange={this.handleOnchange} placeholder='Filter by Ref. ID'/>
         <table className="table table-hover">
 
           <thead>

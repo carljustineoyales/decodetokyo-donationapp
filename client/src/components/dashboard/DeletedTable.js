@@ -49,7 +49,7 @@ export class DeletedTable extends Component {
       <div>
         <h2>Deleted</h2>
         <p>This table shows deleted campaigns</p>
-        <input type='text' onChange={this.handleOnchange} placeholder='search'/>
+        <input type='text' onChange={this.handleOnchange} placeholder='Filter by Ref. ID'/>
         <table className="table table-hover">
           <thead>
             <tr>

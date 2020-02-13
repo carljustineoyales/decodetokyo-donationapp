@@ -49,7 +49,7 @@ export class UsersTable extends Component {
       <div>
         <h2>Users</h2>
         <p>This table shows users that are registered in the database</p>
-        <input type='text' onChange={this.handleOnchange} placeholder='search'/>
+        <input type='text' onChange={this.handleOnchange} placeholder='Filter by username'/>
         <table className="table table-hover">
 
           <thead>
