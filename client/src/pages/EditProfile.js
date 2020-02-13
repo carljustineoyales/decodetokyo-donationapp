@@ -37,11 +37,7 @@ export class EditProfile extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${strapi}/users/${getId()}`, {
-      headers: {
-        'Authorization': `Bearer ${withToken()}`
-      }
-    }).then(res => {
+    axios.get(`${strapi}/users/${getId()}`).then(res => {
       console.log(res)
       this.setState({
         email: res.data.email,
