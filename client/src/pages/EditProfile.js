@@ -107,7 +107,7 @@ export class EditProfile extends Component {
         data: bodyFormData,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${withToken()}`
+          // 'Authorization': `Bearer ${withToken()}`
         }
       }).then(res => {
         console.log(res.data)
