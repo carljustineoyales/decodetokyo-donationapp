@@ -17,6 +17,7 @@
 <p><strong>Added</strong></p>
 <ul>
   <li>Need help functionality</li>
+  <li>Need help Router</li>
 </ul>
 <p><strong>Fixed</strong></p>
 <ul>
