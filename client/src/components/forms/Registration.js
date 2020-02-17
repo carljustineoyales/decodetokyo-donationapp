@@ -20,12 +20,16 @@ export class Registration extends Component {
       password: '',
       bank_account: '',
       bank_name: '',
-      
-      errors: [], isLoading: false,noErrors: false,axiosError: '',
+      errors: [],
+      isLoading: false,
+      noErrors: false,
+      axiosError: '',
+      sent: false
     }
     this.handleOnChange = this
       .handleOnChange
       .bind(this)
+    this.OnSuccess = this.OnSuccess.bind(this)
   }
 
   removeItem = (item) => {
@@ -69,21 +73,56 @@ export class Registration extends Component {
     }
   }
 
+  OnSuccess = () => {
+    this.props.handleOnSuccess()
+  }
+
   continue = (e) => {
     console.log(this.state)
     e.preventDefault();
     if (this.state.first_name.length > 0 && this.state.last_name.length > 0 && this.state.email.length > 0 && this.state.address.length > 0 && this.state.city.length > 0 && this.state.zipcode.length > 0 && this.state.country.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
-      const data = this.state
+      const data = {
+        paypal_email: this.state.paypal_email,
+      gcash_number: this.state.gcash_number,
+      first_name: this.state.first_name,
+      last_name: this.state.last_name,
+      email: this.state.email,
+      address: this.state.address,
+      city: this.state.city,
+      zipcode: this.state.zipcode,
+      country: this.state.country,
+      username: this.state.username,
+      password: this.state.password,
+      bank_account: this.state.bank_account,
+      bank_name: this.state.bank_name,
+      confirmed:false
+      }
       this.setState({errors: []})
+      
       axios
         .post(`${strapi}/users`, data)
         .then(res => {
-          this
-            .props
-            .login(this.state.username, this.state.password);
+          
+          axios.post(`${strapi}/auth/send-email-confirmation`, {
+            email: this.state.email
+          }, {
+            headers: {
+              'Content-type': 'application/json'
+            }
+          }).then(res => {
+            // Handle success.
+            console.log(res.data);
+            alert('sent')
+            this.OnSuccess();
+            // this.setState({sent: true})
+            
+          }).catch(error => {
+            // Handle error.
+            console.log('An error occured:', error.response);
+          });
         })
         .catch(err => {
-          this.setState({axiosError: err.response.data.message[0].messages[0].message})
+          this.setState({axiosError: err})
         })
     } else {
       if (this.state.first_name.length <= 0) {
@@ -239,6 +278,7 @@ export class Registration extends Component {
   render() {
 
     return (
+      
       <Fragment>
         <h1>Sign Up</h1>
         <p>Register to create a campaign</p>

@@ -12,6 +12,7 @@ export class Profile extends Component {
       profile_data: [],
       error: ''
     }
+    this.goBack = this.goBack.bind(this); 
   }
 
 
@@ -30,6 +31,13 @@ export class Profile extends Component {
 
   }
 
+  
+  
+  goBack(){
+    this.props.history.goBack();
+}
+
+
   render() {
     console.log(this.state)
     const {profile_data} = this.state
@@ -43,13 +51,10 @@ export class Profile extends Component {
 
               <div key={data.id}>
                 {getUserName() !== this.props.match.params.username
-                  ? <Link to={'/feed'}  style={{
-                    display: 'block'
-                  }}>Go Back</Link>
+                  ?
+                  (<button onClick={this.goBack}>Go Back</button>)
                   : (<>
-                    <Link to={'/feed'}  style={{
-                    display: 'block'
-                  }}>Go Back</Link>
+                    <button onClick={this.goBack}>Go Back</button>
                     <Link
                     to={`/edit/${this.props.match.params.username}`}
                     style={{

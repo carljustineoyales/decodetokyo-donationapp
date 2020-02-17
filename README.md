@@ -10,14 +10,35 @@
   <li>Bootstrap Framework - <a href='https://getbootstrap.com/'>https://getbootstrap.com/</a></li>
 </ul>
 
+<h2>Feb 17 2020</h2>
+<ul>
+  <li>Custom Email Template using Nodemail</li>
+</ul>
+<p><strong>Added</strong></p>
+<ul>
+  <li>Need help functionality</li>
+</ul>
+<p><strong>Fixed</strong></p>
+<ul>
+  <li>Go Back react-router-dom bug</li>
+</ul>
+<hr/>
+
 <h2>Feb 13 2020</h2>
 <ul>
   <li>Dashboard Search Functionality</li>
   <li>Strapi Email Functionality</li>
+  <li>Nodemail for Email Verification</li>
 </ul>
 <p><strong>Added</strong></p>
 <ul>
   <li>Change Password Page</li>
+  <li>Email Verification Page</li>
+  <li>Nodemail strapi plugin</li>
+</ul>
+<p><strong>Issues</strong></p>
+<ul>
+  <li>Go Back react-router-dom bug</li>
 </ul>
 <hr/>
 

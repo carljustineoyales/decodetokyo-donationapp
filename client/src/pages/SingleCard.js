@@ -25,6 +25,7 @@ export class SingleCard extends Component {
       avatar:null,
       image:null
     }
+    this.goBack = this.goBack.bind(this); 
   }
 
   componentDidMount() {
@@ -131,7 +132,9 @@ export class SingleCard extends Component {
     window.location.href = '/'
   }
 
-  
+  goBack(){
+    this.props.history.goBack();
+}
 
   render() {
     console.log(this.state)
@@ -171,9 +174,11 @@ export class SingleCard extends Component {
               : ''
 }
             <div>
-              <Link to={'/feed'} style={{
+              
+              <button onClick={this.goBack}
+               style={{
                 display: "block"
-              }}>Go back</Link>
+               }}>Go Back</button>
               <div className="row">
                 <div
                   className="col-sm-9"

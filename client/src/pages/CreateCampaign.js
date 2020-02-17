@@ -20,8 +20,8 @@ export class CreateCampaign extends Component {
       isSuccess:false,
       response:{}
     }
-
   }
+
 
   handleChange = input => e => {
 
@@ -100,7 +100,7 @@ export class CreateCampaign extends Component {
     event.preventDefault();
     this.getUser();
   }
-
+  
   render() {
     const {title, description, goalFund,isSuccess} = this.state
     const values = { title, description, goalFund }
@@ -114,6 +114,7 @@ export class CreateCampaign extends Component {
           <Navbar/>
           <main>
             <div className='container'>
+            {(withToken()) ? <Link to={'/feed'}>Go Back</Link> : ''}
               <h1>Create A Campaign
               </h1>
               <form onSubmit={this.onFormSubmit}>

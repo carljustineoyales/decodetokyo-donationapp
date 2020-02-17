@@ -13,11 +13,15 @@ import {getRole, withToken} from './components/functions';
 import CheckOut from './pages/CheckOut';
 import NotFound from './pages/NotFound';
 import {CardListContextProvider} from './contexts/CardListContext'
+import Verification from './pages/Verification';
+import RegistrationContext from './contexts/RegistrationContext';
+import NeedHelp from './pages/NeedHelp';
 class App extends Component {
 
   render() {
     return (
       <Fragment>
+      <RegistrationContext>
       <CardListContextProvider>
         <Router>
           <Switch>
@@ -26,6 +30,11 @@ class App extends Component {
             <Route path="/campaign/:id" component={SingleCard}/>
             <Route path="/donation/:id" component={Donation}/>
             <Route path="/profile/:username" component={Profile}/>
+            <Route path="/?confirmation=:code" component={Verification}/>
+            <Route path="/help" component={NeedHelp}/>
+            
+
+            
             <Route
               path="/dashboard/:username"
               render={() => getRole() === 'admin'
@@ -43,9 +52,11 @@ class App extends Component {
               : <CreateCampaign/>}/>
             <Route path="/checkout/:id" component={CheckOut}/>
             <Route component={NotFound}/>
+            {/* {withToken() ? <Route path="/create-campaign" component={CreateCampaign}/> : <Route component={NotFound}/>} */}
           </Switch>
         </Router>
       </CardListContextProvider>
+      </RegistrationContext>
       </Fragment>
     );
   }

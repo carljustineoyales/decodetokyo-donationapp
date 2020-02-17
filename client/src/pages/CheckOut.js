@@ -31,6 +31,7 @@ export class CheckOut extends Component {
     }
     this.handeOnSubmit = this.handeOnSubmit.bind(this)
     this.showInput = this.showInput.bind(this)
+    this.goBack = this.goBack.bind(this); 
   }
 
   handeOnSubmit = () => {
@@ -186,6 +187,10 @@ export class CheckOut extends Component {
         console.log(err.response)
       })
   }
+
+  goBack(){
+    this.props.history.goBack();
+}
   
   render() {
     const {id,raised,title,currency,author,isSuccess} = this.state
@@ -199,7 +204,7 @@ export class CheckOut extends Component {
             <main>
               <div className='container'>
               
-              <Link to={`/campaign/${id}`}>Go Back</Link>
+              <button onClick={this.goBack}>Go Back</button>
                 <h1>Checkout</h1>
                 <h4>Campaign Title: {title}</h4>
                 <h4>Amount: {currency} {raised}</h4>

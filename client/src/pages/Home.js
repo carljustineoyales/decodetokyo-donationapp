@@ -6,6 +6,7 @@ import Feed from './Feed';
 import {withToken} from '../components/functions'
 import About from '../components/Home/About';
 import { Redirect } from 'react-router-dom';
+import { RegistrationContext } from '../contexts/RegistrationContext';
 
 
 export class Home extends Component {
@@ -14,14 +15,15 @@ export class Home extends Component {
     
   if(withToken()){
     return (
-        <Redirect to={`/feed`}>
-        <Feed/>
-        </Redirect>
+        <Redirect to={`/feed`}/>
     )
   }else{
     return (
-      <Fragment>
-        <Navbar/>
+      <RegistrationContext.Consumer>{(context) => {
+        
+        return(
+          <>
+          <Navbar/>
         <main>
           <div className='container'>
             <div className="row">
@@ -31,7 +33,12 @@ export class Home extends Component {
           </div>
         </main>
         <Footer/>
-        </Fragment>
+        </>
+        )
+      }
+      }
+        
+        </RegistrationContext.Consumer>
       );
      
   }
