@@ -711,7 +711,7 @@ export class Registration extends Component {
           </div>
           <div className='row'>
             <div className="col-sm">
-              <Link to="#">Need Help?</Link>
+              <Link to="/help">Need Help?</Link>
             </div>
             <div className="col-sm">
               <button className='btn btn-primary w-100' onClick={this.continue}>Continue</button>

@@ -221,7 +221,7 @@ export class CreateCampaign extends Component {
                 </div>
                 <div className='row '>
                   <div className="col-md-9 mb-3">
-                    <Link to="#">Need Help?</Link>
+                    <Link to="/help">Need Help?</Link>
                   </div>
                   <div className="col-md-3">
                     <button className='btn btn-warning w-100'>Submit</button>
