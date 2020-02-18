@@ -12,6 +12,21 @@
 
 <h2>Feb 17 2020</h2>
 <ul>
+  <li>Basic form validation for reset password form</li>
+</ul>
+<p><strong>Added</strong></p>
+<ul>
+  <li>Reset password functionality</li>
+  <li>Reset password router</li>
+</ul>
+<p><strong>Fixed</strong></p>
+<ul>
+  <li>query string code</li>
+</ul>
+<hr/>
+
+<h2>Feb 17 2020</h2>
+<ul>
   <li>Custom Email Template using Nodemail</li>
 </ul>
 <p><strong>Added</strong></p>

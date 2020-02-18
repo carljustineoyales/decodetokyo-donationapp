@@ -92,7 +92,7 @@ export class Login extends Component {
                     placeholder='Password'
                     value={password}
                     onChange={this.handleOnChange}/>
-                    <Link to={"#"}>Forgot Password?</Link>
+                    <Link to={"/forgot-password"}>Forgot Password?</Link>
           </div>
           <div className="col-sm">
           <button className='btn btn-primary btn-sm w-100' type='submit'>Login</button>

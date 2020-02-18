@@ -16,6 +16,8 @@ import {CardListContextProvider} from './contexts/CardListContext'
 import Verification from './pages/Verification';
 import RegistrationContext from './contexts/RegistrationContext';
 import NeedHelp from './pages/NeedHelp';
+import ChangePassword from './pages/ChangePassword';
+import ResetPassword from './pages/ResetPassword';
 class App extends Component {
 
   render() {
@@ -32,8 +34,8 @@ class App extends Component {
             <Route path="/profile/:username" component={Profile}/>
             <Route path="/?confirmation=:code" component={Verification}/>
             <Route path="/help" component={NeedHelp}/>
-            
-
+            <Route path="/forgot-password" component={ChangePassword}/>
+            <Route path="/reset-password" component={ResetPassword}/>
             
             <Route
               path="/dashboard/:username"
