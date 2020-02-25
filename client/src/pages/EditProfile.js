@@ -8,6 +8,7 @@ export class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id:'',
       first_name: '',
       last_name: '',
       address: '',
@@ -37,20 +38,21 @@ export class EditProfile extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${strapi}/users/${getId()}`).then(res => {
-      console.log(res)
+    axios.get(`${strapi}/users/?username=${this.props.match.params.username}`).then(res => {
+      console.log(res.data)
       this.setState({
-        email: res.data.email,
-        gcash_number: res.data.gcash_number,
-        paypal_email: res.data.paypal_email,
-        first_name: res.data.first_name,
-        last_name: res.data.last_name,
-        address: res.data.address,
-        city: res.data.city,
-        country: res.data.country,
-        zipcode: res.data.zipcode,
-        bank_name: res.data.bank_name,
-        bank_account: res.data.bank_account
+        id:res.data[0].id,
+        email: res.data[0].email,
+        gcash_number: res.data[0].gcash_number,
+        paypal_email: res.data[0].paypal_email,
+        first_name: res.data[0].first_name,
+        last_name: res.data[0].last_name,
+        address: res.data[0].address,
+        city: res.data[0].city,
+        country: res.data[0].country,
+        zipcode: res.data[0].zipcode,
+        bank_name: res.data[0].bank_name,
+        bank_account: res.data[0].bank_account
       })
     }).catch(err => {
       console.log(err.response.data.message)
@@ -84,9 +86,10 @@ export class EditProfile extends Component {
       bank_name
     };
 
-    axios.put(`${strapi}/users/${getId()}`, {
+    axios.put(`${strapi}/users/${this.state.id}`, {
       headers: {
         'Content-type': 'application/json',
+        'Cookie':'access_token'
         // 'Authorization':`Bearer ${withToken()}`
       }
     }, {data}).then(res => {
@@ -94,7 +97,7 @@ export class EditProfile extends Component {
       let bodyFormData = new FormData();
       bodyFormData.append("files", this.state.avatars, this.state.avatars.name)
       bodyFormData.append("ref", "user")
-      bodyFormData.append("refId", getId())
+      bodyFormData.append("refId", this.state.id)
       bodyFormData.append("field", "avatar")
       bodyFormData.append("source", "users-permissions")
       axios({
@@ -107,7 +110,7 @@ export class EditProfile extends Component {
         }
       }).then(res => {
         console.log(res.data)
-        window.location.href = `/profile/${getUserName()}`
+        window.location.href = `/profile/${this.props.match.params.username}`
       }).catch(err => {
         console.log(err.response.data.message)
       })
@@ -502,7 +505,7 @@ export class EditProfile extends Component {
 
               <button className='btn btn-primary mr-3'>Submit</button>
 
-              <Link to={`/profile/${getUserName()}`}>Cancel</Link>
+              <Link to={`/profile/${this.props.match.params.username}`}>Cancel</Link>
             </form>
           </div>
         </main>

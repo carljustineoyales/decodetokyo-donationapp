@@ -5,6 +5,7 @@ import axios from 'axios';
 import {strapi, getUserName,getId} from '../components/functions';
 import NotFound from './NotFound';
 import Success from './Success';
+import { LoggedInContext } from '../contexts/LoggedInContext';
 export class CheckOut extends Component {
   //AFTER SENDING THE REQUEST DELETE THE CAMPAIGN
   constructor(props) {
@@ -158,7 +159,8 @@ export class CheckOut extends Component {
   }
 
   componentDidMount(){
-    axios.get(`${strapi}/campaigns/${this.props.match.params.id}`).then(res=>{
+    axios.get(`${strapi}/campaigns/${this.props.match.params.id}`)
+    .then(res=>{
       console.log(res.data)
         this.setState({
           raised:res.data.raised,
@@ -193,67 +195,75 @@ export class CheckOut extends Component {
 }
   
   render() {
-    const {id,raised,title,currency,author,isSuccess} = this.state
-    if(author === getUserName()){
-      if (isSuccess) {
-        return <Success/>
-      } else {
-        return (
-          <div>
-            <Navbar/>
-            <main>
-              <div className='container'>
-              
-              <button onClick={this.goBack}>Go Back</button>
-                <h1>Checkout</h1>
-                <h4>Campaign Title: {title}</h4>
-                <h4>Amount: {currency} {raised}</h4>
-                {(this.state.errors.length > 0)
-            ? <div className="alert alert-danger" role="alert">{this
-                  .state
-                  .errors
-                  .map(error => (
-                    <div key={error.id}>{error}</div>
-                  ))}</div>
-            : ''}
-                <form onSubmit={this.formValidation}>
-                <div className='row my-3'>
-                <div className='col-sm-5'>
-                <label htmlFor='country'>Mode of Payment:</label>
-                  <select 
-                  className="form-control form-control-sm"
-                  name='modeOfPayment' onChange={this.handleOnChange}>
-                    <option value='gcash'>GCASH</option>
-                    <option value='paypal'>PayPal</option>
-                    <option value='smartpadala'>Smart Padala</option>
-                  </select>
-                </div>
-                </div>
-                <div className='row mb-3'>
-                <div className='col-sm-12'>
-                {this.showInput()}
-                </div>
-                </div>
-                <div className='row'>
-                <div className='col'>
-                <button className='btn btn-primary'>Request Check Out</button>
-                </div>
-                </div>
-                </form>
-                <p>
-                <strong>Important:</strong> You can checkout the funds raised by your campaign in this page.<br/>
-                Your campaign will unable to gather more funds if you check out now.
-                </p>
+    const {id,raised,title,currency,author,isSuccess} = this.state;
+    return(
+<LoggedInContext.Consumer>{(context)=>{
+      const {username} = context
+      if(author === username){
+    if (isSuccess) {
+      return <Success/>
+    } else {
+      return (
+        <div>
+          <Navbar/>
+          <main>
+            <div className='container'>
+            
+            <button onClick={this.goBack}>Go Back</button>
+              <h1>Checkout</h1>
+              <h4>Campaign Title: {title}</h4>
+              <h4>Amount: {currency} {raised}</h4>
+              {(this.state.errors.length > 0)
+          ? <div className="alert alert-danger" role="alert">{this
+                .state
+                .errors
+                .map(error => (
+                  <div key={error.id}>{error}</div>
+                ))}</div>
+          : ''}
+              <form onSubmit={this.formValidation}>
+              <div className='row my-3'>
+              <div className='col-sm-5'>
+              <label htmlFor='country'>Mode of Payment:</label>
+                <select 
+                className="form-control form-control-sm"
+                name='modeOfPayment' onChange={this.handleOnChange}>
+                  <option value='gcash'>GCASH</option>
+                  <option value='paypal'>PayPal</option>
+                  <option value='smartpadala'>Smart Padala</option>
+                </select>
               </div>
-            </main>
-          </div>
-        );
-      }
-    }else{
-      return(
-        <NotFound/>
-      )
+              </div>
+              <div className='row mb-3'>
+              <div className='col-sm-12'>
+              {this.showInput()}
+              </div>
+              </div>
+              <div className='row'>
+              <div className='col'>
+              <button className='btn btn-primary'>Request Check Out</button>
+              </div>
+              </div>
+              </form>
+              <p>
+              <strong>Important:</strong> You can checkout the funds raised by your campaign in this page.<br/>
+              Your campaign will unable to gather more funds if you check out now.
+              </p>
+            </div>
+          </main>
+        </div>
+      );
     }
+  }else{
+    return(
+      <NotFound/>
+    )
+  }
+    
+  }}
+  
+  </LoggedInContext.Consumer>
+    )
     
   }
 }

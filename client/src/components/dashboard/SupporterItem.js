@@ -10,8 +10,6 @@ constructor(props) {
   render() {
     
     const {id,name,email,campaigns,donation,orderID} = this.props.item
-    
-    console.log(this.props.item)
     return (
       <Fragment>
         <tr>

@@ -11,7 +11,11 @@ export class CheckOutItem extends Component {
     let data = {
       requested:false
     }
-    axios.put(`${strapi}/campaigns/${this.props.item.campaign_id}`,data)
+    axios.put(`${strapi}/campaigns/${this.props.item.campaign_id}`,{
+      headers:{
+        'Cookie':'access_token'
+      }
+    },data)
     .then(res=>{
       console.log(res)
       axios.delete(`${strapi}/checkout-requests/${this.props.item.id}`)

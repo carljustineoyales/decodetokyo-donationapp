@@ -34,7 +34,7 @@ export class CardListContextProvider extends Component {
             })
         })
         .catch(err=>{
-          console.log(err.response.data.message)
+          console.log(err)
         })
       }else{
         this.componentDidMount();
@@ -56,7 +56,7 @@ export class CardListContextProvider extends Component {
         
       })
       .catch(err=>{
-        console.log(err.response.data.message)
+        console.log(err)
       })
   }
 

@@ -16,7 +16,15 @@ export class supporterTable extends Component {
   removeSupporters = () => {
     this.state.items.map(item=>{
       if(item.campaigns.length <= 0 ){
-        axios.delete(`${strapi}/supporters/?id=${item.id}`)
+        // axios.delete(`${strapi}/supporters/${item.id}`)
+        axios({
+          url:`/deletesupporters`,
+          method:'post',
+          params:{
+            id:item.id
+          },
+          withCredentials:true
+        })
         .then(res=>{
           console.log(res.data)
         })
@@ -34,11 +42,12 @@ export class supporterTable extends Component {
   }
 
   componentDidMount(){
-    axios.get(`${strapi}/supporters`,{
-      headers:{
-        'Authorization': `Bearer ${withToken()}`
-      }
-    })
+    // axios.get(`${strapi}/supporters`,{
+    //   headers:{
+    //     'Authorization': `Bearer ${withToken()}`
+    //   }
+    // })
+    axios.post('/getsupporters')
     .then(res=>{
       this.setState({
         items:res.data
@@ -46,7 +55,7 @@ export class supporterTable extends Component {
       console.log(this.state.items)
       this.removeSupporters();
     })
-    .catch(err=>{console.log(err.response.data.message)})
+    .catch(err=>{console.log(err)})
   }
   
 

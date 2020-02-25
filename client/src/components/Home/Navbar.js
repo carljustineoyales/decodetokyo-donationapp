@@ -1,32 +1,41 @@
 import React, {Component, Fragment} from 'react';
-import {getUserName, withToken, getRole} from '../functions.js'
 import {Link} from 'react-router-dom';
-import Login from './Login';
 import {CardListContext} from '../../contexts/CardListContext'
+import axios from 'axios';
+import { LoggedInContext } from '../../contexts/LoggedInContext.js';
 
 export class Navbar extends Component {
 
   handleLogout = () => {
-    localStorage.removeItem('JWT');
-    localStorage.removeItem('role');
-    localStorage.removeItem('username');
-    localStorage.removeItem('id');
-    window.location.href = '/'
+    
+    // window.location.href = '/'
+    axios.post('/logout',
+    {
+      withCredentials: true 
+    }
+    )
+      .then(res=>{
+        window.location.href = '/'
+        
+        console.log(res)
+      })
+      .catch(err=>{console.log(err)})
   }
 
   render() {
-    const username = (getUserName())
-      ? getUserName()
-      : '';
+   
     return (
-      <CardListContext.Consumer>{(context) => {
-        
+      <CardListContext.Consumer>{(CardContext) => {
           return (
+            <LoggedInContext.Consumer>{(LoggedInContext)=>{
+              const {loggedin,role,id,username} = LoggedInContext
+          return(
             <header className="bg-light fixed-top">
               <div className=" container">
                 <nav className="navbar navbar-expand-lg navbar-light">
                   <h2 className="navbar-brand">
-                    <Link to="/">Logo</Link>
+                  {loggedin ? <Link to="/feed">Logo</Link> : <Link to="/">Logo</Link>}
+                    
                   </h2>
                   <button
                     className="navbar-toggler"
@@ -41,7 +50,7 @@ export class Navbar extends Component {
                   <div className="collapse navbar-collapse" id="navbarColor01">
                     <ul className="navbar-nav ml-auto">
 
-                      {(getRole() === 'admin' || window.location.pathname === `/feed`)
+                      {(role === 'admin' || window.location.pathname === `/feed`)
                         ? ''
                         : (
                           <li className="nav-item">
@@ -52,12 +61,12 @@ export class Navbar extends Component {
                       {window.location.pathname === `/feed`
                         ? (
                           <Fragment>
-                            <form className='form-inline' onSubmit={context.handleOnSearch}>
+                            <form className='form-inline' onSubmit={CardContext.handleOnSearch}>
                               <div className='col-sm-12'>
                                 <input
                                   className='form-control form-control-sm w-100'
                                   placeholder='Search by Title'
-                                  onChange={context.handleOnChange}
+                                  onChange={CardContext.handleOnChange}
                                   type='text'/>
                               </div>
 
@@ -67,17 +76,17 @@ export class Navbar extends Component {
                         : ''
 }
 
-                      {withToken()
+                      {loggedin
                         ? (
                           <Fragment>
                             <li className="nav-item">
                               <Link className="nav-link" to="/create-campaign">Create Campaign</Link>
                             </li>
-                            {(getRole() === 'admin')
+                            {(role === 'admin')
                               ? (
                                 <Fragment>
                                   <li className="nav-item">
-                                    <Link className="nav-link" to={`/dashboard/${username}`}>Dashboard</Link>
+                                    <Link className="nav-link" to={`/dashboard/${id}`}>Dashboard</Link>
                                   </li>
                                 </Fragment>
                               )
@@ -91,13 +100,21 @@ export class Navbar extends Component {
                             </li>
                           </Fragment>
                         )
-                        : (<Login/>)
+                        : (
+                          <li className="nav-item">
+                              <Link className="nav-link" to={`/login`}>Login</Link>
+                            </li>
+                        )
 }
                     </ul>
                   </div>
                 </nav>
               </div>
             </header>
+          )
+        }}
+
+        </LoggedInContext.Consumer>
           )
         }}
 

@@ -3,6 +3,7 @@ import Navbar from '../components/Home/Navbar';
 import {strapi, withToken,getUserName} from '../components/functions';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import { LoggedInContext } from '../contexts/LoggedInContext';
 
 export class Profile extends Component {
 
@@ -40,9 +41,12 @@ export class Profile extends Component {
 
   render() {
     console.log(this.state)
-    const {profile_data} = this.state
+    const {profile_data} = this.state;
     // console.log(this.state.profile_data)
-    return (
+    return(
+<LoggedInContext.Consumer>{(LoggedInContext)=>{
+  const {username,loggedin} = LoggedInContext
+return (
       <Fragment>
         <Navbar/>
         <main>
@@ -50,7 +54,7 @@ export class Profile extends Component {
             {profile_data.map(data => (
 
               <div key={data.id}>
-                {getUserName() !== this.props.match.params.username
+                {username !== this.props.match.params.username
                   ?
                   (<button onClick={this.goBack}>Go Back</button>)
                   : (<>
@@ -92,7 +96,7 @@ export class Profile extends Component {
                     <div key={campaign.id}>
                       <hr/>
                       {
-                        (withToken() && getUserName() === this.props.match.params.username) ? ((campaign.requested) ? 
+                        (loggedin && username === this.props.match.params.username) ? ((campaign.requested) ? 
                          '':( <Fragment>
                           <Link to={`/checkout/${campaign.id}`}>Checkout</Link>
                           </Fragment>) 
@@ -141,6 +145,11 @@ export class Profile extends Component {
 
       </Fragment>
     );
+    }}
+    
+    </LoggedInContext.Consumer>
+    );
+    
   }
 }
 

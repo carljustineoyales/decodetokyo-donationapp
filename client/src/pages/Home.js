@@ -9,6 +9,7 @@ import { Redirect } from 'react-router-dom';
 import { RegistrationContext } from '../contexts/RegistrationContext';
 
 
+
 export class Home extends Component {
 
   render() {

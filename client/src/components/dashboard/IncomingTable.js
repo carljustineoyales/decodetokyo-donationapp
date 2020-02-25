@@ -15,8 +15,13 @@ export class IncomingTable extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    axios
-      .get(`${strapi}/campaigns?verified=false&deleted=false`)
+    // axios
+    //   .get(`${strapi}/campaigns?verified=false&deleted=false`)
+    axios({
+      url:`/getcampaign`,
+      method:'post',
+      withCredentials:true
+    })
       .then(res => {
         console.log(res.data)
         if (this._isMounted) {

@@ -77,156 +77,173 @@ export class Registration extends Component {
     this.props.handleOnSuccess()
   }
 
-  continue = (e) => {
-    console.log(this.state)
-    e.preventDefault();
-    if (this.state.first_name.length > 0 && this.state.last_name.length > 0 && this.state.email.length > 0 && this.state.address.length > 0 && this.state.city.length > 0 && this.state.zipcode.length > 0 && this.state.country.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
-      const data = {
-        paypal_email: this.state.paypal_email,
+  continue = (event) => {
+    event.preventDefault();
+    const data ={
+      paypal_email: this.state.paypal_email,
       gcash_number: this.state.gcash_number,
-      first_name: this.state.first_name,
-      last_name: this.state.last_name,
-      email: this.state.email,
-      address: this.state.address,
-      city: this.state.city,
-      zipcode: this.state.zipcode,
-      country: this.state.country,
-      username: this.state.username,
+    email: this.state.email,
+    username: this.state.username,
       password: this.state.password,
-      bank_account: this.state.bank_account,
-      bank_name: this.state.bank_name,
-      confirmed:false
-      }
-      this.setState({errors: []})
-      
-      axios
-        .post(`${strapi}/users`, data)
-        .then(res => {
-          
-          axios.post(`${strapi}/auth/send-email-confirmation`, {
-            email: this.state.email
-          }, {
-            headers: {
-              'Content-type': 'application/json'
-            }
-          }).then(res => {
-            // Handle success.
-            console.log(res.data);
-            alert('sent')
-            this.OnSuccess();
-            // this.setState({sent: true})
-            
-          }).catch(error => {
-            // Handle error.
-            console.log('An error occured:', error.response);
-          });
-        })
-        .catch(err => {
-          this.setState({axiosError: err})
-        })
-    } else {
-      if (this.state.first_name.length <= 0) {
-        if (!this.state.errors.includes('Enter First Name')) {
-          this
-            .state
-            .errors
-            .push('Enter First Name')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter First Name')
-      }
-      if (this.state.last_name.length <= 0) {
-        if (!this.state.errors.includes('Enter Last Name')) {
-          this
-            .state
-            .errors
-            .push('Enter Last Name')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Last Name')
-      }
-      if (this.state.email.length <= 0) {
-        if (!this.state.errors.includes('Enter Email')) {
-          this
-            .state
-            .errors
-            .push('Enter Email')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Email')
-      }
-      if (this.state.address.length <= 0) {
-        if (!this.state.errors.includes('Enter Address')) {
-          this
-            .state
-            .errors
-            .push('Enter Address')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Address')
-      }
-      if (this.state.city.length <= 0) {
-        if (!this.state.errors.includes('Enter City')) {
-          this
-            .state
-            .errors
-            .push('Enter City')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter City')
-      }
-      if (this.state.zipcode.length <= 0) {
-        if (!this.state.errors.includes('Enter Zip Code')) {
-          this
-            .state
-            .errors
-            .push('Enter Zip Code')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Zip Code')
-      }
-
-      if (this.state.username.length <= 0) {
-        if (!this.state.errors.includes('Enter Username')) {
-          this
-            .state
-            .errors
-            .push('Enter Username')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Username')
-      }
-      if (this.state.password.length <= 0) {
-        if (!this.state.errors.includes('Enter Password')) {
-          this
-            .state
-            .errors
-            .push('Enter Password')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Password')
-      }
-      if (this.state.country.length <= 0) {
-        if (!this.state.errors.includes('Enter Country')) {
-          this
-            .state
-            .errors
-            .push('Enter Country')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.checkCountry();
-        this.removeItem('Enter Country')
-      }
+    confirmed:false,
+    done:false
     }
+    axios.post(`${strapi}/users`, data).then(res=>{
+      console.log(res.data)
+      axios.post(`${strapi}/auth/send-email-confirmation`,{email:this.state.email})
+      .then(res=>{
+        console.log(res.data)
+      })
+    })
+    // console.log(this.state)
+    // e.preventDefault();
+    // if (this.state.first_name.length > 0 && this.state.last_name.length > 0 && this.state.email.length > 0 && this.state.address.length > 0 && this.state.city.length > 0 && this.state.zipcode.length > 0 && this.state.country.length > 0 && this.state.username.length > 0 && this.state.password.length > 0) {
+    //   const data = {
+    //     paypal_email: this.state.paypal_email,
+    //   gcash_number: this.state.gcash_number,
+    //   first_name: this.state.first_name,
+    //   last_name: this.state.last_name,
+    //   email: this.state.email,
+    //   address: this.state.address,
+    //   city: this.state.city,
+    //   zipcode: this.state.zipcode,
+    //   country: this.state.country,
+    //   username: this.state.username,
+    //   password: this.state.password,
+    //   bank_account: this.state.bank_account,
+    //   bank_name: this.state.bank_name,
+    //   confirmed:false
+    //   }
+    //   this.setState({errors: []})
+      
+    //   axios
+    //     .post(`${strapi}/users`, data)
+    //     .then(res => {
+          
+    //       axios.post(`${strapi}/auth/send-email-confirmation`, {
+    //         email: this.state.email
+    //       }, {
+    //         headers: {
+    //           'Content-type': 'application/json'
+    //         }
+    //       }).then(res => {
+    //         // Handle success.
+    //         console.log(res.data);
+    //         alert('sent')
+    //         this.OnSuccess();
+    //         // this.setState({sent: true})
+            
+    //       }).catch(error => {
+    //         // Handle error.
+    //         console.log('An error occured:', error.response);
+    //       });
+    //     })
+    //     .catch(err => {
+    //       this.setState({axiosError: err})
+    //     })
+    // } else {
+    //   if (this.state.first_name.length <= 0) {
+    //     if (!this.state.errors.includes('Enter First Name')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter First Name')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.removeItem('Enter First Name')
+    //   }
+    //   if (this.state.last_name.length <= 0) {
+    //     if (!this.state.errors.includes('Enter Last Name')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter Last Name')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.removeItem('Enter Last Name')
+    //   }
+    //   if (this.state.email.length <= 0) {
+    //     if (!this.state.errors.includes('Enter Email')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter Email')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.removeItem('Enter Email')
+    //   }
+    //   if (this.state.address.length <= 0) {
+    //     if (!this.state.errors.includes('Enter Address')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter Address')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.removeItem('Enter Address')
+    //   }
+    //   if (this.state.city.length <= 0) {
+    //     if (!this.state.errors.includes('Enter City')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter City')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.removeItem('Enter City')
+    //   }
+    //   if (this.state.zipcode.length <= 0) {
+    //     if (!this.state.errors.includes('Enter Zip Code')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter Zip Code')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.removeItem('Enter Zip Code')
+    //   }
+
+    //   if (this.state.username.length <= 0) {
+    //     if (!this.state.errors.includes('Enter Username')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter Username')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.removeItem('Enter Username')
+    //   }
+    //   if (this.state.password.length <= 0) {
+    //     if (!this.state.errors.includes('Enter Password')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter Password')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.removeItem('Enter Password')
+    //   }
+    //   if (this.state.country.length <= 0) {
+    //     if (!this.state.errors.includes('Enter Country')) {
+    //       this
+    //         .state
+    //         .errors
+    //         .push('Enter Country')
+    //     }
+    //     this.setState({isLoading: false})
+    //   } else {
+    //     this.checkCountry();
+    //     this.removeItem('Enter Country')
+    //   }
+    // }
 
   }
 
@@ -646,7 +663,7 @@ export class Registration extends Component {
 
           </div>
 
-          <div className='row'>
+          {/* <div className='row'>
             <div className="col-sm">
               <label htmlFor='first_name'>First Name</label>
               <input
@@ -708,7 +725,7 @@ export class Registration extends Component {
 
             </div>
 
-          </div>
+          </div> */}
           <div className='row'>
             <div className="col-sm">
               <Link to="/help">Need Help?</Link>

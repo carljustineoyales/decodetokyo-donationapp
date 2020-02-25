@@ -55,14 +55,14 @@ export class Card extends Component {
             </div>
           </div>
           <Link to={`/campaign/${id}`} className="card-link">
-            <section
+            {/* <section
               style={{
               backgroundImage: "url(" + strapi + this.props.card.image[0].url + ")",
               height: "20em",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "50% 50%",
               backgroundSize: "cover"
-            }}></section>
+            }}></section> */}
           </Link>
           <div className="card-body">
             <h5> Fund Goal: <strong>{currency} {goal}</strong> </h5>

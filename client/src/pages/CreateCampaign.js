@@ -4,11 +4,13 @@ import axios from 'axios';
 import {strapi, getUserName, withToken} from '../components/functions'
 import Navbar from '../components/Home/Navbar';
 import Success from './Success'
+import { LoggedInContext } from '../contexts/LoggedInContext';
 export class CreateCampaign extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      
       title: '',
       description: '',
       goalFund: '',
@@ -33,13 +35,13 @@ export class CreateCampaign extends Component {
   }
 
   getUser = () => {
-    axios.get(`${strapi}/users/?username=${getUserName()}`).then(res => {
+    axios.get(`${strapi}/users/?username=${this.state.username}`).then(res => {
 
       this.setState({
         author: {
           id: res.data[0].id
         },
-        username: getUserName()
+        username: this.state.username
       })
 
       this.postCampaign();
@@ -79,7 +81,7 @@ export class CreateCampaign extends Component {
       data: bodyFormData,
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${withToken()}`
+        // 'Authorization': `Bearer ${withToken()}`
         }
       })
       .then(res=> {
@@ -103,8 +105,12 @@ export class CreateCampaign extends Component {
   
   render() {
     const {title, description, goalFund,isSuccess} = this.state
-    const values = { title, description, goalFund }
-    if (isSuccess) {
+    const values = { title, description, goalFund };
+    return(
+<LoggedInContext.Consumer>{(context)=>{
+      const {username,loggedin} = context;
+      this.state.username = username
+        if (isSuccess) {
       return (
             <Success/>
       )
@@ -114,7 +120,7 @@ export class CreateCampaign extends Component {
           <Navbar/>
           <main>
             <div className='container'>
-            {(withToken()) ? <Link to={'/feed'}>Go Back</Link> : ''}
+            {loggedin ? <Link to={'/feed'}>Go Back</Link> : ''}
               <h1>Create A Campaign
               </h1>
               <form onSubmit={this.onFormSubmit}>
@@ -235,6 +241,13 @@ export class CreateCampaign extends Component {
         </Fragment>
       );
     }
+      
+    }}
+
+    </LoggedInContext.Consumer>
+    );
+    
+    
     
   }
 }

@@ -15,7 +15,15 @@ export class UsersItem extends Component {
   
 
   componentDidMount() {
-    axios.get(`${strapi}/campaigns/?username=${this.props.item.username}`)
+    
+    axios({
+      url:`/getusercampaign`,
+      method:'post',
+      data: {
+        username: this.props.item.username,
+      },
+      withCredentials:true
+    })
     .then(res=>{
       console.log(res.data)
       this.setState({
@@ -23,7 +31,7 @@ export class UsersItem extends Component {
       })
       
     })
-    .catch(err=>{console.log(err.response.data.message)})
+    .catch(err=>{console.log(err.response)})
   }
 
   render() {

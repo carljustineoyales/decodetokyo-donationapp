@@ -21,15 +21,20 @@ export class DeletedTable extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    axios
-      .get(`${strapi}/campaigns?deleted=true`)
+    // axios
+    //   .get(`${strapi}/campaigns?deleted=true`)
+    axios({
+      url:`/getdeletedcampaign`,
+      method:'post',
+      withCredentials:true
+    })
       .then(res => {
         console.log(res.data)
         if (this._isMounted) {
           this.setState({items: res.data})
         }
       })
-      .catch(err=>{console.log(err.response.data.message)})
+      .catch(err=>{console.log(err)})
   }
 
   componentWillUnmount() {

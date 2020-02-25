@@ -25,32 +25,16 @@ export class Login extends Component {
       identifier: this.state.username,
       password: this.state.password
     }
-    this.setState({
-      Loading: true
-    }, () => {
-      
-      
-      axios
-        .post(`${strapi}/auth/local`, loginData)
+    axios
+        .post(`/auth/login`, loginData)
         .then(res => {
           console.log(res)
-          if (undefined === res.data.jwt) {
-            this.setState({error: res.data.message, Loading: false});
-            return;
-          }
-
-          localStorage.setItem('JWT', res.data.jwt);
-          localStorage.setItem('username', res.data.user.username);
-          localStorage.setItem('role', res.data.user.role.type);
-          localStorage.setItem('id', res.data.user.id);
-
-          this.setState({Loading: false, token: res.data.jwt, username: res.data.user.username, email: res.data.user.email, isLoggedIn: true});
+          this.props.handleOnSuccess(res.data)
           // window.location.href = '/';
         })
         .catch(err => {
-          console.log(err.response.data.message)
+          console.log(err.response.data)
         })
-    })
 
   }
 

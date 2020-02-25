@@ -18,20 +18,20 @@ export class UsersTable extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    axios
-      .get(`${strapi}/users`,{
-        headers:{
-          'Authorization':`Bearer ${withToken()}`
-        }
-      })
-      .then(res => {
+    // 
+    axios({
+      url: '/getusers',
+      method: 'post',
+      withCredentials:true
+    })
+      .then(res=>{
         if (this._isMounted) {
           
-          this.setState({items: res.data})
-        }
+                this.setState({items: res.data})
+              }
       })
-      .catch(err => {
-        console.log(err.response.data.message)
+      .catch(err=>{
+        console.log(err)
       })
   }
 
