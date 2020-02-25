@@ -32,14 +32,11 @@ export class IncomingTable extends Component {
       .catch(err => {
         console.log(err.response.data.message)
       })
-
   }
 
   handleOnchange = (event) => {
     this.setState({filter: event.target.value})
   }
-
-
 
   componentWillUnmount() {
     this._isMounted = false;

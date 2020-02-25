@@ -68,11 +68,15 @@ app.post('/api/form',(req,res)=> {
   })
 });
 
+
+
 //Logout
 app.post('/logout',(req,res)=>{
   res.clearCookie('access_token')
   res.status(200).send('logged out')
 });
+
+
 
 //Login
 app.use('/auth/login', async (req,res,next)=>{
@@ -112,6 +116,7 @@ app.use('/auth/login', async (req,res,next)=>{
   return decoded
 }); 
 
+
 //Users TABLE
 app.use('/getusers', (req,res)=>{
   axios({
@@ -127,9 +132,7 @@ app.use('/getusers', (req,res)=>{
       console.log(err)
       
     })
-})
-
-//Campaign TABLE
+});
 app.use('/getusercampaign',(req,res)=>{
   
   axios({
@@ -139,8 +142,9 @@ app.use('/getusercampaign',(req,res)=>{
   })
   .then(response=>{res.status(200).send(response.data)})
   .catch(err=>{console.log(err.response)})
-})
+});
 
+//Incoming TABLE
 app.use('/getcampaign',(req,res)=>{
   
   // axios.get(`${strapi}/campaigns?verified=false&deleted=false`)
@@ -158,7 +162,37 @@ app.use('/getcampaign',(req,res)=>{
     res.status(200).send(response.data)
   })
   .catch(err=>{console.log(err.response)})
-})
+});
+app.use('/approvecampaign',(req,res)=>{
+  
+  axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'put',
+    withCredentials:true,
+    data:{
+      verified:req.body.verified
+    }
+  })
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err.response)})
+});
+app.use('/declinecampaign',(req,res)=>{
+  axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'put',
+    withCredentials:true,
+    data:{
+      deleted:req.body.deleted
+    }
+  })
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err.response)})
+});
+
 
 
 //Deleted TABLE
@@ -178,7 +212,32 @@ app.use('/getdeletedcampaign',(req,res)=>{
     res.status(200).send(response.data)
   })
   .catch(err=>{console.log(err.response)})
-})
+});
+app.use('/restorecampaign',(req,res)=>{
+  axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'put',
+    withCredentials:true,
+    data:{
+      deleted:req.body.deleted
+    }
+  })
+  .then(response=>{console.log(response.data)})
+  .catch(err=>{console.log(err.data)})
+});
+app.use('/destroycampaign',(req,res)=>{
+  axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'delete',
+    withCredentials:true
+  })
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err.response)})
+});
+
+
 
 //Supporter TABLE
 app.use('/getsupporters',(req,res)=>{
@@ -194,17 +253,15 @@ app.use('/getsupporters',(req,res)=>{
     res.status(200).send(response.data)
   })
   .catch(err=>{console.log(err.response)})
-})
-
-//FIX THIS!!!!
+});
 app.use('/deletesupporters', (req,res)=>{
   console.log(req.query.id)
-  axios.delete(`${strapi}/supporters/${req.query.id}`)
-  // axios({
-  //   url:`${strapi}/supporters/?id=${req.query.id}`,
-  //   method:'delete',
-  //   withCredentials:true
-  // })
+  // axios.delete(`${strapi}/supporters/${req.query.id}`)
+  axios({
+    url:`${strapi}/supporters/${req.query.id}`,
+    method:'delete',
+    withCredentials:true
+  })
   .then(response=>{
     
     res.status(200).send(response.data)
@@ -212,6 +269,142 @@ app.use('/deletesupporters', (req,res)=>{
   .catch(err=>{
     console.log(err)
   })
+});
+
+
+//Checkout Table
+app.use('/getcheckoutrequest',(req,res)=>{
+  axios({
+    url:`${strapi}/checkout-requests`,
+    method:'get',
+    withCredentials:true
+  })
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err.response)})
+});
+app.use('/declinecheckout',(req,res)=>{
+  axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'put',
+    data:{
+      requested:req.body.requested
+    },
+    withCredentials:true
+  })
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err.response)})
+});
+//ADD APPROVE CHECKOUT
+app.use('/approvecheckout',(req,res)=>{
+  console.log(req)
+});
+
+//Single Campaign
+app.use('/getsinglecampaign',(req,res)=>{
+  axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'get',
+    withCredentials:true,
+    
+  })
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err)})
+});
+app.use('/savesinglecampaign', (req,res)=>{
+  axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'put',
+    withCredentials:true,
+    data:{
+      title: req.body.title,
+      goal: req.body.goal,
+      description: req.body.description,
+      verified: req.body.verified
+    }
+  })
+  .then(response=>{console.log(response.data)})
+  .catch(err=>{console.log(err.response)})
+});
+app.use('/deletesinglecampaign',(req,res)=>{
+  axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'put',
+    withCredentials:true,
+    data:{
+      verified: req.body.verified,
+      deleted: req.body.deleted
+  }
+})
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err)})
+});
+
+
+//Profile Page
+app.use('/getuserprofile',(req,res)=>{
+  axios({
+    url:`${strapi}/users/?username=${req.body.username}`,
+    method:'get',
+    withCredentials:true
+  })
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err.response)})
+});
+
+//Edit Profile Page
+app.use('/editprofile',(req,res)=>{
+  axios({
+    url:`${strapi}/users/?username=${req.body.username}`,
+    method:'get',
+    withCredentials:true
+  })
+  .then(response=>{
+    res.status(200).send(response.data)
+  })
+  .catch(err=>{console.log(err.response)})
+});
+//Think of a way for the save method
+
+//Donation Page
+app.use('/supporters', async (req,res)=>{
+  
+  await axios({
+    url:`${strapi}/supporters`,
+    method:'post',
+    withCredentials:true,
+    data:{
+      name:req.body.name,
+      payerID:req.body.payerID,
+      orderID:req.body.orderID,
+      donation:req.body.donation,
+      email:req.body.email,
+      campaigns:req.body.campaigns,
+    }
+  })
+  .then(response=>{res.status(200).send(response.data)})
+  .catch(err=>{return err.response})
+});
+app.use('/updatecampaign', async (req,res)=>{
+  await axios({
+    url:`${strapi}/campaigns/${req.body.id}`,
+    method:'put',
+    data:{
+      raised:req.body.raised
+    },
+    withCredentials:true
+  })
+  .then(response=>{res.status(200).send(response.data)})
+  .catch(err=>{return err.response})
 })
 
 
@@ -224,7 +417,7 @@ app.use('/',(req,res)=>{
       decoded = jwtDecoder(token.access_token)
       res.status(200).send(decoded)
     }
-})
+});
 
 
 

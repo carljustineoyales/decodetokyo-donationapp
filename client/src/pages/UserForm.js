@@ -17,8 +17,6 @@ export class UserForm extends Component {
       username: '',
       password: '',
       error: '',
-      // isSuccess:false
-      //add image later
     }
     this.redirect = this.redirect.bind(this)
   }
@@ -29,32 +27,12 @@ export class UserForm extends Component {
       identifier: user,
       password: pass
     }
-    // console.log(data)
-    // axios
-    //   .post(`${strapi}/auth/local`, data)
-    //   .then(res => {
-    //     console.log(res.data)
-    //     if (undefined === res.data.jwt) {
-    //       this.setState({error: res.data.message, loading: false});
-    //       return;
-    //     }
-    //     localStorage.setItem('JWT', res.data.jwt);
-    //     localStorage.setItem('username', res.data.user.username);
-    //     localStorage.setItem('role', res.data.user.role.type);
-    //     localStorage.setItem('id', res.data.user.id);
-        
-    //     this.setState({loading: false,});
-
-    //     this.redirect();
-    //   })
-    //   .catch(err => {
-    //     console.log(err.response.data.message)
-    //   })
   }
 
   
   
   redirect = () => {
+    //Check this
     if (withToken()) {
       console.log('redirecting')
       window.parent.location = '/create-campaign';

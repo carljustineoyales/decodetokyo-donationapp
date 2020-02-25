@@ -25,6 +25,7 @@ export class CardListContextProvider extends Component {
   
     event.preventDefault();
       if(this.query.length > 0){
+        //move to backend
         axios.get(`${strapi}/campaigns?verified=true&title=${this.query}`)
         .then(res=>{
             this.query=''
@@ -43,7 +44,7 @@ export class CardListContextProvider extends Component {
 
   componentDidMount(){
     this._isMounted=true
-    
+    //move to backend
       axios.get(`${strapi}/campaigns?verified=true&requested=false`)
       .then(res=>{
         console.log(res.data)

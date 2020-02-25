@@ -37,6 +37,7 @@ class App extends Component {
           <Route path="/donation/:id" component={Donation}/>
           <Route path="/checkout/:id" component={CheckOut}/>
           <Route path="/create-campaign" component={CreateCampaign}/>
+          <Redirect from='/login' to='/feed'/>
           <Route path="/feed" component={Feed}/>
           
           </Switch>
@@ -56,6 +57,7 @@ class App extends Component {
             <Route path="/reset-password" component={ResetPassword}/>
             <Route path="/personalinfo" component={PersonalInfo}/> 
             <Route path="/profile/:username" component={Profile}/>
+            
             </Switch>
           )
       default:
@@ -64,16 +66,27 @@ class App extends Component {
   }
 
   componentDidMount(){
-    axios.post('/',{
-      headers:{
-        'Cookie':'access_token'
-      }
-    })
-    .then(res=>{
-      console.log(res)
-      this.props.handleOnSuccess(res.data.id)
-    })
-    .catch(err=>{console.log(err.response.status)})
+    // axios.post('/',{
+    //   headers:{
+    //     'Cookie':'access_token'
+    //   }
+    // })
+    if(!this.props.loggedin){
+      axios({
+        url:'/',
+        method:'post',
+        headers:{
+          'Cookie':'access_token'
+        },
+        withCredentials:true
+      })
+      .then(res=>{
+        console.log(res)
+        this.props.handleOnSuccess(res.data.id)
+      })
+      .catch(err=>{console.log(err.response.status)})
+    }
+    
   }
   render() {
     return (

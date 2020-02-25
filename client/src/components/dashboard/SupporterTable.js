@@ -42,11 +42,7 @@ export class supporterTable extends Component {
   }
 
   componentDidMount(){
-    // axios.get(`${strapi}/supporters`,{
-    //   headers:{
-    //     'Authorization': `Bearer ${withToken()}`
-    //   }
-    // })
+    
     axios.post('/getsupporters')
     .then(res=>{
       this.setState({

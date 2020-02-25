@@ -19,8 +19,16 @@ export class Profile extends Component {
 
   componentDidMount() {
 
-    axios
-      .get(`${strapi}/users/?username=${this.props.match.params.username}`)
+    // axios
+    //   .get(`${strapi}/users/?username=${this.props.match.params.username}`)
+    axios({
+      url:'/getuserprofile',
+      method:'post',
+      withCredentials:true,
+      data:{
+        username:this.props.match.params.username
+      }
+    })
       .then(res => {
         console.log(res.data)
         this.setState({profile_data: res.data})

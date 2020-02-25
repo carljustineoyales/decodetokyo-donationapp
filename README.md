@@ -10,6 +10,12 @@
   <li>Bootstrap Framework - <a href='https://getbootstrap.com/'>https://getbootstrap.com/</a></li>
 </ul>
 
+<h2>Feb 26 2020</h2>
+<ul>
+  <li>Move some code to server script</li>
+</ul>
+<hr/>
+
 <h2>Feb 25 2020</h2>
 <ul>
   <li>Fixing Issues</li>

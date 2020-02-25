@@ -18,8 +18,18 @@ export class IncomingItem extends Component {
     const data = {
       verified: true,
     }
-    axios
-      .put(`${strapi}/campaigns/${this.props.item.id}`, data)
+    
+    // axios
+    //   .put(`${strapi}/campaigns/${this.props.item.id}`, data)
+    axios({
+      url:'/approvecampaign',
+      method:'post',
+      withCredentials:true,
+      data:{
+        verified:true,
+        id:this.props.item.id
+      }
+    })
       .then(res => {
         console.log(res.data)
         this.setState({clicked: !this.state.clicked})
@@ -35,8 +45,18 @@ export class IncomingItem extends Component {
     const data = {
       deleted: true,
     }
-    axios
-      .put(`${strapi}/campaigns/${this.props.item.id}`, data)
+     //move to backend
+    // axios
+    //   .put(`${strapi}/campaigns/${this.props.item.id}`, data)
+    axios({
+      url:'/declinecampaign',
+      method:'post',
+      withCredentials:true,
+      data:{
+        deleted:true,
+        id:this.props.item.id
+      }
+    })
       .then(res => {
         console.log(res.data)
         this.setState({clicked: !this.state.clicked})

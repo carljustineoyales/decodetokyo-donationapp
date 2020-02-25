@@ -7,42 +7,50 @@ import {withToken} from '../components/functions'
 import About from '../components/Home/About';
 import { Redirect } from 'react-router-dom';
 import { RegistrationContext } from '../contexts/RegistrationContext';
+import { LoggedInContext } from '../contexts/LoggedInContext';
 
 
 
 export class Home extends Component {
 
   render() {
-    
-  if(withToken()){
-    return (
-        <Redirect to={`/feed`}/>
-    )
-  }else{
-    return (
-      <RegistrationContext.Consumer>{(context) => {
-        
-        return(
-          <>
-          <Navbar/>
-        <main>
-          <div className='container'>
-            <div className="row">
-              <div className='col-sm'><About/></div>
-              <div className='col-sm'><UserForm/></div>
-            </div>
+    return(
+<LoggedInContext.Consumer>{(LoggedInContext)=>{
+      
+      if(withToken()){
+  return (
+      <Redirect to={`/feed`}/>
+  )
+}else{
+  return (
+    <RegistrationContext.Consumer>{(context) => {
+      
+      return(
+        <>
+        <Navbar/>
+      <main>
+        <div className='container'>
+          <div className="row">
+            <div className='col-sm'><About/></div>
+            <div className='col-sm'><UserForm/></div>
           </div>
-        </main>
-        <Footer/>
-        </>
-        )
-      }
-      }
-        
-        </RegistrationContext.Consumer>
-      );
-     
-  }
+        </div>
+      </main>
+      <Footer/>
+      </>
+      )
+    }
+    }
+      
+      </RegistrationContext.Consumer>
+    );
+   
+}
+    
+  }}</LoggedInContext.Consumer>
+    )
+    
+  
       
       
     

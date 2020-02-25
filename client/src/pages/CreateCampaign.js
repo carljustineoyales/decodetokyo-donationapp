@@ -74,7 +74,7 @@ export class CreateCampaign extends Component {
     bodyFormData.append('files.image', this.state.images, this.state.images.name)
     bodyFormData.append('data', JSON.stringify(data));
     console.log(data)
-
+    //move to backend
     axios({
       method: 'post',
       url: `${strapi}/campaigns`,

@@ -159,6 +159,7 @@ export class CheckOut extends Component {
   }
 
   componentDidMount(){
+    //move to backend
     axios.get(`${strapi}/campaigns/${this.props.match.params.id}`)
     .then(res=>{
       console.log(res.data)

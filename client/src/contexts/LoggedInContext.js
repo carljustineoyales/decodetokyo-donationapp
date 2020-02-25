@@ -17,6 +17,7 @@ export class LoggedInContextProvider extends Component {
   }
 
   handleOnSuccess = (data) => { 
+    //move to backend
     axios.get(`${strapi}/users/${data}`)
       .then(res=>{
         console.log(res.data)

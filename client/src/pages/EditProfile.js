@@ -38,7 +38,17 @@ export class EditProfile extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${strapi}/users/?username=${this.props.match.params.username}`).then(res => {
+    
+    // axios.get(`${strapi}/users/?username=${this.props.match.params.username}`)
+    axios({
+      url:'/editprofile',
+      method:'post',
+      withCredentials:true,
+      data:{
+        username:this.props.match.params.username
+      }
+    })
+    .then(res => {
       console.log(res.data)
       this.setState({
         id:res.data[0].id,
@@ -85,7 +95,7 @@ export class EditProfile extends Component {
       bank_account,
       bank_name
     };
-
+//move to backend
     axios.put(`${strapi}/users/${this.state.id}`, {
       headers: {
         'Content-type': 'application/json',
