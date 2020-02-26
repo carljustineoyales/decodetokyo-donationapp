@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from 'react';
 import Registration from '../components/forms/Registration';
 import axios from 'axios';
-import {strapi, withToken} from '../components/functions';
+import {withToken} from '../components/functions';
 import {RegistrationContext} from '../contexts/RegistrationContext'
+import {LoggedInContext} from '../contexts/LoggedInContext'
 import Verification from './Verification';
 export class UserForm extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ export class UserForm extends Component {
       username: '',
       password: '',
       error: '',
+      loggedin:false
     }
     this.redirect = this.redirect.bind(this)
   }
@@ -32,15 +34,20 @@ export class UserForm extends Component {
   
   
   redirect = () => {
-    //Check this
-    if (withToken()) {
+    
+    if (this.state.loggedin) {
       console.log('redirecting')
       window.parent.location = '/create-campaign';
     }
   }
 
   render() {
-    return(<RegistrationContext.Consumer>{(context) => {
+    return(
+      <LoggedInContext>{(LoggedInContext)=>{
+        const {loggedin} = LoggedInContext;
+        this.state.loggedin = loggedin
+        return(
+          <RegistrationContext.Consumer>{(context) => {
       const {isSuccess,handleOnSuccess} = context;
       if(!isSuccess){
         return (
@@ -56,9 +63,13 @@ export class UserForm extends Component {
       
     }}
 
-    </RegistrationContext.Consumer>);
+    </RegistrationContext.Consumer>
+    );
     
-   
+      }}</LoggedInContext>
+    
+    
+    );
   }
 
 }

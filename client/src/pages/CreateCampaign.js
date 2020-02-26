@@ -53,7 +53,7 @@ export class CreateCampaign extends Component {
 
   postCampaign = () => {
 
-    const data = {
+    const datas = {
       'title': this.state.title,
       'description': this.state.description,
       'author': this.state.author,
@@ -68,21 +68,23 @@ export class CreateCampaign extends Component {
     };
     // const data = this.state
 
-    console.log(data)
-    var bodyFormData = new FormData();
+    console.log(datas)
+    var data = new FormData();
 
-    bodyFormData.append('files.image', this.state.images, this.state.images.name)
-    bodyFormData.append('data', JSON.stringify(data));
-    console.log(data)
+    data.append('files.image', this.state.images, this.state.images.name)
+    data.append('data', JSON.stringify(datas));
+    console.log(JSON.stringify(datas))
+
     //move to backend
     axios({
       method: 'post',
       url: `${strapi}/campaigns`,
-      data: bodyFormData,
+      data:data,
       headers: {
         'Content-Type': 'multipart/form-data',
         // 'Authorization': `Bearer ${withToken()}`
-        }
+        },
+        // withCredentials:true
       })
       .then(res=> {
         this.setState({
@@ -93,7 +95,7 @@ export class CreateCampaign extends Component {
       })
       .catch(err=> {
         //handle error
-        console.log(err);
+        console.log(err.response);
       });
     console.log(this.state)
   }

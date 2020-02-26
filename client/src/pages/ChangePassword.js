@@ -23,9 +23,15 @@ export class ChangePassword extends Component {
   hanldeOnSubmit = (event) =>{
     const {email} = this.state
     event.preventDefault();
-    axios.post(`${strapi}/auth/forgot-password`,{
-      email,
-      url:`https://radiant-hollows-04485.herokuapp.com/reset-password`
+
+  
+    axios({
+      url:'/changepassword',
+      method:'post',
+      data:{
+        email,
+      }
+
     })
     .then(res=>{
       this.setState({

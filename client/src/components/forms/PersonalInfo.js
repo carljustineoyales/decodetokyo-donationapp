@@ -3,10 +3,12 @@ import axios from 'axios';
 import {strapi, getId} from '../functions';
 import Navbar from '../Home/Navbar';
 import {Redirect} from 'react-router-dom';
+import { LoggedInContext } from '../../contexts/LoggedInContext';
 export class PersonalInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id:'',
       first_name: '',
       last_name: '',
       address: '',
@@ -40,6 +42,7 @@ export class PersonalInfo extends Component {
     event.preventDefault();
 
     const {
+      id,
       first_name,
       last_name,
       address,
@@ -53,6 +56,7 @@ export class PersonalInfo extends Component {
     if (first_name.length > 0 && last_name.length > 0 && address.length > 0 && city.length > 0 && zipcode.length > 0) {
 
       const data = {
+        id,
         first_name,
         last_name,
         address,
@@ -62,8 +66,15 @@ export class PersonalInfo extends Component {
         bank_name,
         done
       }
-      axios.put(`${strapi}/users/${getId()}`, data).then(res => {
-        localStorage.setItem('done', done);
+
+      
+      axios({
+        url:'/finishsignup',
+        method:'post',
+        data,
+        withCredentials:true
+      })
+      .then(res => {
         window.parent.location = '/create-campaign'
       }).catch(err => {
         console.log(err.response)
@@ -71,7 +82,10 @@ export class PersonalInfo extends Component {
     }
   }
   render() {
-    return (
+    return(
+<LoggedInContext.Consumer>{(context)=>{
+  this.state.id = context.id
+      return (
       <Fragment>
         <Navbar/>
         <main>
@@ -171,6 +185,10 @@ export class PersonalInfo extends Component {
         </main>
       </Fragment>
     );
+    }}</LoggedInContext.Consumer>
+    )
+    
+    
   }
 }
 

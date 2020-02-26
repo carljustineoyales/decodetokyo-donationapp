@@ -88,12 +88,18 @@ export class Registration extends Component {
     confirmed:false,
     done:false
     }
-    axios.post(`${strapi}/users`, data).then(res=>{
+
+    //move to backend
+    // axios.post(`${strapi}/users`, data)
+    axios({
+      url:'/registeruser',
+      method:'post',
+      data
+    })
+    .then(res=>{
       console.log(res.data)
-      axios.post(`${strapi}/auth/send-email-confirmation`,{email:this.state.email})
-      .then(res=>{
-        console.log(res.data)
-      })
+      
+      this.OnSuccess();
     })
     // console.log(this.state)
     // e.preventDefault();

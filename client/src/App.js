@@ -37,6 +37,7 @@ class App extends Component {
           <Route path="/donation/:id" component={Donation}/>
           <Route path="/checkout/:id" component={CheckOut}/>
           <Route path="/create-campaign" component={CreateCampaign}/>
+          <Route path="/personalinfo" component={PersonalInfo}/> 
           <Redirect from='/login' to='/feed'/>
           <Route path="/feed" component={Feed}/>
           
@@ -55,7 +56,7 @@ class App extends Component {
             <Route path="/donation/:id" component={Donation}/>
             <Route path="/forgot-password" component={ChangePassword}/>
             <Route path="/reset-password" component={ResetPassword}/>
-            <Route path="/personalinfo" component={PersonalInfo}/> 
+            
             <Route path="/profile/:username" component={Profile}/>
             
             </Switch>

@@ -28,7 +28,7 @@ export class Navbar extends Component {
       <CardListContext.Consumer>{(CardContext) => {
           return (
             <LoggedInContext.Consumer>{(LoggedInContext)=>{
-              const {loggedin,role,id,username} = LoggedInContext
+              const {loggedin,role,id,username,done} = LoggedInContext
           return(
             <header className="bg-light fixed-top">
               <div className=" container">
@@ -79,9 +79,12 @@ export class Navbar extends Component {
                       {loggedin
                         ? (
                           <Fragment>
+                          {done ? (
                             <li className="nav-item">
                               <Link className="nav-link" to="/create-campaign">Create Campaign</Link>
                             </li>
+                          ) : ''}
+                            
                             {(role === 'admin')
                               ? (
                                 <Fragment>

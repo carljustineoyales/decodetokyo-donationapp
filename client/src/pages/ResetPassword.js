@@ -35,10 +35,21 @@ export class ResetPassword extends Component {
     const {passwordConfirmation, password} =this.state;
 
     if (password === passwordConfirmation) {
-    axios.post(`${strapi}/auth/reset-password`,{
-      code:this.state.code.code,
-      password,
-      passwordConfirmation
+
+      //move to backend
+    // axios.post(`${strapi}/auth/reset-password`,{
+    //   code:this.state.code.code,
+    //   password,
+    //   passwordConfirmation
+    // })
+    axios({
+      url:'/resetpassword',
+      method:'post',
+      data:{
+        code:this.state.code.code,
+        password:password,
+        passwordConfirmation:passwordConfirmation
+      }
     })
     .then(res=>{
       this.setState({
