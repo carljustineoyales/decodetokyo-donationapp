@@ -2,11 +2,11 @@
   "name": "donationapp",
   "version": "1.0.0",
   "description": "<h1>Donation Application</h1>",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "start": "node index.js",
-    "server": "nodemon index.js",
+    "start": "node app.js",
+    "server": "nodemon app.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
