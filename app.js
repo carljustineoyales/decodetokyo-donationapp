@@ -12,7 +12,8 @@ const app = express();
 
 let decoded = '';
 let token = '';
-const strapi = 'https://limitless-brushlands-81295.herokuapp.com/'
+const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
+// const strapi = 'http://localhost:1337'
 app.use(express.urlencoded({extended: true}));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -100,40 +101,45 @@ app.post('/logout',(req,res)=>{
 //CLEAN THIS
 app.use('/auth/login', async (req,res,next)=>{
   const data ={
-    identifier:'',
-    password:'',
+    identifier:req.body.identifier,
+    password:req.body.password,
   };
   let error = '';
   
   
-  data.identifier = req.body.identifier
-  data.password = req.body.password
+  // data.identifier = req.body.identifier
+  // data.password = req.body.password
   
 
   await axios.post(`${strapi}/auth/local`,data)
     .then(response=>{
       token = response.data.jwt
-      return token
-    })
-    .catch(err=>{
-      error = err.response.data.message[0].messages;
-      console.log(error)
-      res.status(400).send(error)
-      return error
-    })
-  
-
-    decoded = jwtDecoder(token)
-    
-
-  if(error){
-    res.status(400).send(error)
-  }else{
+      decoded = jwtDecoder(token)
     res.cookie('access_token',token,{
       httpOnly:true
     })
     res.status(200).json(decoded.id)
-  }
+    })
+    .catch(err=>{
+      error = err.response.data;
+      console.log('error',error)
+      res.status(400).send(error)
+      // return error
+    })
+  
+
+    
+    
+
+  // if(error){
+  //   res.status(400).send(error)
+  // }else{
+  //   decoded = jwtDecoder(token)
+  //   res.cookie('access_token',token,{
+  //     httpOnly:true
+  //   })
+  //   res.status(200).json(decoded.id)
+  // }
   return decoded
 }); 
 
@@ -621,9 +627,9 @@ app.use('/registeruser',(req,res)=>{
       }
     })
     .then(response=>{res.status(200).send(response.data)})
-    .catch(err=>{console.log(err.response)})
+    .catch(err=>{console.log(err)})
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{console.log(err)})
 })
 
 /**
@@ -650,6 +656,38 @@ app.use('/finishsignup',(req,res)=>{
   .catch(err=>{console.log(err.response)})
 })
 
+/**
+ * 
+ * 
+ * Cardlist Context
+ * 
+ */
+app.use('/getcards',(req,res)=>{
+  axios({
+    url:`${strapi}/campaigns?verified=true&requested=false`,
+    method:'get'
+  })
+  .then(response=>{res.send(response.data)})
+  .catch(err=>{
+    
+    res.send(err)
+  })
+})
+/**
+ * 
+ * Logged In Context
+ * 
+ */
+
+app.use('/getlogin',(req,res)=>{
+  //`${strapi}/users/${data}`
+  axios({
+    url:`${strapi}/users/${req.body.id}`,
+    method:'get'
+  })
+  .then(response=>{res.send(response.data)})
+  .catch(err=>{console.log(err)})
+})
 /**
  * 
  * Home Page 
