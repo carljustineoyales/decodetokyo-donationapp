@@ -8,7 +8,7 @@ export class Feed extends Component {
 
   render() {
     return (
-      <LoggedInContext>{(context)=>{
+      <LoggedInContext.Consumer>{(context)=>{
         const {done} = context
         return(
           <div>
@@ -21,7 +21,7 @@ export class Feed extends Component {
               </main>
             </div>
         )
-      }}</LoggedInContext>
+      }}</LoggedInContext.Consumer>
             
     );
   }

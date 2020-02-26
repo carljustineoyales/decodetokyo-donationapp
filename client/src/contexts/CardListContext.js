@@ -44,8 +44,11 @@ export class CardListContextProvider extends Component {
 
   componentDidMount(){
     this._isMounted=true
-    //move to backend
-      axios.get(`${strapi}/campaigns?verified=true&requested=false`)
+    
+      axios({
+        url:'/getcards/campaigns?verified=true&requested=false',
+        method:'post'
+      })
       .then(res=>{
         console.log(res.data)
         if(this._isMounted){

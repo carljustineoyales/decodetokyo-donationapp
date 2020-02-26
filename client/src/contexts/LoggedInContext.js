@@ -17,8 +17,14 @@ export class LoggedInContextProvider extends Component {
   }
 
   handleOnSuccess = (data) => { 
-    //move to backend
-    axios.get(`${strapi}/users/${data}`)
+   
+    axios({
+      url:`/getlogin`,
+      method:'post',
+      data:{
+        id:data
+      }
+    })
       .then(res=>{
         console.log(res.data)
         this.setState({
