@@ -110,7 +110,7 @@ app.use('/auth/login', async (req,res,next)=>{
   data.password = req.body.password
   
 
-  await axios.post(`http://localhost:1337/auth/local`,data)
+  await axios.post(`${strapi}/auth/local`,data)
     .then(response=>{
       token = response.data.jwt
       return token
