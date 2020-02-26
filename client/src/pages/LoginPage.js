@@ -6,12 +6,20 @@ import Navbar from '../components/Home/Navbar';
 
 import Login from '../components/Home/Login';
 import { LoggedInContext } from '../contexts/LoggedInContext';
+
 export class LoginPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      loggedin:false,
+      done:false
+    }
+  }
   
   render() {
 
-    if (withToken()) {
-      if(getdone() === 'false'){
+    if (this.state.loggedin) {
+      if(this.state.done){
         return (<Redirect to={`/personalinfo`}/>)
       }else{
         return (<Redirect to={`/feed`}/>)
@@ -21,7 +29,9 @@ export class LoginPage extends Component {
     } else {
       return (
         <LoggedInContext.Consumer>{(context)=>{
-          const { handleOnSuccess,id} = context
+          const { handleOnSuccess,id,loggedin,done} = context;
+          this.state.loggedin = loggedin;
+          this.state.done = done;
           return(
             <Fragment>
           <Navbar/>

@@ -19,7 +19,13 @@ export class CheckOutTable extends Component {
 
 
   componentDidMount(){
-    axios.get(`${strapi}/checkout-requests`)
+    //move to backend
+    // axios.get(`${strapi}/checkout-requests`)
+    axios({
+      url:'/getcheckoutrequest',
+      method:'post',
+      withCredentials:true
+    })
     .then(res=>{
       console.log(res.data)
       this.setState({

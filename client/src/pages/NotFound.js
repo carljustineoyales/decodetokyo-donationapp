@@ -5,7 +5,7 @@ export class NotFound extends Component {
     return (
       <div>
         <h1>Oppss.. Page Not Found</h1>
-        <h5>Click <Link to={`/`}>here</Link> to return to home</h5>
+        <h5>Click <Link to={`/feed`}>here</Link> to return to home</h5>
       </div>
 
     );

@@ -66,19 +66,32 @@ export class Donation extends Component {
       email,
       campaigns
     } = this.state
-    const body = {
-      name,
+   
+    // const supporters = axios.post(`${strapi}/supporters`, body)
+    const supporters = axios({
+      url:'/supporters',
+      method:'post',
+      data:{
+        name,
       payerID,
       orderID,
       donation,
       email,
       campaigns
-    }
-    const supporters = axios.post(`${strapi}/supporters`, body)
-    const raised = {
-      raised: Number(this.state.raised) + Number(donation)
-    }
-    const updateCampaigns = axios.put(`${strapi}/campaigns/${this.props.match.params.id}`, raised)
+      },
+      withCredentials:true
+    })
+   
+    // const updateCampaigns = axios.put(`${strapi}/campaigns/${this.props.match.params.id}`, raised)
+    const updateCampaigns = axios({
+      url:'/updatecampaign',
+      method:'post',
+      data:{
+        id:this.props.match.params.id,
+        raised:Number(this.state.raised) + Number(donation)
+      },
+      withCredentials:true
+    })
     // .then(res=>{console.log(res)}).catch(err=>{console.log(err)})
     Promise
       .all([supporters, updateCampaigns])

@@ -31,8 +31,17 @@ export class SingleCard extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0)
-    axios
-      .get(`${strapi}/campaigns/${this.props.match.params.id}`)
+    
+    // axios
+    //   .get(`${strapi}/campaigns/${this.props.match.params.id}`)
+    axios({
+      url:'/getsinglecampaign',
+      method:'post',
+      withCredentials:true,
+      data:{
+        id:this.props.match.params.id
+      }
+    })
       .then(res => {
         console.log(res.data)
         if(res.data.author.avatar !== null || res.data.author.avatar === ''){
@@ -89,20 +98,34 @@ export class SingleCard extends Component {
       description: this.state.description,
       verified: false
     }
-    axios
-      .put(`${strapi}/campaigns/${this.props.match.params.id}`,{
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${withToken()}`
-          }
-      }, {data})
+    // axios
+    // 
+    //   .put(`${strapi}/campaigns/${this.props.match.params.id}`,{
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${withToken()}`
+    //       }
+    //   }, {data})
+    axios({
+      url:'/savesinglecampaign',
+      method:'post',
+      withCredentials:true,
+      data:{
+        id:this.props.match.params.id,
+        title: this.state.title,
+        goal: this.state.goal,
+        description: this.state.description,
+        verified: false
+      }
+    })
       .then(res => {
         console.log(res.data)
+        window.parent.location = window.parent.location.href
       })
       .catch(err => {
         console.log(err.response.data.message)
       });
-    window.parent.location = window.parent.location.href
+    
   }
 
   gcashInstructions = (event) => {
@@ -122,15 +145,27 @@ export class SingleCard extends Component {
       deleted: true
     }
     event.preventDefault();
-    axios
-      .put(`${strapi}/campaigns/${this.props.match.params.id}`, data)
+    
+    // axios
+    //   .put(`${strapi}/campaigns/${this.props.match.params.id}`, data)
+    axios({
+      url:'/deletesinglecampaign',
+      method:'post',
+      withCredentials:true,
+      data:{
+        id:this.props.match.params.id,
+        verified: false,
+        deleted: true
+      }
+    })
       .then(res => {
         console.log(res.data)
+        window.location.href = '/feed'
       })
       .catch(err => {
         console.log(err.response.data.message)
       });
-    window.location.href = '/'
+    
   }
 
   goBack(){

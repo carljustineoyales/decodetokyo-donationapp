@@ -17,8 +17,18 @@ export class DeletedItem extends Component {
     const data = {
       deleted: false
     }
-    axios
-      .put(`${strapi}/campaigns/${this.props.item.id}`, data)
+    
+    // axios
+    //   .put(`${strapi}/campaigns/${this.props.item.id}`, data)
+    axios({
+      url:'/restorecampaign',
+      method:'post',
+      withCredentials:true,
+      data:{
+        deleted:false,
+        id:this.props.item.id
+      },
+    })
       .then(res => {
         console.log(res.data)
         this.setState({
@@ -32,8 +42,17 @@ export class DeletedItem extends Component {
 
   deleteItem = (event) => {
     event.preventDefault();
-    axios
-      .delete(`${strapi}/campaigns/${this.props.item.id}`)
+    
+    // axios
+    //   .delete(`${strapi}/campaigns/${this.props.item.id}`)
+    axios({
+      url:'/destroycampaign',
+      method:'post',
+      data:{
+        id:this.props.item.id
+      },
+      withCredentials:true
+    })
       .then(res => {
         console.log(res.data)
         this.setState({
