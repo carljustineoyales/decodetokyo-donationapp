@@ -14,6 +14,7 @@
 <ul>
   <li>Redesign Registration</li>
   <li>Tooltip functionality</li>
+  <li>Ticket Functionality</li>
 </ul>
 <hr/>
 
