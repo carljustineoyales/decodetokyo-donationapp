@@ -9,7 +9,9 @@ export class NeedHelp extends Component {
       email:'',
       name:'',
       message:'',
-      sent:false
+      sent:false,
+      errors:[],
+      isLoading:false,
     }
     this.handleOnChange = this.handleOnChange.bind(this);
   }
@@ -21,6 +23,7 @@ export class NeedHelp extends Component {
   }
 
   handleOnSubmit = (event) => {
+    this.state.errors = []
     event.preventDefault();
     const {name,fb,message,email} = this.state
     
@@ -34,7 +37,17 @@ export class NeedHelp extends Component {
         sent:true
       })
     })
-    .catch(err=>console.log(err.response))
+    .catch(err=>{
+      console.log(err.response.data)
+      err.response.data.map(item=>{
+        if(!this.state.errors.includes(item)){
+          this.state.errors.push(item)
+        }
+      })
+      this.setState({
+        isLoading:true
+      })
+    })
   }
   
   render() {
@@ -60,6 +73,11 @@ export class NeedHelp extends Component {
         
           <div className='container'>
           <h1>Create a Ticket</h1>
+          {(this.state.errors.length > 0) ? (
+            this.state.errors.map(item => (
+              <div>{item}</div>
+            ))
+          ): ''}
           <form onSubmit={this.handleOnSubmit}>
           {/* <label htmlFor='fb'>Facebook</label><br/>
           <input type='email' name='fb' onChange={this.handleOnChange}/><br/><br/> */}
