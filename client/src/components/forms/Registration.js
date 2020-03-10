@@ -45,35 +45,6 @@ export class Registration extends Component {
   //   }
   // }
 
-  checkCountry = () => {
-    if (this.state.country === 'Philippines') {
-      this.removeItem('Enter Paypal Email')
-      if (this.state.gcash_number.length <= 0) {
-        if (!this.state.errors.includes('Enter Gcash Number')) {
-          this
-            .state
-            .errors
-            .push('Enter Gcash Number')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Gcash Number')
-      }
-    } else {
-      this.removeItem('Enter Gcash Number')
-      if (this.state.paypal_email.length <= 0) {
-        if (!this.state.errors.includes('Enter Paypal Email')) {
-          this
-            .state
-            .errors
-            .push('Enter Paypal Email')
-        }
-        this.setState({isLoading: false})
-      } else {
-        this.removeItem('Enter Paypal Email')
-      }
-    }
-  }
 
   OnSuccess = () => {
     this.props.handleOnSuccess(this.state.email)
@@ -81,6 +52,47 @@ export class Registration extends Component {
 
   continue = (event) => {
     event.preventDefault();
+    if(validator.isEmpty(this.state.country)){
+      console.log('empty country')
+      if(!this.state.errors.includes('Empty Country.')){
+        this.state.errors.push('Empty Country.');
+        this.setState({
+                  isLoading: true,
+                })
+      }
+    }else{
+      if(this.state.country === 'Philippines'){
+        if(validator.isEmpty(this.state.gcash_number)){
+          console.log('empty gcash')
+          if(!this.state.errors.includes('Empty Gcash.')){
+            this.state.errors.push('Empty Gcash.');
+            this.setState({
+                      isLoading: true,
+                    })
+          }
+        }
+      }else{
+        
+        if(validator.isEmpty(this.state.paypal_email)){
+          if(!this.state.errors.includes('Empty Paypal.')){
+            this.state.errors.push('Empty Paypal.');
+            this.setState({
+                      isLoading: true,
+                    })
+          }
+        }
+      }
+    }
+    if(validator.isEmpty(this.state.password)){
+      if(!this.state.errors.includes('Empty Password.')){
+        this.state.errors.push('Empty Password.');
+        this.setState({
+                  isLoading: true,
+                })
+      }
+    }
+    
+    
     const data ={
     paypal_email: this.state.paypal_email,
     gcash_number: this.state.gcash_number,
@@ -91,69 +103,112 @@ export class Registration extends Component {
     done:false,
     country:this.state.country
     }
-    if(this.state.email === this.state.confirmEmail){
-      //move to backend
-    // axios.post(`${strapi}/users`, data)
-    // if(this.state.errors.length <= 0){
-      axios({
-        url:'/registeruser',
-        method:'post',
-        data
-      })
-      .then(res=>{
-        console.log('continue function axios',res.data)
-        this.OnSuccess();
-      })
-      .catch(err=>{
+    if(validator.isEmpty(this.state.email) && validator.isEmpty(this.state.confirmEmail)){
+      this.state.errors.push('Empty Email.')
+    }else{
+      if(this.state.errors.length <= 0){
+        if(this.state.emailMatched){
+
+          axios({
+                url:'/registeruser',
+                method:'post',
+                data
+              })
+              .then(res=>{
+                console.log('continue function axios',res.data)
+                this.OnSuccess();
+              })
+              .catch(err=>{
+                
+                try {
+                  if(!this.state.errors.includes(err.response.data[0].messages[0].message)){
+                    this.state.errors.push(err.response.data[0].messages[0].message)
+                  }else if(this.state.errors.includes(err.response.data[0].messages[0].message)){
+                    this.state.errors = this.state.errors.filter(item => item !== err.response.data[0].messages[0].message);
+                  }
+                  
+          
+                  
+                } catch (error) {
+                  console.log(err.response.data)
+                  err.response.data.map(item=>{
+                    if(!this.state.errors.includes(item)){
+                            this.state.errors.push(item)
+                          }
+                  })
+                }
+               this.setState({
+                    isLoading: true,
+                  })
+              })
+            }
+            
+            else{
+              if(!this.state.errors.includes('Email does not match.')){
+                this.state.errors.push('Email does not match.')
+                this.setState({
+                  isLoading:true
+                })
+              }
+        }
+      }else{
+        window.scrollTo(0,0)
+      }
+      
+    }
+    
+    // if(this.state.email === this.state.confirmEmail){
+    //   //move to backend
+    // // axios.post(`${strapi}/users`, data)
+    // // if(this.state.errors.length <= 0){
+    //   axios({
+    //     url:'/registeruser',
+    //     method:'post',
+    //     data
+    //   })
+    //   .then(res=>{
+    //     console.log('continue function axios',res.data)
+    //     this.OnSuccess();
+    //   })
+    //   .catch(err=>{
         
-        // console.log(err.response.data[0].messages[0].message)
-        try {
-          if(!this.state.errors.includes(err.response.data[0].messages[0].message)){
-            this.state.errors.push(err.response.data[0].messages[0].message)
-          }else if(this.state.errors.includes(err.response.data[0].messages[0].message)){
-            this.state.errors = this.state.errors.filter(item => item !== err.response.data[0].messages[0].message);
-          }
+    //     try {
+    //       if(!this.state.errors.includes(err.response.data[0].messages[0].message)){
+    //         this.state.errors.push(err.response.data[0].messages[0].message)
+    //       }else if(this.state.errors.includes(err.response.data[0].messages[0].message)){
+    //         this.state.errors = this.state.errors.filter(item => item !== err.response.data[0].messages[0].message);
+    //       }
           
   
           
-        } catch (error) {
-          console.log(err.response.data)
-          // err.response.data.map(item=>{
-          //     if(!this.state.errors.includes(item)){
-          //       this.state.errors.push(item)
-          //     }
-          //   }
-          err.response.data.map(item=>{
-            if(!this.state.errors.includes(item)){
-                    this.state.errors.push(item)
-                  }
-
-          })
-          // this.setState({
-          //         isLoading: true,
-          //       })
-          
-        }
-       this.setState({
-            isLoading: true,
-          })
-      })
-    }
+    //     } catch (error) {
+    //       console.log(err.response.data)
+    //       err.response.data.map(item=>{
+    //         if(!this.state.errors.includes(item)){
+    //                 this.state.errors.push(item)
+    //               }
+    //       })
+    //     }
+    //    this.setState({
+    //         isLoading: true,
+    //       })
+    //   })
+    // }
     
-    else{
-      if(!this.state.errors.includes(`email does not match`)){
-        this.state.errors.push(`email does not match`)
-        this.setState({
-          isLoading:true
-        })
-      }
-      else if(this.state.errors.includes(`email does not match`)){
-        this.state.errors = this.state.errors.filter(item => item !== `email does not match`);
-        this.setState({
-          emailMatched:true
-        })
-      }
-    }
+    // else{
+    //   if(!this.state.errors.includes(`email does not match`)){
+    //     this.state.errors.push(`email does not match`)
+    //     this.setState({
+    //       isLoading:true
+    //     })
+    //   }
+    //   else if(this.state.errors.includes(`email does not match`)){
+    //     this.state.errors = this.state.errors.filter(item => item !== `email does not match`);
+    //     this.setState({
+    //       emailMatched:true
+    //     })
+    //   }
+    // }
     
     
   }
@@ -163,6 +218,32 @@ export class Registration extends Component {
       case 'Philippines':
         return (
           <Fragment>
+          <div className="input-group input-group-sm mb-3">
+                <div className="input-group-prepend">
+                  <label className="input-group-text" for="paypal_email">Paypal</label>
+                </div>
+                <input
+                  className='form-control form-control-sm'
+                  type='text'
+                  placeholder='johndoe@email.com'
+                  name="paypal_email"
+                  id='paypal'
+                  value={this.state.paypal_email}
+                  onChange={this.handleOnChange}/>
+                <a
+                  href='#'
+                  className="d-inline-block"
+                  data-toggle="tooltip"
+                  
+
+                  onClick={this.tooltip}
+                  title='insert tooltip for paypal'>
+                  <img
+                  
+                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
+                    alt='paypal-help-icon'/>
+                </a>
+              </div>
             <div className=' mb-3'>
               <div className="input-group input-group-sm">
                 <div className="input-group-prepend">
@@ -196,88 +277,121 @@ export class Registration extends Component {
         )
 
       default:
-        return ''
+        return (
+          <>
+          <div className="input-group input-group-sm mb-3">
+                <div className="input-group-prepend">
+                  <label className="input-group-text" for="paypal_email">Paypal</label>
+                </div>
+                <input
+                  className='form-control form-control-sm'
+                  type='text'
+                  placeholder='johndoe@email.com'
+                  name="paypal_email"
+                  id='paypal'
+                  value={this.state.paypal_email}
+                  onChange={this.handleOnChange}/>
+                <a
+                  href='#'
+                  className="d-inline-block"
+                  data-toggle="tooltip"
+                  
+
+                  onClick={this.tooltip}
+                  title='insert tooltip for paypal'>
+                  <img
+                  
+                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
+                    alt='paypal-help-icon'/>
+                </a>
+              </div>
+          </>
+        )
         break
     }
   }
 
   handleOnChange = (event) => {
+    
     this.setState({
-      [event.target.name]: event.target.value
-    })
-    // if(event.target.name ==='confirmEmail'){
-    //   if(event.target.value !== this.state.email){
-    //     if(!this.state.errors.includes(`email does not match`)){
-    //       this.state.errors.push(`email does not match`)
-    //       this.setState({
-    //         emailMatched:false,
-    //         isLoading:true
-    //       })
-    //   }else{
-    //     if(this.state.errors.includes(`email does not match`)){
-    //       this.state.errors = this.state.errors.filter(item => item !== `email does not match`);
-    //       this.setState({
-    //         emailMatched:true,
-    //         isLoading:true
-    //       })
-    //     }
-    //   }
-    // }
-    
-    if(event.target.value === '' || event.target.value === null){
-      // console.log(`empty ${event.target.name}`)
-      // if(event.target.name === 'bank_name' || event.target.name === 'bank_account'){
-      //   return
-      // }else{
-        
-        if(!this.state.errors.includes(`empty ${event.target.id}`)){
-          this.state.errors.push(`empty ${event.target.id}`)
-        }
-        if(this.state.errors.includes(`invalid ${event.target.id}`)){
-          this.state.errors = this.state.errors.filter(item => item !== `invalid ${event.target.id}`)
-        }
-      // }
+      [event.target.name]: event.target.value,
       
-    }else{
-      if(this.state.errors.includes(`Email already taken.`)){
-        this.state.errors = this.state.errors.filter(item => item !== `Email already taken.`)
+    })
+
+  if(event.target.value !== '' || event.target.value !== null){
+    if(event.target.name === 'country'){
+      if(this.state.errors.includes('Empty Country.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Empty Country.')
       }
-      if(event.target.name === 'country'){
-        if(event.target.value !== 'Philippines'){
-          if(this.state.errors.includes(`empty gcash`)){
-            this.state.errors = this.state.errors.filter(item => item !== `empty gcash`)
-          }
-          else if(!this.state.errors.includes(`empty paypal`)){
-            this.state.errors.push(`empty paypal`)
-          }
-        }else{
-          if(this.state.errors.includes(`empty paypal`)){
-            this.state.errors = this.state.errors.filter(item => item !== `empty paypal`)
-          }
-          else if(!this.state.errors.includes(`empty gcash`)){
-            this.state.errors.push(`empty gcash`)
-          }
-        }
+      if(this.state.errors.includes('Empty Gcash.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Empty Gcash.')
       }
-      if(event.target.name === 'email'){
-        
-        let invalidEmail = validator.isEmail(event.target.name)
-        // console.log(invalidEmail)
-        if(invalidEmail){
-          if(!this.state.errors.includes(`invalid ${event.target.id}`)){
-            this.state.errors.push(`invalid ${event.target.id}`)
-          }else{
-            this.state.errors = this.state.errors.filter(item => item !== `invalid ${event.target.id}`)
-          }
-        }
+    }
+    if(event.target.name === 'gcash_number'){
+      if(this.state.errors.includes('Empty Gcash.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Empty Gcash.')
       }
-      if(this.state.errors.includes(`empty ${event.target.id}`)){
-        console.log(`empty ${event.target.id}`)
-        this.state.errors = this.state.errors.filter(item => item !== `empty ${event.target.id}`)
-      }
+    }
     
+    if(event.target.name === 'paypal_email'){
+      if(this.state.errors.includes('Empty Paypal.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Empty Paypal.')
+      }
+    }
+    if(event.target.name === 'email'){
+      if(!validator.isEmpty(this.state.confirmEmail)){
+        if(event.target.value !== this.state.confirmEmail){
+          if(!this.state.errors.includes('Email does not match.')){
+            this.state.errors.push('Email does not match.')
+          }
+          this.setState({
+            emailMatched:false,
+          })
+        }else{
+          this.setState({
+            emailMatched:true
+          })
+          if(this.state.errors.includes('Email does not match.')){
+            this.state.errors = this.state.errors.filter(item => item !== 'Email does not match.')
+          }
+        }
+      }
+      if(this.state.errors.includes('Empty Email.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Empty Email.')
+      }
+      if(this.state.errors.includes('Invalid Email.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Invalid Email.')
+      }
+      if(this.state.errors.includes('Email already taken.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Email already taken.')
+      }
+    }
+    if(event.target.name === 'confirmEmail'){
+      if(event.target.value !== this.state.email){
+        if(!this.state.errors.includes('Email does not match.')){
+          this.state.errors.push('Email does not match.')
+        }
+        this.setState({
+          emailMatched:false,
+        })
+      }else{
+        this.setState({
+          emailMatched:true
+        })
+        if(this.state.errors.includes('Email does not match.')){
+          this.state.errors = this.state.errors.filter(item => item !== 'Email does not match.')
+        }
+      }
+    }
+    if(event.target.name === 'password'){
+      if(this.state.errors.includes('Empty Password.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Empty Password.')
+      }
+    }
   }
   }
+
+  
   tooltip = (event) => {
     console.log(event.target.alt)
     switch (event.target.alt) {
@@ -327,32 +441,7 @@ export class Registration extends Component {
 
             <div className='col-sm'>
               <label htmlFor='country'>Payment: <span className='red'>*</span></label>
-              <div className="input-group input-group-sm mb-3">
-                <div className="input-group-prepend">
-                  <label className="input-group-text" for="paypal_email">Paypal</label>
-                </div>
-                <input
-                  className='form-control form-control-sm'
-                  type='text'
-                  placeholder='johndoe@email.com'
-                  name="paypal_email"
-                  id='paypal'
-                  value={this.state.paypal_email}
-                  onChange={this.handleOnChange}/>
-                <a
-                  href='#'
-                  className="d-inline-block"
-                  data-toggle="tooltip"
-                  
-
-                  onClick={this.tooltip}
-                  title='insert tooltip for paypal'>
-                  <img
-                  
-                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                    alt='paypal-help-icon'/>
-                </a>
-              </div>
+              
               {this.showInputs()}
               
             </div>

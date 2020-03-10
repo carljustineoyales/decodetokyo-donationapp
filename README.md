@@ -10,6 +10,14 @@
   <li>Bootstrap Framework - <a href='https://getbootstrap.com/'>https://getbootstrap.com/</a></li>
 </ul>
 
+<h2>Mar 11 2020</h2>
+<strong>Fixed</strong>
+<ul>
+  <li>Backend form validation for Sign Up</li>
+  <li>Database Issue cause sign up and sign in bugs</li>
+</ul>
+<hr/>
+
 <h2>Mar 10 2020</h2>
 <ul>
   <li>Redesign Registration</li>
