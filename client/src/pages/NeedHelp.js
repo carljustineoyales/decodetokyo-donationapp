@@ -8,7 +8,8 @@ export class NeedHelp extends Component {
       fb:'',
       email:'',
       name:'',
-      message:''
+      message:'',
+      sent:false
     }
     this.handleOnChange = this.handleOnChange.bind(this);
   }
@@ -25,23 +26,44 @@ export class NeedHelp extends Component {
     
     axios.post('/api/form',{
       name,
-      fb,
+      // fb,
       email,
       message
-    }).then(res=>console.log(res.data))
+    }).then(res=>{
+      this.setState({
+        sent:true
+      })
+    })
     .catch(err=>console.log(err.response))
   }
   
   render() {
+    if(this.state.sent){
+      return (
+        <>
+        <Navbar/>
+        <main>
+            <div className='container'>
+            <h1>Ticket Sent</h1>
+            <p>create another ticket <a href='/help'>here</a> </p>
+            </div>
+            
+            </main>
+         
+        </>
+      );
+    }else{
     return (
       <>
       <Navbar/>
       <main>
+        
           <div className='container'>
+          <h1>Create a Ticket</h1>
           <form onSubmit={this.handleOnSubmit}>
-          <label htmlFor='fb'>Facebook</label><br/>
-          <input type='email' name='fb' onChange={this.handleOnChange}/><br/><br/>
-          <label htmlFor='link'>Email</label><br/>
+          {/* <label htmlFor='fb'>Facebook</label><br/>
+          <input type='email' name='fb' onChange={this.handleOnChange}/><br/><br/> */}
+          <label htmlFor='link'>Facebook or Email</label><br/>
           <input type='email' name='email' onChange={this.handleOnChange}/><br/><br/>
           <label htmlFor='name'>Name</label><br/>
           <input type='text' name='name' onChange={this.handleOnChange}/><br/><br/>
@@ -56,6 +78,7 @@ export class NeedHelp extends Component {
       </>
     );
   }
+}
 }
 
 export default NeedHelp;
