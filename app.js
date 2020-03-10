@@ -13,8 +13,8 @@ const app = express();
 
 let decoded = '';
 let token = '';
-// const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
-const strapi = 'http://localhost:1337'
+const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
+// const strapi = 'http://localhost:1337'
 app.use(express.urlencoded({extended: true}));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -634,34 +634,29 @@ app.use('/registeruser',(req,res)=>{
   let emptyCountry = validator.isEmpty(req.body.country)
  
   if(emptyEmail && emptyUsername){
-    error.push('empty email')
+    error.push('Empty Email.')
   } else if(!invalidEmail){
-    error.push('invalid email')
+    error.push('Invalid Email.')
   }
 
   if(req.body.country === 'Philippines'){
     let emptyGcash = validator.isEmpty(req.body.gcash_number)
     if(emptyGcash){
-      error.push('empty gcash')
+      error.push('Empty Gcash.')
     }
   }else{
     let emptyPaypal = validator.isEmpty(req.body.paypal_email)
     if(emptyPaypal){
-      error.push('empty paypal')
+      error.push('Empty Paypal.')
     }
   }
   
-  
-  // if(emptyUsername){
-  //   error.push('empty username')
-  // }
-  
   if(emptyPassword){
-    error.push('empty password')
+    error.push('Empty Password.')
   }
   
   if(emptyCountry){
-    error.push('empty country')
+    error.push('Empty Country.')
   }
   if(error.length <= 0){
     axios({
