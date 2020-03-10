@@ -6,12 +6,16 @@ export class RegistrationContextProvider extends Component {
   constructor(props) {
     super(props);
     this.state= {
-      isSuccess:false
+      isSuccess:false,
+      email:''
     }
   }
   
-  handleOnSuccess = () => {
-    this.setState({isSuccess:true})
+  handleOnSuccess = (email) => {
+    this.setState({
+      isSuccess:true,
+      email
+    })
     console.log(this.state)
   }
 

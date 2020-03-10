@@ -16,8 +16,8 @@ export class Home extends Component {
   render() {
     return(
 <LoggedInContext.Consumer>{(LoggedInContext)=>{
-      
-      if(withToken()){
+      const {loggedin} = LoggedInContext
+      if(loggedin){
   return (
       <Redirect to={`/feed`}/>
   )
@@ -25,7 +25,7 @@ export class Home extends Component {
   return (
     <RegistrationContext.Consumer>{(context) => {
       
-      return(
+      return( 
         <>
         <Navbar/>
       <main>

@@ -178,7 +178,7 @@ export class CheckOut extends Component {
      
     }).catch(err=>{console.log(err)})
     
-    axios.get(`${strapi}/users/${getId()}`)
+    axios.get(`${strapi}/users/${this.state.contextid}`)
       .then(res=>{
         console.log(res.data)
         this.setState({
@@ -199,7 +199,8 @@ export class CheckOut extends Component {
     const {id,raised,title,currency,author,isSuccess} = this.state;
     return(
 <LoggedInContext.Consumer>{(context)=>{
-      const {username} = context
+      const {username,id} = context
+      this.state.contextid = id;
       if(author === username){
     if (isSuccess) {
       return <Success/>

@@ -16,7 +16,8 @@ export class Card extends Component {
       created_at,
       currency
     } = this.props.card;
-
+    console.log(author.avatar)
+    // console.log(this.props.card.image[0].url)
     return (
       <div>
         <div className="card mb-3">
@@ -55,14 +56,15 @@ export class Card extends Component {
             </div>
           </div>
           <Link to={`/campaign/${id}`} className="card-link">
-            {/* <section
+          
+            <section
               style={{
-              backgroundImage: "url(" + strapi + this.props.card.image[0].url + ")",
+              backgroundImage: "url(" + strapi + this.props.card.image.url + ")",
               height: "20em",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "50% 50%",
               backgroundSize: "cover"
-            }}></section> */}
+            }}></section>
           </Link>
           <div className="card-body">
             <h5> Fund Goal: <strong>{currency} {goal}</strong> </h5>
@@ -72,7 +74,7 @@ export class Card extends Component {
                     .split(" ")
                     .slice(0, 50)
                     .join(" ")}
-                  [...]</p>
+                  ...</p>
               )
               : (
                 <p className="card-text">{description}</p>

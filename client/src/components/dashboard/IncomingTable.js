@@ -30,7 +30,7 @@ export class IncomingTable extends Component {
 
       })
       .catch(err => {
-        console.log(err.response.data.message)
+          console.log(err)
       })
   }
 

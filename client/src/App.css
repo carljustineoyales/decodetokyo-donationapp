@@ -40,6 +40,10 @@ body main .container .row .col-sm form .row .col-sm {
   padding-top: 0.8em;
 }
 
+.red{
+  color:red
+}
+
 footer{
   text-align: center;
   padding: 2em;

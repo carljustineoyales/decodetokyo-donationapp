@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import Navbar from '../components/Home/Navbar'
-import {getUserName} from '../components/functions'
+
 
 
 import CampaignTable from '../components/dashboard/CampaignTable'
+import { LoggedInContext } from '../contexts/LoggedInContext';
 export class Dashboard extends Component {
   render() {
-    const username = getUserName();
+    
     
       return (
-        <div>
+        <LoggedInContext.Consumer>{(context)=>{
+          const {username} = context
+          return(
+            <div>
         <Navbar />
           <main>
             <div className='container'>
@@ -18,6 +22,9 @@ export class Dashboard extends Component {
             </div>
           </main>          
         </div>
+          )
+        }}</LoggedInContext.Consumer>
+        
       );
    
     
