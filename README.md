@@ -15,6 +15,7 @@
   <li>Redesign Registration</li>
   <li>Tooltip functionality</li>
   <li>Ticket Functionality</li>
+  <li>Ticket form validation</li>
 </ul>
 <hr/>
 

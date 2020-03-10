@@ -39,44 +39,68 @@ app.get('*', (req, res) => {
 //Fix this!!!
 app.post('/api/form',(req,res)=> {
   //NODEMAILER TO SEND EMAILS
-  nodemailer.createTestAccount((err,account)=>{
-    const htmlEmail = `
-      <h3>Contact Details</h3>
-      <ul>
-      <li>Name: ${req.body.name}</li>
-      <li>Facebook or Email: ${req.body.email}</li>
-      </ul>
-      <p>${req.body.message}</p>
-    `
+  console.log(req.body)
+  let error = [];
+  let emptyName = validator.isEmpty(req.body.name);
+  let emptyEmail = validator.isEmpty(req.body.email);
+  let invalidEmail = validator.isEmail(req.body.email);
+  let emptyMessage = validator.isEmpty(req.body.message);
 
-    let transporter = nodemailer.createTransport({
-      host:'smtp.ethereal.email',
-      port:587,
-      auth:{
-        user:'joey76@ethereal.email',
-        pass:'ugDvFjR5CpxPA58q2R'
+  if(emptyName){
+    error.push('Empty Name')
+  }
+  if(emptyEmail){
+    error.push('Empty Email')
+  }else if(!invalidEmail){
+    error.push('Invalid Email')
+  }
+  if(emptyMessage){
+    error.push('Empty Message')
+  }
+
+  if(error.length <= 0){
+    nodemailer.createTestAccount((err,account)=>{
+      const htmlEmail = `
+        <h3>Contact Details</h3>
+        <ul>
+        <li>Name: ${req.body.name}</li>
+        <li>Facebook or Email: ${req.body.email}</li>
+        </ul>
+        <p>${req.body.message}</p>
+      `
+  
+      let transporter = nodemailer.createTransport({
+        host:'smtp.ethereal.email',
+        port:587,
+        auth:{
+          user:'joey76@ethereal.email',
+          pass:'ugDvFjR5CpxPA58q2R'
+        }
+      })
+  
+      let mailOptions = {
+        from:`${req.body.email}`,
+        to:'joey76@ethereal.email',
+        replyTo:'test@testaccount.com',
+        subject:'New Message',
+        text:req.body.message,
+        html:htmlEmail
       }
+  
+      transporter.sendMail(mailOptions, (err,info)=>{
+        if(err){
+          return console.log(err)
+        }
+  
+        // console.log('Message sent: %s',info.message);
+        res.status(200).send('Message Sent')
+        console.log('Message URL: %s', nodemailer.getTestMessageUrl(info))
+      })
     })
-
-    let mailOptions = {
-      from:`${req.body.email}`,
-      to:'joey76@ethereal.email',
-      replyTo:'test@testaccount.com',
-      subject:'New Message',
-      text:req.body.message,
-      html:htmlEmail
-    }
-
-    transporter.sendMail(mailOptions, (err,info)=>{
-      if(err){
-        return console.log(err)
-      }
-
-      // console.log('Message sent: %s',info.message);
-      res.status(200).send('Message Sent')
-      console.log('Message URL: %s', nodemailer.getTestMessageUrl(info))
-    })
-  })
+  }else{
+    res.status(400).send(error)
+  }
+  
 });
 
 
