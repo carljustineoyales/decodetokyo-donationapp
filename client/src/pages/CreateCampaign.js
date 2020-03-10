@@ -1,10 +1,12 @@
 import React, {Component, Fragment} from 'react';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 import axios from 'axios';
-import {strapi, getUserName, withToken} from '../components/functions'
+import {strapi, getUserName, withToken} from '../components/functions';
 import Navbar from '../components/Home/Navbar';
-import Success from './Success'
+import Success from './Success';
 import { LoggedInContext } from '../contexts/LoggedInContext';
+import validator from 'validator';
+
 export class CreateCampaign extends Component {
 
   constructor(props) {
@@ -20,7 +22,9 @@ export class CreateCampaign extends Component {
       images: {},
       currency:'USD',
       isSuccess:false,
-      response:{}
+      response:{},
+      errors:[],
+      isLoading:false
     }
   }
 
@@ -35,6 +39,46 @@ export class CreateCampaign extends Component {
   }
 
   getUser = () => {
+    if(validator.isEmpty(this.state.title)){
+      if(!this.state.errors.includes('title cannot be empty')){
+        this.state.errors.push('title cannot be empty')
+      }
+    }else{
+      if(this.state.errors.includes('title cannot be empty')){
+        this.state.errors = this.state.errors.filter(item => item !== 'title cannot be empty')
+      }
+    }
+
+    if(validator.isEmpty(this.state.description)){
+      if(!this.state.errors.includes('description cannot be empty')){
+        this.state.errors.push('description cannot be empty')
+      }
+    }else{
+      if(this.state.errors.includes('description cannot be empty')){
+        this.state.errors = this.state.errors.filter(item => item !== 'description cannot be empty')
+      }
+    }
+
+    if(validator.isEmpty(this.state.goalFund)){
+      if(!this.state.errors.includes('goal cannot be empty')){
+        this.state.errors.push('goal cannot be empty')
+      }
+    }else{
+      if(this.state.errors.includes('goal cannot be empty')){
+        this.state.errors = this.state.errors.filter(item => item !== 'goal cannot be empty')
+      }
+    }
+
+    if(this.state.images.name === '' || this.state.images.name === undefined || this.state.images.name === null ){
+      if(!this.state.errors.includes('upload image')){
+        this.state.errors.push('upload image')
+      }
+    }else{
+      if(this.state.errors.includes('upload image')){
+        this.state.errors = this.state.errors.filter(item => item !== 'upload image')
+      }
+    }
+    
     axios.get(`${strapi}/users/?username=${this.state.username}`).then(res => {
 
       this.setState({
@@ -67,37 +111,45 @@ export class CreateCampaign extends Component {
       'currency':this.state.currency
     };
     // const data = this.state
-
-    console.log(datas)
-    var data = new FormData();
-
-    data.append('files.image', this.state.images, this.state.images.name)
-    data.append('data', JSON.stringify(datas));
-    console.log(JSON.stringify(datas))
+    
+   
 
     //move to backend
-    axios({
-      method: 'post',
-      url: `${strapi}/campaigns`,
-      data:data,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        // 'Authorization': `Bearer ${withToken()}`
-        },
-        // withCredentials:true
-      })
-      .then(res=> {
-        this.setState({
-          isSuccess:true,
-          response:res.data
+    
+      console.log(datas)
+     
+        var bodyFormData = new FormData();
+  
+      bodyFormData.append('files.image', this.state.images, this.state.images.name)
+      bodyFormData.append('data', JSON.stringify(datas));
+      console.log(JSON.stringify(datas))
+      
+      if(this.state.errors.length <= 0){
+      axios({
+      
+        url: `${strapi}/campaigns`,
+        method: 'post',
+        data:bodyFormData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          
+          // 'Authorization': `Bearer ${withToken()}`
+          },
+          // withCredentials:true
         })
-        console.log(res);
-      })
-      .catch(err=> {
-        //handle error
-        console.log(err.response);
-      });
-    console.log(this.state)
+        .then(res=> {
+          this.setState({
+            isSuccess:true,
+            response:res.data
+          })
+          console.log(res);
+        })
+        .catch(err=> {
+          //handle error
+          console.log(err.response);
+        });
+    }
+    
   }
 
   onFormSubmit = (event) => {
@@ -125,6 +177,15 @@ export class CreateCampaign extends Component {
             {loggedin ? <Link to={'/feed'}>Go Back</Link> : ''}
               <h1>Create A Campaign
               </h1>
+              
+        {(this.state.errors.length > 0)
+          ? <div className="alert alert-danger" role="alert">{this
+                .state
+                .errors
+                .map(error => (
+                  <div key={error.id}>{error}</div>
+                ))}</div>
+          : ''}
               <form onSubmit={this.onFormSubmit}>
                 <div className='row '>
                   <div className="col-md-12 mb-3">

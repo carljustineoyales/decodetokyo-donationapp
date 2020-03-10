@@ -1,9 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import axios from 'axios';
-import {strapi, getId} from '../functions';
 import Navbar from '../Home/Navbar';
-import {Redirect} from 'react-router-dom';
 import { LoggedInContext } from '../../contexts/LoggedInContext';
+import validator from 'validator'
 export class PersonalInfo extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +19,8 @@ export class PersonalInfo extends Component {
       errors: [],
       refresh: false,
       noErrors: false,
-      axiosError: ''
+      axiosError: '',
+      isLoading:false
     }
 
     this.handleOnChange = this
@@ -36,6 +36,22 @@ export class PersonalInfo extends Component {
     this.setState({
       [event.target.name]: event.target.value
     })
+    if(validator.isEmpty(event.target.value)){
+      if(event.target.name === 'bank_account' || event.target.name === 'bank_name'){
+        return
+      }else{
+        if(!this.state.errors.includes(`empty ${event.target.id}`)){
+          this.state.errors.push(`empty ${event.target.id}`)
+        }
+        if(this.state.errors.includes(`invalid ${event.target.id}`)){
+          this.state.errors = this.state.errors.filter(item => item !== `invalid ${event.target.id}`)
+        }
+      }
+    }else{
+      if(this.state.errors.includes(`empty ${event.target.id}`)){
+        this.state.errors = this.state.errors.filter(item => item !== `empty ${event.target.id}`)
+      }
+    }
   }
 
   handleOnSubmit = (event) => {
@@ -52,22 +68,18 @@ export class PersonalInfo extends Component {
       bank_name,
       done
     } = this.state;
-
-    if (first_name.length > 0 && last_name.length > 0 && address.length > 0 && city.length > 0 && zipcode.length > 0) {
-
-      const data = {
-        id,
-        first_name,
-        last_name,
-        address,
-        city,
-        zipcode,
-        bank_account,
-        bank_name,
-        done
-      }
-
-      
+    const data = {
+      id,
+      first_name,
+      last_name,
+      address,
+      city,
+      zipcode,
+      bank_account,
+      bank_name,
+      done
+    }
+    
       axios({
         url:'/finishsignup',
         method:'post',
@@ -77,9 +89,12 @@ export class PersonalInfo extends Component {
       .then(res => {
         window.parent.location = '/create-campaign'
       }).catch(err => {
-        console.log(err.response)
+        console.log(err.response.data)
+        err.response.data.map(item => this.state.errors.push(item))
+        this.setState({
+          isLoading:true
+        })
       })
-    }
   }
   render() {
     return(
@@ -90,6 +105,14 @@ export class PersonalInfo extends Component {
         <Navbar/>
         <main>
           <div className='container'>
+          {(this.state.errors.length > 0)
+          ? <div className="alert alert-danger" role="alert">{this
+                .state
+                .errors
+                .map(error => (
+                  <div key={error.id}>{error}</div>
+                ))}</div>
+          : ''}
             <form onSubmit={this.handleOnSubmit}>
               <label htmlFor='country'>Bank (optional):</label>
               <span
@@ -124,6 +147,7 @@ export class PersonalInfo extends Component {
                     type='text'
                     placeholder='John'
                     name="first_name"
+                    id='First Name'
                     onChange={this.handleOnChange}/>
 
                 </div>
@@ -135,6 +159,7 @@ export class PersonalInfo extends Component {
                     type='text'
                     placeholder='Doe'
                     name="last_name"
+                    id='Last Name'
                     onChange={this.handleOnChange}/>
 
                 </div>
@@ -149,6 +174,7 @@ export class PersonalInfo extends Component {
                     type='text'
                     placeholder='123 Street Rd'
                     name="address"
+                    id='address'
                     onChange={this.handleOnChange}/>
 
                 </div>
@@ -163,6 +189,7 @@ export class PersonalInfo extends Component {
                     type='text'
                     placeholder='City/State'
                     name="city"
+                    id='city'
                     onChange={this.handleOnChange}/>
 
                 </div>
@@ -174,6 +201,7 @@ export class PersonalInfo extends Component {
                     type='number'
                     placeholder='1234'
                     name="zipcode"
+                    id='zipcode'
                     onChange={this.handleOnChange}/>
 
                 </div>

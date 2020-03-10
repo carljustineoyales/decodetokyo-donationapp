@@ -9,7 +9,6 @@ import SingleCard from './pages/SingleCard';
 import Profile from './pages/Profile';
 import Donation from './pages/Donation';
 import EditProfile from './pages/EditProfile';
-import {withToken} from './components/functions';
 import CheckOut from './pages/CheckOut';
 import NotFound from './pages/NotFound';
 import {CardListContextProvider} from './contexts/CardListContext'
@@ -20,8 +19,19 @@ import ChangePassword from './pages/ChangePassword';
 import ResetPassword from './pages/ResetPassword';
 import PersonalInfo from './components/forms/PersonalInfo';
 import LoginPage from './pages/LoginPage';
+import ResendEmailVerification from './pages/ResendEmailVerification'
 import axios from 'axios';
+import gcashToolTip from './components/Tooltip/gcashToolTip';
+import PaypalToolTip from './components/Tooltip/PaypalToolTip';
 class App extends Component {
+
+  
+  // Button = (props) => {
+  //   console.log(props)
+  //   return(
+  //     <button style={{height:'200px',width:'200px'}}>{props.name}</button>
+  //   )
+  // }
 
   showRoutes = () => {
     switch (this.props.loggedin) {
@@ -56,9 +66,11 @@ class App extends Component {
             <Route path="/donation/:id" component={Donation}/>
             <Route path="/forgot-password" component={ChangePassword}/>
             <Route path="/reset-password" component={ResetPassword}/>
-            
+            <Route path="/resendemailverification" component={ResendEmailVerification}/>
             <Route path="/profile/:username" component={Profile}/>
-            
+            <Route path="/gcashtooltip" component={gcashToolTip}/>
+            <Route path="/paypaltooltip" component={PaypalToolTip}/>
+
             </Switch>
           )
       default:
@@ -102,6 +114,7 @@ class App extends Component {
       </CardListContextProvider>
       </RegistrationContext>
       </Fragment>
+      // <this.Button name='title'/>
     );
   }
 

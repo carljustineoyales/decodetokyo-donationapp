@@ -8,12 +8,13 @@ const FormData = require('form-data');
 const fs = require('fs');
 const  cookieParser = require('cookie-parser');
 const jwtDecoder = require('jwt-decode');
+const validator = require('validator');
 const app = express();
 
 let decoded = '';
 let token = '';
-const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
-// const strapi = 'http://localhost:1337'
+// const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
+const strapi = 'http://localhost:1337'
 app.use(express.urlencoded({extended: true}));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -127,19 +128,6 @@ app.use('/auth/login', async (req,res,next)=>{
       // return error
     })
   
-
-    
-    
-
-  // if(error){
-  //   res.status(400).send(error)
-  // }else{
-  //   decoded = jwtDecoder(token)
-  //   res.cookie('access_token',token,{
-  //     httpOnly:true
-  //   })
-  //   res.status(200).json(decoded.id)
-  // }
   return decoded
 }); 
 
@@ -160,7 +148,7 @@ app.use('/getusers', (req,res)=>{
       res.status(200).send(response.data)
     })
     .catch(err=>{
-      console.log(err)
+      res.send(err.response)
       
     })
 });
@@ -172,7 +160,7 @@ app.use('/getusercampaign',(req,res)=>{
     withCredentials:true
   })
   .then(response=>{res.status(200).send(response.data)})
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 
 /**
@@ -197,7 +185,7 @@ app.use('/getcampaign',(req,res)=>{
     // console.log(response.data)
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/approvecampaign',(req,res)=>{
   
@@ -212,7 +200,7 @@ app.use('/approvecampaign',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/declinecampaign',(req,res)=>{
   axios({
@@ -226,7 +214,7 @@ app.use('/declinecampaign',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 
 /**
@@ -249,7 +237,7 @@ app.use('/getdeletedcampaign',(req,res)=>{
     // console.log(response.data)
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/restorecampaign',(req,res)=>{
   axios({
@@ -261,7 +249,7 @@ app.use('/restorecampaign',(req,res)=>{
     }
   })
   .then(response=>{console.log(response.data)})
-  .catch(err=>{console.log(err.data)})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/destroycampaign',(req,res)=>{
   axios({
@@ -272,7 +260,7 @@ app.use('/destroycampaign',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 
 
@@ -295,7 +283,7 @@ app.use('/getsupporters',(req,res)=>{
     
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/deletesupporters', (req,res)=>{
   console.log(req.query.id)
@@ -310,7 +298,7 @@ app.use('/deletesupporters', (req,res)=>{
     res.status(200).send(response.data)
   })
   .catch(err=>{
-    console.log(err)
+    res.send(err.response)
   })
 });
 
@@ -329,7 +317,7 @@ app.use('/getcheckoutrequest',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/declinecheckout',(req,res)=>{
   axios({
@@ -343,7 +331,7 @@ app.use('/declinecheckout',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 //ADD APPROVE CHECKOUT
 app.use('/approvecheckout',(req,res)=>{
@@ -366,7 +354,7 @@ app.use('/getsinglecampaign',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err)})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/savesinglecampaign', (req,res)=>{
   axios({
@@ -380,8 +368,8 @@ app.use('/savesinglecampaign', (req,res)=>{
       verified: req.body.verified
     }
   })
-  .then(response=>{console.log(response.data)})
-  .catch(err=>{console.log(err.response)})
+  .then(response=>{res.status(200).send(response.data)})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/deletesinglecampaign',(req,res)=>{
   axios({
@@ -396,7 +384,7 @@ app.use('/deletesinglecampaign',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err)})
+  .catch(err=>{res.send(err.response)})
 });
 
 /**
@@ -413,7 +401,7 @@ app.use('/getuserprofile',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 
 /**
@@ -431,7 +419,7 @@ app.use('/editprofile',(req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 });
 //Think of a way for the save method
 
@@ -456,7 +444,7 @@ app.use('/supporters', async (req,res)=>{
     }
   })
   .then(response=>{res.status(200).send(response.data)})
-  .catch(err=>{return err.response})
+  .catch(err=>{res.send(err.response)})
 });
 app.use('/updatecampaign', async (req,res)=>{
   await axios({
@@ -468,7 +456,7 @@ app.use('/updatecampaign', async (req,res)=>{
     withCredentials:true
   })
   .then(response=>{res.status(200).send(response.data)})
-  .catch(err=>{return err.response})
+  .catch(err=>{res.send(err.response)})
 });
 
 
@@ -492,7 +480,7 @@ app.use('/resetpassword',(req,res)=>{
     res.status(200).send(response.data)
   })
   .catch(err=>{
-    console.log(err)
+    res.send(err.response)
   })
 });
 
@@ -590,6 +578,7 @@ app.use('/createcampaign',  (req,res)=>{
  * 
  */
 app.use('/changepassword', (req,res)=>{
+  
   axios({
     url:`${strapi}/auth/forgot-password`,
     method:'post',
@@ -601,7 +590,7 @@ app.use('/changepassword', (req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.send(err.response)})
 })
 
 /**
@@ -611,26 +600,98 @@ app.use('/changepassword', (req,res)=>{
  * 
  */
 app.use('/registeruser',(req,res)=>{
+  console.log(req.body)
+  let error = [];
+  let emptyEmail = validator.isEmpty(req.body.email)
+  let invalidEmail = validator.isEmail(req.body.email)
+  let emptyUsername = validator.isEmpty(req.body.username)
+  let emptyPassword = validator.isEmpty(req.body.password)
+  let emptyCountry = validator.isEmpty(req.body.country)
+ 
+  if(emptyEmail && emptyUsername){
+    error.push('empty email')
+  } else if(!invalidEmail){
+    error.push('invalid email')
+  }
+
+  if(req.body.country === 'Philippines'){
+    let emptyGcash = validator.isEmpty(req.body.gcash_number)
+    if(emptyGcash){
+      error.push('empty gcash')
+    }
+  }else{
+    let emptyPaypal = validator.isEmpty(req.body.paypal_email)
+    if(emptyPaypal){
+      error.push('empty paypal')
+    }
+  }
+  
+  
+  // if(emptyUsername){
+  //   error.push('empty username')
+  // }
+  
+  if(emptyPassword){
+    error.push('empty password')
+  }
+  
+  if(emptyCountry){
+    error.push('empty country')
+  }
+  if(error.length <= 0){
+    axios({
+        url:`${strapi}/users`,
+        method:'post',
+        data:req.body
+      })
+      .then(response=>{
+        axios({
+          url:`${strapi}/auth/send-email-confirmation`,
+          method:'post',
+          data:{
+            email:req.body.email
+          }
+        })
+        .then(response=>{res.status(200).send(response.data)})
+        .catch(err=>{console.log(err)})
+      })
+      .catch(err=>{res.status(400).send(err.response.data.message)})
+  }else{
+    res.status(400).send(error)
+  }
+  
   // axios.post(`${strapi}/users`, data)
   //axios.post(`${strapi}/auth/send-email-confirmation`,{email:this.state.email})
-  axios({
-    url:`${strapi}/users`,
-    method:'post',
-    data:req.body
-  })
-  .then(response=>{
-    axios({
-      url:`${strapi}/auth/send-email-confirmation`,
-      method:'post',
-      data:{
-        email:req.body.email
-      }
-    })
-    .then(response=>{res.status(200).send(response.data)})
-    .catch(err=>{console.log(err)})
-  })
-  .catch(err=>{console.log(err)})
+  // 
 })
+
+/**
+ * 
+ * 
+ * Resend Email Verification
+ * 
+ */
+
+app.use('/resendverification',(req,res)=>{
+  axios({
+    url:`${strapi}/auth/send-email-confirmation`,
+    method:'post',
+    data:{
+      email:req.body.email
+    }
+  })
+  .then(response=>{res.status(200).send(response.data)})
+  .catch(err=>{
+    console.log(err.response.data)
+    if(err.response.data.statusCode === 500){
+      res.status(500).send(err.response.data)
+    }else if (err.response.data.statusCode === 400){
+      res.status(400).send(err.response.data)
+    }
+  
+  })
+})
+
 
 /**
  * 
@@ -638,7 +699,30 @@ app.use('/registeruser',(req,res)=>{
  * 
  */
 app.use('/finishsignup',(req,res)=>{
-  axios({
+  console.log(req.body)
+  let error = [];
+  let emptyFirstName = validator.isEmpty(req.body.first_name);
+  let emptyLastName = validator.isEmpty(req.body.last_name);
+  let emptyAddress = validator.isEmpty(req.body.address);
+  let emptyCity = validator.isEmpty(req.body.city);
+  let emptyZipCode = validator.isEmpty(req.body.zipcode);
+  if(emptyFirstName){
+    error.push('empty First Name')
+  }
+  if(emptyLastName){
+    error.push('empty Last Name')
+  }
+  if(emptyAddress){
+    error.push('empty address')
+  }
+  if(emptyCity){
+    error.push('empty city')
+  }
+  if(emptyZipCode){
+    error.push('empty zipcode')
+  }
+  if(error.length <= 0){
+axios({
     url:`${strapi}/users/${ req.body.id }`,
     method:'put',
     data:{
@@ -653,7 +737,11 @@ app.use('/finishsignup',(req,res)=>{
     }
   })
   .then(response=>{res.status(200).send(response.data)})
-  .catch(err=>{console.log(err.response)})
+  .catch(err=>{res.status(400).send(err.response)})
+  }else{
+    res.status(400).send(error)
+  }
+  
 })
 
 /**
@@ -670,7 +758,7 @@ app.use('/getcards',(req,res)=>{
   .then(response=>{res.send(response.data)})
   .catch(err=>{
     
-    res.send(err)
+    res.send(err.response)
   })
 })
 /**
@@ -686,8 +774,11 @@ app.use('/getlogin',(req,res)=>{
     method:'get'
   })
   .then(response=>{res.send(response.data)})
-  .catch(err=>{console.log(err)})
+  .catch(err=>{res.send(err.response)})
 })
+
+
+
 /**
  * 
  * Home Page 

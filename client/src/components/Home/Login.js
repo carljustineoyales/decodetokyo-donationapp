@@ -31,11 +31,19 @@ export class Login extends Component {
         .then(res => {
           console.log(res)
           this.props.handleOnSuccess(res.data)
-          // window.location.href = '/';
+          
         })
-        .catch(err => {
-          console.log(err.response)
-        })
+        .catch(err =>{ 
+          console.log(err.response.data)
+          // let errId = err.response.data.message[0].messages[0].id
+          // console.log(err.response.data.message[0].messages[0].id)
+          // if(errId === 'Auth.form.error.confirmed'){
+          //   <Redirect to={'/resendemailverification'}/>
+          this.setState({
+            error:err.response.data.message[0].messages[0].id
+          })}
+          // }
+        )
 
   }
 
@@ -56,11 +64,15 @@ export class Login extends Component {
 <LoggedInContext.Consumer>{(context)=>{
     this.state.loggedin = context.loggedin
     const {username, password} = this.state;
-  if (this.state.loggedin) {
+    if(this.state.error === 'Auth.form.error.confirmed'){
+      return (<Redirect to={'/resendemailverification'}/>)
+    }
+  else if (this.state.loggedin) {
     return (<Redirect to={`/feed`}/>)
   } else {
     return (
       <Fragment>
+      {(this.state.error === "Auth.form.error.invalid") ? (<div>Identifier or password invalid.</div>):((this.state.error === "Auth.form.error.email.provide") ? (<div>Please provide your username or your e-mail.</div>) : '')}
         <form onSubmit={this.onFormSubmit} className='form-group'>
         <div className="col-sm-5 mb-3">
         <input

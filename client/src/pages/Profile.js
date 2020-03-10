@@ -93,8 +93,7 @@ return (
                     height="100px"/>)
 }
                 <h2>{data.first_name} {data.last_name}</h2>
-                <h4>{data.email}</h4>
-                <h4>@{data.username}</h4>
+                <h4>Email: {data.email}</h4>
                 <br/>
                 <p>{data.address} {data.city}, {data.zipcode}, {data.country}</p>
                 <h3>Posted Campaigns</h3>

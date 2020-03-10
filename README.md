@@ -10,6 +10,39 @@
   <li>Bootstrap Framework - <a href='https://getbootstrap.com/'>https://getbootstrap.com/</a></li>
 </ul>
 
+<h2>Mar 10 2020</h2>
+<ul>
+  <li>Redesign Registration</li>
+  <li>Tooltip functionality</li>
+</ul>
+<hr/>
+
+<h2>Mar 06 2020</h2>
+<ul>
+  <li>Personal Info validation error handle</li>
+  <li>create campaign error handle</li>
+</ul>
+<hr/>
+
+<h2>Mar 05 2020</h2>
+<ul>
+  <li>Redesign resend email validation page</li>
+  <li>Resend email validation error handle</li>
+</ul>
+<hr/>
+
+<h2>Mar 04 2020</h2>
+<ul>
+  <li>Redesign Validation Algorithm for Registration</li>
+</ul>
+<hr/>
+
+<h2>Mar 03 2020</h2>
+<ul>
+  <li>Email Verification Resend</li>
+</ul>
+<hr/>
+
 <h2>Feb 26 2020</h2>
 <ul>
   <li>Move some code to server script</li>
