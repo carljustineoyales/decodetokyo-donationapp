@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import {strapi} from '../functions';
+import { Modal,Button } from 'react-bootstrap';
 import validator from 'validator';
+
 export class Registration extends Component {
 
   constructor(props) {
@@ -26,24 +27,14 @@ export class Registration extends Component {
       noErrors: false,
       axiosError: '',
       sent: false,
-      emailMatched:false
+      emailMatched:false,
+      show:false
     }
     this.handleOnChange = this
       .handleOnChange
       .bind(this)
     this.OnSuccess = this.OnSuccess.bind(this)
   }
-
-  // removeItem = (item) => {
-  //   for (var i = 0; i < this.state.errors.length; i++) {
-  //     if (this.state.errors[i] === item) {
-  //       this
-  //         .state
-  //         .errors
-  //         .splice(i, 1);
-  //     }
-  //   }
-  // }
 
 
   OnSuccess = () => {
@@ -155,62 +146,7 @@ export class Registration extends Component {
         window.scrollTo(0,0)
       }
       
-    }
-    
-    // if(this.state.email === this.state.confirmEmail){
-    //   //move to backend
-    // // axios.post(`${strapi}/users`, data)
-    // // if(this.state.errors.length <= 0){
-    //   axios({
-    //     url:'/registeruser',
-    //     method:'post',
-    //     data
-    //   })
-    //   .then(res=>{
-    //     console.log('continue function axios',res.data)
-    //     this.OnSuccess();
-    //   })
-    //   .catch(err=>{
-        
-    //     try {
-    //       if(!this.state.errors.includes(err.response.data[0].messages[0].message)){
-    //         this.state.errors.push(err.response.data[0].messages[0].message)
-    //       }else if(this.state.errors.includes(err.response.data[0].messages[0].message)){
-    //         this.state.errors = this.state.errors.filter(item => item !== err.response.data[0].messages[0].message);
-    //       }
-          
-  
-          
-    //     } catch (error) {
-    //       console.log(err.response.data)
-    //       err.response.data.map(item=>{
-    //         if(!this.state.errors.includes(item)){
-    //                 this.state.errors.push(item)
-    //               }
-    //       })
-    //     }
-    //    this.setState({
-    //         isLoading: true,
-    //       })
-    //   })
-    // }
-    
-    // else{
-    //   if(!this.state.errors.includes(`email does not match`)){
-    //     this.state.errors.push(`email does not match`)
-    //     this.setState({
-    //       isLoading:true
-    //     })
-    //   }
-    //   else if(this.state.errors.includes(`email does not match`)){
-    //     this.state.errors = this.state.errors.filter(item => item !== `email does not match`);
-    //     this.setState({
-    //       emailMatched:true
-    //     })
-    //   }
-    // }
-    
-    
+    }  
   }
 
   showInputs = () => {
@@ -233,16 +169,35 @@ export class Registration extends Component {
                 <a
                   href='#'
                   className="d-inline-block"
-                  data-toggle="tooltip"
+                  data-toggle="modal"
+                  name='gcash'
+                  // onClick={this.tooltip}
+                  data-target="#exampleModal"
+                  title='insert tooltip for gcash'>
                   
-
-                  onClick={this.tooltip}
-                  title='insert tooltip for paypal'>
                   <img
-                  
                     src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                    alt='paypal-help-icon'/>
+                    alt='gcash-help-icon'/>
                 </a>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             <div className=' mb-3'>
               <div className="input-group input-group-sm">
@@ -260,19 +215,41 @@ export class Registration extends Component {
                 <a
                   href='#'
                   className="d-inline-block"
-                  data-toggle="tooltip"
+                  data-toggle="modal"
                   name='gcash'
-                  onClick={this.tooltip}
+                  // onClick={this.tooltip}
+                  data-target="#exampleModal"
                   title='insert tooltip for gcash'>
+                  
                   <img
                     src="https://img.icons8.com/material-rounded/18/000000/help.png"
                     alt='gcash-help-icon'/>
                 </a>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <small className="form-text text-muted">
                 If you lived in the Philippines, you only need GCASH Number
               </small>
             </div>
+            
           </Fragment>
         )
 
@@ -392,23 +369,6 @@ export class Registration extends Component {
   }
 
   
-  tooltip = (event) => {
-    console.log(event.target.alt)
-    switch (event.target.alt) {
-      case 'paypal-help-icon':
-        window.open('/paypaltooltip', "paypal","menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=500,heigh=500")
-
-        break;
-      case 'gcash-help-icon':
-        window.open('/gcashtooltip', "paypal","menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=500,heigh=500")
-
-        break;
-    
-      default:
-        break;
-    }
-    return false;
-  }
   render() {
 
     return (
@@ -490,69 +450,7 @@ export class Registration extends Component {
 
           </div>
 
-          {/* <div className='row'>
-            <div className="col-sm">
-              <label htmlFor='first_name'>First Name</label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='John'
-                name="first_name"
-                onChange={this.handleOnChange}/>
-
-            </div>
-            <div className="col-sm">
-
-              <label htmlFor='last_name'>Last Name:</label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='Doe'
-                name="last_name"
-                onChange={this.handleOnChange}/>
-
-            </div>
-
-          </div>
-          <div className='row'>
-            <div className="col-sm">
-
-              <label htmlFor='address'>Address:</label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='123 Street Rd'
-                name="address"
-                onChange={this.handleOnChange}/>
-
-            </div>
-
-          </div>
-          <div className='row'>
-            <div className="col-sm">
-
-              <label htmlFor='city'>City/State:</label>
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='City/State'
-                name="city"
-                onChange={this.handleOnChange}/>
-
-            </div>
-            <div className="col-sm">
-
-              <label htmlFor='zipcode'>Zip Code:</label>
-              <input
-                className='form-control form-control-sm'
-                type='number'
-                placeholder='1234'
-                name="zipcode"
-                onChange={this.handleOnChange}/>
-
-            </div>
-
-          </div> */}
+          
           <div className='row'>
             <div className="col-sm">
               <Link to="/help">Need Help?</Link>
