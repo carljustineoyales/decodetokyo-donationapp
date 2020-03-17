@@ -36,7 +36,9 @@ app.get('*', (req, res) => {
  * Nodemailer test custom mail
  * 
  */
-//Fix this!!!
+/**
+ * change real email
+ */
 app.post('/api/form',(req,res)=> {
   //NODEMAILER TO SEND EMAILS
   console.log(req.body)

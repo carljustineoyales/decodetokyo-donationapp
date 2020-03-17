@@ -5,6 +5,7 @@ import {withToken} from '../components/functions';
 import {RegistrationContext} from '../contexts/RegistrationContext'
 import {LoggedInContext} from '../contexts/LoggedInContext'
 import Verification from './Verification';
+
 export class UserForm extends Component {
   constructor(props) {
     super(props);
