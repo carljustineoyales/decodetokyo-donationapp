@@ -16,7 +16,7 @@ export class Card extends Component {
       created_at,
       currency
     } = this.props.card;
-    console.log(author.avatar)
+    console.log(author)
     // console.log(this.props.card.image[0].url)
     return (
       <div>
@@ -34,7 +34,7 @@ export class Card extends Component {
                     borderRadius: '100%'
                   }}/>)
                   : (<img
-                    src={`${strapi}${author.avatar.url}`}
+                    src={`${author.avatar.url}`}
                     width="65px"
                     height="65px"
                     alt={`${title}-${id}`}
@@ -59,7 +59,7 @@ export class Card extends Component {
           
             <section
               style={{
-              backgroundImage: "url(" + strapi + this.props.card.image.url + ")",
+              backgroundImage: "url("+this.props.card.image.url+")",
               height: "20em",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "50% 50%",

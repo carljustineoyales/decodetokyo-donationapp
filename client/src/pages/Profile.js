@@ -84,7 +84,7 @@ return (
                     borderRadius: '100%'
                   }}/>)
                   : (<img
-                    src={`${strapi}${data.avatar.url}`}
+                    src={`${data.avatar.url}`}
                     style={{
                     borderRadius: '50%'
                   }}
