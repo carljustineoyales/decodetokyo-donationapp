@@ -63,8 +63,7 @@ export class SingleCard extends Component {
           supporters: res.data.supporters,
           currency:res.data.currency,
           raised:res.data.raised,
-          // avatar:res.data.author.avatar.url,
-          // image:res.data.image[0].url
+          image:res.data.image.url
         })
         console.log(res.data)
       })
@@ -98,14 +97,7 @@ export class SingleCard extends Component {
       description: this.state.description,
       verified: false
     }
-    // axios
-    // 
-    //   .put(`${strapi}/campaigns/${this.props.match.params.id}`,{
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${withToken()}`
-    //       }
-    //   }, {data})
+    
     axios({
       url:'/savesinglecampaign',
       method:'post',
@@ -236,7 +228,7 @@ export class SingleCard extends Component {
         ) : (
           <section
             style={{
-            backgroundImage: "url(" + strapi + image + ")",
+            backgroundImage: "url(" + image + ")",
             height: "20em",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "50% 50%",
@@ -386,7 +378,7 @@ export class SingleCard extends Component {
                         }}/>
                       ) : (
                         <img
-                          src={`${strapi}${avatar}`}
+                          src={`${avatar}`}
                           width="65px"
                           height="65px"
                           style={{
