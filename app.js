@@ -13,8 +13,8 @@ const app = express();
 
 let decoded = '';
 let token = '';
-const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
-// const strapi = 'http://localhost:1337'
+// const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
+const strapi = 'http://localhost:1337'
 app.use(express.urlencoded({extended: true}));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: true}));
