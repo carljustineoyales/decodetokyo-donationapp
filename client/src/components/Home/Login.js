@@ -128,7 +128,7 @@ export class Login extends Component {
                   type='text'
                   fullWidth
                   name='username'
-                  label='Username'
+                  label='Email'
                   variant='outlined'
                   value={username}
                   onChange={this.handleOnChange}
