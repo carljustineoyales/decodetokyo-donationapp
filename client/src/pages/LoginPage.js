@@ -1,12 +1,45 @@
 import React, {Component, Fragment} from 'react';
-import axios from 'axios';
+
 import {Redirect, Link} from 'react-router-dom';
 import {withToken,getdone} from '../components/functions'
-import Navbar from '../components/Home/Navbar';
+
 
 import Login from '../components/Home/Login';
 import { LoggedInContext } from '../contexts/LoggedInContext';
+import {withStyles} from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
+const useStyles = theme => ({
+  mainStyle:{
+    width:'100vw',
+    height:'100vh',
+    margin:'0'
+  },
+  paperStyleBackground:{
+    background: 'rgb(0,152,131)',
+    background: 'linear-gradient(-45deg, rgba(0,152,131,1) 0%, rgba(0,192,99,1) 100%)',
+    borderRadius:'0',
+    height:'100vh',
+    display:'flex',
+    flowDirection:'column',
+    justifyContent:'center',
+    alignItems:'center',
+    color:'#fff',
+    textAlign:'center'
+  },
+  paperStyle:{
+    background:'white',
+    borderRadius:'0',
+    
+  },
+  linkStyle:{
+    color:'#fff',
+    "&:hover": {
+      textDecoration:'none',
+      color:'#fff',
+    }
+  }
+})
 export class LoginPage extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +50,8 @@ export class LoginPage extends Component {
   }
   
   render() {
-
+    const { classes } = this.props;
+    console.log(this.props)
     if (this.state.loggedin) {
       if(this.state.done){
         return (<Redirect to={`/personalinfo`}/>)
@@ -34,13 +68,29 @@ export class LoginPage extends Component {
           this.state.done = done;
           return(
             <Fragment>
-          <Navbar/>
-          <main>
-            <div className='container'>
+          {/* <Navbar/> */}
+          <main className={classes.mainStyle}>
+            
+              <Grid container>
+                <Grid item xs={6} className={classes.paperStyleBackground}>
+                  <div>
+                  <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
+                  <h4>Company Name</h4>
+                  </div>
+                </Grid>
+                
+                
+                <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
+                  <Login handleOnSuccess={handleOnSuccess} id={id}/> 
+                  
+                  
+                </Grid>
+                  
+                
+              </Grid>
+              
 
-              <Login handleOnSuccess={handleOnSuccess} id={id}/>
-
-            </div>
+            
           </main>
 
         </Fragment>
@@ -55,4 +105,4 @@ export class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+export default withStyles(useStyles)(LoginPage);

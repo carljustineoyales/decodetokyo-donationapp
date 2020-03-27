@@ -2,7 +2,52 @@ import React, {Component, Fragment} from 'react';
 import Navbar from '../components/Home/Navbar';
 import axios from 'axios';
 import {strapi, getId, getUserName, withToken} from '../components/functions'
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import {withStyles} from '@material-ui/core/styles';
+import { Grid, Typography,Button,Divider, TextField, MenuItem, Avatar } from '@material-ui/core';
+const countries = [
+  {
+    value: 'Philippines',
+    label: 'Philippines',
+  },
+  {
+    value: 'United States of America',
+    label: 'United States of America',
+  },
+  {
+    value: 'Japan',
+    label: 'Japan',
+  },
+  {
+    value: 'South Korea',
+    label: 'South Korea',
+  },
+];
+const useStyles = theme => ({
+  mainStyle:{
+    margin:theme.spacing(14),
+    height:'auto',
+  },
+  headeing1:{
+    fontSize:'32px'
+  },
+  fixed:{
+    position:'fixed'
+  },
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  input: {
+    display: 'none',
+  },
+  large: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+})
+
 export class EditProfile extends Component {
 
   constructor(props) {
@@ -21,7 +66,9 @@ export class EditProfile extends Component {
       error: '',
       bank_account: '',
       bank_name: '',
-      avatars: {}
+      avatars: {},
+      dataImg:'',
+      password:''
     }
     this.handleOnChange = this
       .handleOnChange
@@ -30,7 +77,23 @@ export class EditProfile extends Component {
 
   handleOnChange = input => (event) => {
     if (event.target.type === 'file') {
-      this.setState({avatars: event.target.files[0]})
+    
+     
+      // console.log(reader.readAsDataURL(input.files[0]));
+        // console.log(reader.readAsDataURL(event.target.files[0]));
+        try {
+          this.setState({
+            avatars: event.target.files[0],
+            dataImg:URL.createObjectURL(event.target.files[0])
+          })
+          
+        } catch (error) {
+          console.log(error)
+        }
+      
+      
+  // 
+
     }
     this.setState({
       [event.target.name]: event.target.value
@@ -62,7 +125,8 @@ export class EditProfile extends Component {
         country: res.data[0].country,
         zipcode: res.data[0].zipcode,
         bank_name: res.data[0].bank_name,
-        bank_account: res.data[0].bank_account
+        bank_account: res.data[0].bank_account,
+        avatar: res.data[0].avatar.url
       })
     }).catch(err => {
       console.log(err.response.data.message)
@@ -80,7 +144,8 @@ export class EditProfile extends Component {
       gcash_number,
       paypal_email,
       bank_account,
-      bank_name
+      bank_name,
+      password
     } = this.state
     event.preventDefault();
     const data = {
@@ -93,7 +158,8 @@ export class EditProfile extends Component {
       gcash_number,
       paypal_email,
       bank_account,
-      bank_name
+      bank_name,
+      password
     };
 //move to backend
     axios.put(`${strapi}/users/${this.state.id}`, {
@@ -125,10 +191,24 @@ export class EditProfile extends Component {
         console.log(err.response.data.message)
       })
     }).catch(err => {
+      window.location.href = `/profile/${this.props.match.params.username}`
       console.log(err)
     })
   }
+  
+  scrollToview = (event) => {
+    event.preventDefault();
+    if(event.currentTarget.value === 'personalinfo'){
+      window.scrollTo(0,0)
+    }else{
+      let element = document.getElementById(event.currentTarget.value)
+      element.scrollIntoView();
+    }
+    // console.log(document.getElementById(event.currentTarget.value))
+    
+  }
   render() {
+    const {classes} = this.props
     const {
       first_name,
       last_name,
@@ -139,13 +219,274 @@ export class EditProfile extends Component {
       gcash_number,
       paypal_email,
       bank_account,
-      bank_name
+      bank_name,
+      avatar,
+      dataImg
     } = this.state
+    console.log(dataImg)
     return (
       <Fragment>
         <Navbar/>
-        <main>
-          <div className='container'>
+        <main className={classes.mainStyle}>
+        <Grid container direction='row'>
+          <Grid item sm={4} >
+            <div className={classes.fixed}>
+            <Typography>
+          <Button value='personalinfo' onClick={this.scrollToview}>Personal Information</Button>
+          </Typography>
+          <Typography>
+          <Button value='paymentoptions' onClick={this.scrollToview}>Payment Options</Button>
+          </Typography>
+          <Typography>
+          <Button value='accountsettings' onClick={this.scrollToview}>Account Settings</Button>
+          </Typography>
+            </div>
+          
+          </Grid>
+          <Grid item container sm={8} direction='column' >
+          <form onSubmit={this.handleOnSubmit} style={{width:'60%'}}>
+          
+          
+              <section id='personalinfo'>
+              <Typography variant='h6' fullWidth>
+                Personal Information
+                <Divider/>
+              </Typography>
+              <br/>
+              <Grid container item direction='row' alignItems='center' spacing={2}>
+              <Grid item sm={2}>
+              <Avatar alt={`${first_name} ${last_name}`} 
+              // src="/static/images/avatar/1.jpg" 
+              id="output_image"
+              src={(dataImg !== '') ? `${dataImg}` : `${avatar}`}
+              // src={dataImg}
+              
+              className={classes.large} />
+              </Grid>
+              <Grid item sm>
+              <input
+            accept="image/*"
+            className={classes.input}
+            name="avatar"
+            id="contained-button-file"
+            onChange={this.handleOnChange('avatar')}
+            type="file"
+          />
+          <label htmlFor="contained-button-file">
+            <Button variant="contained" color="primary" component="span">
+              Upload
+            </Button>
+          </label>
+          {/* <input
+                    type='file'
+                    name="avatar"
+                    className="form-control-file form-control-sm"
+                    onChange={this.handleOnChange('avatar')}/> */}
+              </Grid>
+              
+              </Grid>
+              <br/>
+              <Grid item container spacing={2}>
+              <Grid item sm={6}>
+                <TextField
+                  label='First Name'
+                  variant='outlined'
+                  fullWidth
+                  name='first_name'
+                    onChange={this.handleOnChange()}
+                    value={first_name}
+                />
+              </Grid>
+              <Grid item sm={6}>
+                <TextField
+                  label='Last Name'
+                  variant='outlined'
+                  fullWidth
+                  name='last_name'
+                  onChange={this.handleOnChange()}
+                    value={last_name}
+                />
+              </Grid>
+              </Grid>
+              <br/>
+              <Grid item container spacing={2}>
+              <Grid item sm={12}>
+                <TextField
+                  label='Address'
+                  variant='outlined'
+                  fullWidth
+                  name='address'
+                  onChange={this.handleOnChange()}
+                    value={address}
+                />
+              </Grid>
+              </Grid>
+              <br/>
+              <Grid item container spacing={2}>
+              <Grid item sm={4}>
+                <TextField
+                  label='City'
+                  variant='outlined'
+                  fullWidth
+                  name='city'
+                  onChange={this.handleOnChange()}
+                    value={city}
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <TextField
+                  label='State/Province'
+                  variant='outlined'
+                  fullWidth
+                  name='province'
+                  onChange={this.handleOnChange()}
+                    // value={province}
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <TextField
+                  label='Zip Code'
+                  variant='outlined'
+                  fullWidth
+                  name='zipcode'
+                  onChange={this.handleOnChange()}
+                    value={zipcode}
+                />
+              </Grid>
+          </Grid>
+          <br/>
+          <Grid item container spacing={2}>
+          
+          <Grid item sm={12}>
+          <TextField
+                        id="outlined-select-currency"
+                        select
+                        name='country'
+                        label="Country"
+                        value={country}
+                        onChange={this.handleOnChange()}
+                        variant="outlined"
+                        fullWidth
+                      >
+                        {countries.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+          </Grid>
+          
+          </Grid>
+          
+          </section>
+            
+          
+          <br/><br/>
+
+          
+          
+          <section id='paymentoptions'>
+              <Typography variant='h6' fullWidth>
+                Payment Options
+                <Divider/>
+              </Typography>
+              <br/>
+              <Grid item container spacing={2}>
+              <Grid item sm={12}>
+                <TextField
+                  label='Paypal Email'
+                  variant='outlined'
+                  fullWidth
+                  type='email'
+                  name='paypal_email'
+                    value={paypal_email}
+                    onChange={this.handleOnChange()}
+                />
+              </Grid>
+              
+              </Grid>
+              <br/>
+              <Grid item container spacing={2}>
+              <Grid item sm={6}>
+                <TextField
+                  label='Bank Name'
+                  variant='outlined'
+                  fullWidth
+                  name='bank_name'
+                    value={bank_name}
+                    onChange={this.handleOnChange()}
+                />
+              </Grid>
+              <Grid item sm={6}>
+                <TextField
+                  label='Account No.'
+                  variant='outlined'
+                  fullWidth
+                  name='bank_name'
+                    value={bank_account}
+                    onChange={this.handleOnChange()}
+                />
+              </Grid>
+              
+              </Grid>
+              <br/>
+              <Grid item container spacing={2}>
+              <Grid item sm={12}>
+                <TextField
+                  label='Gcash No.'
+                  variant='outlined'
+                  fullWidth
+                  helperText='You can use gcash if you live in the Philippines'
+                  name='gcash_number'
+                    value={gcash_number}
+                    onChange={this.handleOnChange()}
+                />
+              </Grid>
+              
+              </Grid>
+              <br/>
+              
+          </section>
+            
+          
+          
+          <section id='accountsettings'>
+          <Typography variant='h6' fullWidth>
+                Account Settings
+                <Divider/>
+              </Typography>
+              <br/>
+              <Grid item container spacing={2}>
+              <Grid item sm={12}>
+                <TextField
+                  label='New Password'
+                  variant='outlined'
+                  fullWidth
+                  type='password'
+                  helperText="Leave blank if you don't want to change password"
+                  name='password'
+                  onChange={this.handleOnChange()}
+                />
+              </Grid>
+              </Grid>
+          </section>
+          <br/>
+            <Grid item container direction='row' justify='space-between'>
+                <Grid item sm={4}>
+                          <Button href={`/profile/${this.props.match.params.username}`} variant='contained' color='secondary' fullWidth>Cancel</Button>
+                </Grid>
+                <Grid item sm={4}>
+                          <Button type='submit' variant='contained' color='primary' fullWidth>Save</Button>
+                </Grid>
+            </Grid>
+            
+          
+            
+           
+          </form>
+          </Grid>
+        </Grid>
+          {/* <div className='container'>
             <h2>Edit Profile</h2>
             <form onSubmit={this.handleOnSubmit}>
               <div className='row mb-3'>
@@ -173,8 +514,8 @@ export class EditProfile extends Component {
                   <label htmlFor='paypal_email'>Paypal Email</label>
                   <input
                     type='text'
-                    name='paypal_email'
-                    className='form-control'
+                    
+                    className='form-control'name='paypal_email'
                     value={paypal_email}
                     onChange={this.handleOnChange()}
                     placeholder='johndoe@email.com'/>
@@ -517,7 +858,7 @@ export class EditProfile extends Component {
 
               <Link to={`/profile/${this.props.match.params.username}`}>Cancel</Link>
             </form>
-          </div>
+          </div> */}
         </main>
 
       </Fragment>
@@ -525,4 +866,4 @@ export class EditProfile extends Component {
   }
 }
 
-export default EditProfile;
+export default withStyles(useStyles)(EditProfile);

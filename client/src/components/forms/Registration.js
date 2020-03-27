@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import { Modal,Button } from 'react-bootstrap';
+import { flexbox } from '@material-ui/system';
+import {Box,Input, TextField, Grid, Button} from '@material-ui/core';
 import validator from 'validator';
 
 export class Registration extends Component {
@@ -51,29 +52,30 @@ export class Registration extends Component {
                   isLoading: true,
                 })
       }
-    }else{
-      if(this.state.country === 'Philippines'){
-        if(validator.isEmpty(this.state.gcash_number)){
-          console.log('empty gcash')
-          if(!this.state.errors.includes('Empty Gcash.')){
-            this.state.errors.push('Empty Gcash.');
-            this.setState({
-                      isLoading: true,
-                    })
-          }
-        }
-      }else{
-        
-        if(validator.isEmpty(this.state.paypal_email)){
-          if(!this.state.errors.includes('Empty Paypal.')){
-            this.state.errors.push('Empty Paypal.');
-            this.setState({
-                      isLoading: true,
-                    })
-          }
-        }
-      }
     }
+    // else{
+    //   if(this.state.country === 'Philippines'){
+    //     if(validator.isEmpty(this.state.gcash_number)){
+    //       console.log('empty gcash')
+    //       if(!this.state.errors.includes('Empty Gcash.')){
+    //         this.state.errors.push('Empty Gcash.');
+    //         this.setState({
+    //                   isLoading: true,
+    //                 })
+    //       }
+    //     }
+    //   }else{
+        
+    //     if(validator.isEmpty(this.state.paypal_email)){
+    //       if(!this.state.errors.includes('Empty Paypal.')){
+    //         this.state.errors.push('Empty Paypal.');
+    //         this.setState({
+    //                   isLoading: true,
+    //                 })
+    //       }
+    //     }
+    //   }
+    // }
     if(validator.isEmpty(this.state.password)){
       if(!this.state.errors.includes('Empty Password.')){
         this.state.errors.push('Empty Password.');
@@ -296,25 +298,25 @@ export class Registration extends Component {
     })
 
   if(event.target.value !== '' || event.target.value !== null){
-    if(event.target.name === 'country'){
-      if(this.state.errors.includes('Empty Country.')){
-        this.state.errors = this.state.errors.filter(item => item !== 'Empty Country.')
-      }
-      if(this.state.errors.includes('Empty Gcash.')){
-        this.state.errors = this.state.errors.filter(item => item !== 'Empty Gcash.')
-      }
-    }
-    if(event.target.name === 'gcash_number'){
-      if(this.state.errors.includes('Empty Gcash.')){
-        this.state.errors = this.state.errors.filter(item => item !== 'Empty Gcash.')
-      }
-    }
+    // if(event.target.name === 'country'){
+    //   if(this.state.errors.includes('Empty Country.')){
+    //     this.state.errors = this.state.errors.filter(item => item !== 'Empty Country.')
+    //   }
+    //   if(this.state.errors.includes('Empty Gcash.')){
+    //     this.state.errors = this.state.errors.filter(item => item !== 'Empty Gcash.')
+    //   }
+    // }
+    // if(event.target.name === 'gcash_number'){
+    //   if(this.state.errors.includes('Empty Gcash.')){
+    //     this.state.errors = this.state.errors.filter(item => item !== 'Empty Gcash.')
+    //   }
+    // }
     
-    if(event.target.name === 'paypal_email'){
-      if(this.state.errors.includes('Empty Paypal.')){
-        this.state.errors = this.state.errors.filter(item => item !== 'Empty Paypal.')
-      }
-    }
+    // if(event.target.name === 'paypal_email'){
+    //   if(this.state.errors.includes('Empty Paypal.')){
+    //     this.state.errors = this.state.errors.filter(item => item !== 'Empty Paypal.')
+    //   }
+    // }
     if(event.target.name === 'email'){
       if(!validator.isEmpty(this.state.confirmEmail)){
         if(event.target.value !== this.state.confirmEmail){
@@ -374,9 +376,7 @@ export class Registration extends Component {
     return (
       
       <Fragment>
-        <h1>Sign Up</h1>
-        <p>Register to create a campaign</p>
-        <p>Note: don't leave input with (<span className='red'>*</span>) blank</p>
+        
         {(this.state.axiosError.length > 0)
           ? <div className="alert alert-warning" role="alert">{this.state.axiosError}</div>
           : ''}
@@ -389,7 +389,7 @@ export class Registration extends Component {
                 ))}</div>
           : ''}
         <form>
-          <div className='row'>
+          {/* <div className='row'>
             <div className="col-sm">
 
               <label htmlFor='country'>Country: <span className='red'>*</span></label>
@@ -405,9 +405,9 @@ export class Registration extends Component {
               {this.showInputs()}
               
             </div>
-          </div>
+          </div> */}
 
-          <div className='row'>
+          {/* <div className='row'>
             <div className="col-sm">
               <label htmlFor='email'>Facebook or Email <span className='red'>*</span></label>
 
@@ -435,18 +435,19 @@ export class Registration extends Component {
             
 
           </div>
+          
           <div className='row'>
           <div className="col-sm">
 
-<label htmlFor='password'>Password <span className='red'>*</span></label>
-<input
-  className='form-control form-control-sm'
-  type='password'
-  placeholder='********'
-  name="password"
-  id='password'
-  onChange={this.handleOnChange}/>
-</div>
+            <label htmlFor='password'>Password <span className='red'>*</span></label>
+            <input
+              className='form-control form-control-sm'
+              type='password'
+              placeholder='********'
+              name="password"
+              id='password'
+              onChange={this.handleOnChange}/>
+            </div>
 
           </div>
 
@@ -459,11 +460,68 @@ export class Registration extends Component {
               <button className='btn btn-primary w-100' onClick={this.continue}>Continue</button>
             </div>
 
-          </div>
+          </div> */}
+    
+      <Grid container direction='row' alignContent='center' spacing={4} sm={12}>
+      <Grid item>
+      <h1>Sign Up</h1>
+        <p>Register to create a campaign</p>
+      </Grid>
+      
+        
+        <Grid item sm={12}>
+                <TextField
+                id="outlined-password-input"
+                name='email'
+                label="Email"
+                type="email"
+                autoComplete="current-password"
+                variant="outlined"
+                fullWidth
+                onChange={this.handleOnChange}
+              />
+        </Grid>
+        <Grid item xs={12}>
+              <TextField
+              id="outlined-password-input"
+              name='confirmEmail'
+              label="Confirm Email"
+              type="email"
+              autoComplete="current-password"
+              variant="outlined"
+              fullWidth
+              onChange={this.handleOnChange}
+            />
+        </Grid>
+        <Grid item xs={12}>
+
+            <TextField
+              name='password'
+            id="password"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            variant="outlined"
+            fullWidth
+            onChange={this.handleOnChange}
+            />
+
+        </Grid>
+        <Grid item sm={8} xs={12}>
+          <Link to="/help">Need Help?</Link>
+        </Grid>
+        <Grid item sm={4} xs={12}>
+          <Button color='primary' fullWidth variant='contained' onClick={this.continue}>Continue</Button>
+        </Grid>
+            
+            
+        </Grid>
+          
         </form>
       </Fragment>
     );
   }
+  
 }
 
 export default Registration;

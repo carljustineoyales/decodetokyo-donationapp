@@ -6,13 +6,66 @@ import Navbar from '../components/Home/Navbar';
 import Success from './Success';
 import { LoggedInContext } from '../contexts/LoggedInContext';
 import validator from 'validator';
+import Moment from 'react-moment'
+import {Grid,Button,TextField,MenuItem,Backdrop,Fade, Card, CardHeader, Avatar, CardMedia,CardContent,Typography } from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
 
+
+const currencies = [
+
+  {
+    value: 'USD',
+    label: '$',
+  },
+  {
+    value: 'EUR',
+    label: '€',
+  },
+  {
+    value: 'BTC',
+    label: '฿',
+  },
+  {
+    value: 'JPY',
+    label: '¥',
+  },
+];
+
+const useStyles = theme => ({
+  root: {
+    width: '30%',
+    
+  },
+  desc:{
+    height:'160px',
+    overflow:'hidden'
+  },
+  mainStyle:{
+    margin:theme.spacing(10),
+    height:'auto',
+  },
+  input: {
+    display: 'none',
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width:'100%'
+  },
+  
+  media: {
+    height: 0,
+    paddingTop: '50%', // 16:9
+  },
+})
 export class CreateCampaign extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      
+      open:false,
       title: '',
       description: '',
       goalFund: '',
@@ -24,7 +77,10 @@ export class CreateCampaign extends Component {
       isSuccess:false,
       response:{},
       errors:[],
-      isLoading:false
+      isLoading:false,
+      name:'',
+      dataImg:'',
+      avatar:''
     }
   }
 
@@ -32,7 +88,11 @@ export class CreateCampaign extends Component {
   handleChange = input => e => {
 
     if (e.target.type === 'file') {
-      this.setState({images: e.target.files[0]})
+      this.setState({
+        images: e.target.files[0],
+        dataImg:URL.createObjectURL(e.target.files[0])
+      })
+      
       console.log(e.target.files[0])
     }
     this.setState({[input]: e.target.value})
@@ -112,8 +172,7 @@ export class CreateCampaign extends Component {
     };
     // const data = this.state
     
-   
-
+    
     //move to backend
     
       console.log(datas)
@@ -152,12 +211,37 @@ export class CreateCampaign extends Component {
     
   }
 
+  handleOpen = (event) => {
+    event.preventDefault();
+    axios.get(`${strapi}/users/?username=${this.state.username}`)
+      .then(res=>{
+        console.log(res.data)
+        this.setState({
+          name:`${res.data[0].first_name} ${res.data[0].last_name}`,
+          avatar:res.data[0].avatar.url
+        })
+      })
+    this.setState({
+      open:true,
+      
+    })
+
+  };
+  handleClose = (event) => {
+    event.preventDefault();
+    this.setState({
+      open:false
+    })
+  };
+
   onFormSubmit = (event) => {
     event.preventDefault();
     this.getUser();
   }
   
   render() {
+    
+    const {classes} = this.props
     const {title, description, goalFund,isSuccess} = this.state
     const values = { title, description, goalFund };
     return(
@@ -172,11 +256,10 @@ export class CreateCampaign extends Component {
       return (
         <Fragment>
           <Navbar/>
-          <main>
-            <div className='container'>
-            {loggedin ? <Link to={'/feed'}>Go Back</Link> : ''}
-              <h1>Create A Campaign
-              </h1>
+          <main className={classes.mainStyle}>
+            
+            {/* {loggedin ? <Link to={'/feed'}>Go Back</Link> : ''}
+              <h1>Create A Campaign</h1><br/> */}
               
         {(this.state.errors.length > 0)
           ? <div className="alert alert-danger" role="alert">{this
@@ -186,7 +269,24 @@ export class CreateCampaign extends Component {
                   <div key={error.id}>{error}</div>
                 ))}</div>
           : ''}
-              <form onSubmit={this.onFormSubmit}>
+              {/* <form onSubmit={this.onFormSubmit}>
+              <div className='row'>
+                  <div className="col-md-12 mb-3">
+                  <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Image tooltip">
+  
+                    <label for='image'>Image <img
+                        src="https://img.icons8.com/material-rounded/18/000000/help.png"
+                        alt='help-icon'/></label>
+                        </span>
+                    <input
+                      type='file'
+                      className="form-control-file form-control-sm"
+                      onChange={this.handleChange('image')}
+                      value={values.image}/>
+  
+                  </div>
+  
+                </div>
                 <div className='row '>
                   <div className="col-md-12 mb-3">
                   <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Title tooltip">
@@ -209,7 +309,7 @@ export class CreateCampaign extends Component {
                         src="https://img.icons8.com/material-rounded/18/000000/help.png"
                         alt='help-icon'/></label>
                         </span>
-                    {/* <h6>Description:</h6> */}
+                    
                     <textarea
                       className="form-control form-control-sm"
                       rows="12"
@@ -226,7 +326,7 @@ export class CreateCampaign extends Component {
                         src="https://img.icons8.com/material-rounded/18/000000/help.png"
                         alt='help-icon'/></label>
                         </span>
-                    {/* <h6>Description:</h6> */}
+                    
                   
                   </div>
   
@@ -271,23 +371,7 @@ export class CreateCampaign extends Component {
                     </div>
                   </div>
 
-                <div className='row'>
-                  <div className="col-md-12 mb-3">
-                  <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Image tooltip">
-  
-                    <label for='image'>Image <img
-                        src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                        alt='help-icon'/></label>
-                        </span>
-                    <input
-                      type='file'
-                      className="form-control-file form-control-sm"
-                      onChange={this.handleChange('image')}
-                      value={values.image}/>
-  
-                  </div>
-  
-                </div>
+                
                 <div className='row '>
                   <div className="col-md-9 mb-3">
                     <Link to="/help">Need Help?</Link>
@@ -297,9 +381,155 @@ export class CreateCampaign extends Component {
                   </div>
   
                 </div>
+              </form> */}
+              
+              <Grid container direction='column' justify='center' alignContent='center'>
+              {loggedin ? <Link to={'/feed'}>Go Back</Link> : ''}
+              <h1>Create A Campaign</h1><br/>
+              <form onSubmit={this.onFormSubmit}>
+                <Grid container spacing={3} >
+                  <Grid item xs={12} sm={12} >
+                      <input
+                      accept="image/*"
+                      className={classes.input}
+                      id="contained-button-file"
+                      onChange={this.handleChange('image')}
+                                    value={values.image}
+                      type="file"
+                    />
+                    <label htmlFor="contained-button-file">
+                      <Button variant="contained" color="primary" component="span">
+                        Upload
+                      </Button>
+                    </label>
+                  </Grid>
+
+                  <Grid item xs={12} sm={12}>
+                    <TextField required 
+                    id="standard-required" 
+                    label="Title" 
+                    helperText="Required Field" 
+                    variant='outlined'
+                    fullWidth
+                    type='text'
+                      onChange={this.handleChange('title')}
+                      value={values.title}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12}>
+                      <TextField
+                          required
+                          id="outlined-multiline-flexible"
+                          label="Description"
+                          multiline
+                          fullWidth
+                          rows="16"
+                          helperText="Required Field" 
+                          onChange={this.handleChange('description')}
+                                      value={values.description}
+                          variant="outlined"
+                        />
+                  </Grid>
+                  <Grid item xs={12} sm={2} >
+                      <TextField
+                        required
+                        id="outlined-select-currency"
+                        select
+                        label="Curency"
+                        value={this.state.currency}
+                        onChange={this.handleChange('currency')}
+                        helperText="Please select your currency"
+                        variant="outlined"
+                        fullWidth
+                      >
+                        {currencies.map(option => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                  </Grid>
+                  <Grid item xs={12} sm={10}>
+                        <TextField required 
+                        id="standard-required" 
+                        label="Amount" 
+                        helperText="Required Field" 
+                        variant='outlined'
+                        type='number'
+                        fullWidth
+                        onChange={this.handleChange('goalFund')}
+                        value={values.goalFund}
+                        />
+                  </Grid>
+                  <Grid item xs={12} sm={9}>
+                  <Link to="/help">Need Help?</Link>
+                  
+                  </Grid>
+                  <Grid item container spacing={2} xs={12} sm={3}>
+                          <Grid item sm={6} >
+                          <Button color='primary' variant='outlined'  fullWidth type='button' onClick={this.handleOpen}>Preview</Button>
+                          </Grid>
+                          <Grid item sm={6}>
+                          <Button color='primary' variant='contained' fullWidth type='submit'>Submit</Button>
+                          </Grid>
+                  
+                 
+                  
+                  </Grid>
+                  
+                </Grid>
               </form>
-            </div>
+              </Grid>
+              <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={this.state.open}
+        onClose={this.handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={this.state.open}>
+        <Card className={classes.root}>
+<CardHeader
+  avatar={
+    <Avatar aria-label="recipe" className={classes.avatar} src={this.state.avatar}/>
+      
+    
+  }
   
+  title={<Link to={`#`}>{this.state.name}</Link>}
+  subheader='Created few minutes ago'
+/>
+<CardMedia
+  className={classes.media}
+  image={`${this.state.dataImg}`}
+  title="Paella dish"
+/>
+<CardContent>
+  <Typography variant="h6" color="textPrimary" component="p">
+  {title}
+  </Typography>
+  <Typography variant="body2" color="textSecondary" component="p" className={classes.desc}>
+  
+ {description}
+  </Typography>
+</CardContent>
+<CardContent>
+  
+  <Typography>
+  <Link to={`#`} >Read More..</Link>
+
+  </Typography>
+</CardContent>
+
+</Card>
+        </Fade>
+      </Modal>
           </main>
         </Fragment>
       );
@@ -315,4 +545,4 @@ export class CreateCampaign extends Component {
   }
 }
 
-export default CreateCampaign;
+export default withStyles(useStyles)(CreateCampaign);

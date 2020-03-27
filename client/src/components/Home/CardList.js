@@ -1,22 +1,32 @@
 import React, {Component} from 'react';
-import Card from './Card';
+import CardItem from './CardItem';
 import {CardListContext} from '../../contexts/CardListContext'
-
+import { Grid,Paper } from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles'
+const useStyles = theme => ({
+  root: {
+    maxWidth: '100%',
+    minHeight:'100%'
+  },
+  
+})
 export class CardList extends Component {
 
   render() {
-    
+    const {classes} = this.props
     return (
       <CardListContext.Consumer>{(context) => {
         const {isLoaded,cards} = context
           if (isLoaded) {
             if(cards.length > 0){
               return (
-              <div>
+                <Grid container spacing={4} direction="row"
+  justify="flex-start"
+  alignItems="stretch">
                 {cards
                   .reverse()
-                  .map(card => (<Card key={card.id} card={card}/>))}
-              </div>
+                  .map(card => (<Grid item sm={4}><Paper variant='outlined'><CardItem key={card.id} card={card} /></Paper></Grid>))}
+              </Grid>
             );
             }else{
               return(<h1>No Result Found</h1>)
@@ -33,4 +43,4 @@ export class CardList extends Component {
   }
 }
 
-export default CardList;
+export default withStyles(useStyles)(CardList);

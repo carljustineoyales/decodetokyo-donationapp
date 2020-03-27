@@ -3,9 +3,63 @@ import {Link} from 'react-router-dom';
 import {CardListContext} from '../../contexts/CardListContext'
 import axios from 'axios';
 import { LoggedInContext } from '../../contexts/LoggedInContext.js';
+import { AppBar, Toolbar, Typography, Button, TextField  } from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles'
+const useStyles = theme => ({
+  appBarStyle:{
+    background:'#fff',
+    position:'fixed',
+    padding:'0px 40px',
+  },
+  appBarStyleTransparent:{
+    background:'transparent',
+    position:'fixed',
+    padding:'0px 40px',
+  },
+  typographyStyles:{
+    flex:1,
+  },
+  linkStyles:{
+    color:'#707070',
+    // padding:'16px 40px',
+    
+  },
+  search: {
+    display:'inline-block',
+    borderRadius: theme.shape.borderRadius,
+    
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  navItems:{
+    
+    display:'inline-block'
+  },
+  navLinks:{
+    marginLeft:'32px',
+      color:'#707070',
+      '&:hover':{
+        textDecoration:'none',
+        color:'#707070',
+      }
+  },
+  navLinksLogout:{
+    marginLeft:'32px',
+      // color:'#707070',
+  },
+
+})
 
 export class Navbar extends Component {
-
+  constructor(props)
+  {
+    super(props);
+  }  
   handleLogout = () => {
     
     // window.location.href = '/'
@@ -23,15 +77,15 @@ export class Navbar extends Component {
   }
 
   render() {
-   
+    const { classes } = this.props;
     return (
       <CardListContext.Consumer>{(CardContext) => {
           return (
             <LoggedInContext.Consumer>{(LoggedInContext)=>{
               const {loggedin,role,id,username,done} = LoggedInContext
           return(
-            <header className="bg-light fixed-top">
-              <div className=" container">
+            <header>
+              {/* <div className=" container">
                 <nav className="navbar navbar-expand-lg navbar-light">
                   <h2 className="navbar-brand">
                   {loggedin ? <Link to="/feed">Logo</Link> : <Link to="/">Logo</Link>}
@@ -112,8 +166,70 @@ export class Navbar extends Component {
                     </ul>
                   </div>
                 </nav>
-              </div>
+              </div> */}
+              
+              <AppBar 
+              className={
+                (window.location.pathname === `/login`) ? (`${classes.appBarStyleTransparent}`) : (`${classes.appBarStyle}`)
+                }
+              >
+                <Toolbar>
+                  <Typography className={classes.typographyStyles}>
+                  {
+                    (loggedin) ? <a className={classes.navLinks} href={`/feed`}>Logo</a> : <a className={classes.navLinks} href={`/`}>Logo</a>
+                  }
+                  
+                  </Typography>
+                  <div className={classes.navItems}>
+                  {window.location.pathname === `/feed`
+                        ? (
+                          <Fragment>
+                            <form onSubmit={CardContext.handleOnSearch} className={classes.search}>
+                            <TextField id="filled-search" size='small' placeholder='Search Campaign' type="search" variant="outlined" onChange={CardContext.handleOnChange}/>
+
+                            </form>
+                          </Fragment>
+                        )
+                        : <Button className={classes.navLinks}  href={`/feed`}>Explore</Button>
+}
+                  
+                  
+                  {loggedin
+                        ? (
+                          <Fragment>
+                          {done ? (
+                            
+                              <Button className={classes.navLinks} href="/create-campaign">Create Campaign</Button>
+                            
+                          ) : ''}
+                            
+                            {(role === 'admin')
+                              ? (
+                                <Fragment>
+                                  
+                                  
+                                  <Button className={classes.navLinks} href={`/dashboard/${id}`}>Dashboard</Button>
+                                  
+                                </Fragment>
+                              )
+                              : ''
+}
+                            
+                            <Button className={classes.navLinks} href={`/profile/${username}`}>Profile</Button>
+                            <Button  className={classes.navLinksLogout} onClick={this.handleLogout} color="secondary" variant="contained">
+                              Logout
+                            </Button>
+                          </Fragment>
+                        )
+                        : (
+                          <Button className={classes.navLinks} href={`/login`}>Login</Button>
+                        )
+}
+</div>
+                </Toolbar>
+              </AppBar>
             </header>
+            
           )
         }}
 
@@ -127,4 +243,4 @@ export class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default withStyles(useStyles)(Navbar);

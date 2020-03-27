@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import Navbar from '../components/Home/Navbar'
+import Navbar from '../components/Home/Navbar';
+import {Grid, TextField, Typography,Button} from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles'
+const useStyles = theme => ({
+  mainStyle:{
+    margin:theme.spacing(14),
+    height:'auto',
+    
+  },
+  heading1:{
+    fontSize:'48px',
+  }
+})
 export class NeedHelp extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +63,7 @@ export class NeedHelp extends Component {
   }
   
   render() {
+    const { classes } = this.props
     if(this.state.sent){
       return (
         <>
@@ -69,27 +82,54 @@ export class NeedHelp extends Component {
     return (
       <>
       <Navbar/>
-      <main>
+      <main className={classes.mainStyle}>
         
-          <div className='container'>
-          <h1>Create a Ticket</h1>
+          
+          
+          
           {(this.state.errors.length > 0) ? (
             this.state.errors.map(item => (
               <div>{item}</div>
             ))
           ): ''}
-          <form onSubmit={this.handleOnSubmit}>
-          {/* <label htmlFor='fb'>Facebook</label><br/>
-          <input type='email' name='fb' onChange={this.handleOnChange}/><br/><br/> */}
-          <label htmlFor='link'>Facebook or Email</label><br/>
+          <form onSubmit={this.handleOnSubmit} style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+          <Typography variant='h1' color='primary' className={classes.heading1}>
+          Create a Ticket
+          </Typography>
+          <br/>
+          <br/>
+              <Grid container  spacing={2} lg={6} >
+                <Grid item sm={12}>
+                <TextField variant='outlined' type='email' fullWidth label='Email' required name='email' onChange={this.handleOnChange}/>
+                </Grid>
+                <Grid item sm={12}>
+                <TextField
+          id="filled-multiline-flexible"
+          label="Message"
+          multiline
+          rows="12"
+            fullWidth
+          variant="outlined"
+          name='message' onChange={this.handleOnChange}
+        />
+                </Grid>
+                <Grid item sm={12}>
+
+                </Grid>
+                <Grid item md={12} sm={12}>
+                  <Button type='submit' fullWidth variant='contained' color='primary'>Submit</Button>
+                </Grid>
+              </Grid>
+          {/* <label htmlFor='link'>Facebook or Email</label><br/>
           <input type='email' name='email' onChange={this.handleOnChange}/><br/><br/>
           <label htmlFor='name'>Name</label><br/>
           <input type='text' name='name' onChange={this.handleOnChange}/><br/><br/>
           <label htmlFor='name'>Message</label><br/>
           <textarea name='message' onChange={this.handleOnChange}></textarea><br/><br/>
-          <button>Submit</button>
+          <button>Submit</button> */}
+          
         </form>
-          </div>
+         
           
           </main>
        
@@ -99,4 +139,4 @@ export class NeedHelp extends Component {
 }
 }
 
-export default NeedHelp;
+export default withStyles(useStyles)(NeedHelp);

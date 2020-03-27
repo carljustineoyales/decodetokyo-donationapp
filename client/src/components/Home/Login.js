@@ -3,9 +3,25 @@ import axios from 'axios';
 import {Redirect, Link} from 'react-router-dom';
 import {strapi, withToken} from '../functions'
 import { LoggedInContext } from '../../contexts/LoggedInContext';
+import { Grid, TextField, Button, Paper, Typography } from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles'
+// import { bake_cookie } from 'sfcookies'; 
+const useStyles = theme => ({
+  
+  mb:{
+    marginBottom:'5em'
+  },
+  formMb:{
+    marginBottom:'2em'
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    background: '#E5F6F1',
+    borderColor:'#009883',
 
-// import { bake_cookie } from 'sfcookies';
-
+  },
+})
 
 export class Login extends Component {
   constructor(props) {
@@ -60,6 +76,7 @@ export class Login extends Component {
   }
   
   render() {
+    const { classes } = this.props;
     return(
 <LoggedInContext.Consumer>{(context)=>{
     this.state.loggedin = context.loggedin
@@ -72,9 +89,18 @@ export class Login extends Component {
   } else {
     return (
       <Fragment>
+      <Grid container item direction='column' justify='center' xs={6}>
       {(this.state.error === "Auth.form.error.invalid") ? (<div>Identifier or password invalid.</div>):((this.state.error === "Auth.form.error.email.provide") ? (<div>Please provide your username or your e-mail.</div>) : '')}
-        <form onSubmit={this.onFormSubmit} className='form-group'>
-        <div className="col-sm-5 mb-3">
+      <Grid item className={classes.mb}>
+        <h1>Welcome</h1>
+        </Grid>
+        
+        <form onSubmit={this.onFormSubmit} style={{width:'100%'}}>
+        <Grid item container xs={12} className={classes.mb}>
+        
+        
+        
+        {/* <div >
         <input
                   type='text'
                   className='form-control form-control-sm w-100'
@@ -83,7 +109,7 @@ export class Login extends Component {
                   value={username}
                   onChange={this.handleOnChange}/>
         </div>
-        <div className="col-sm-5 mb-3">
+        <div >
         <input
                   type='password'
                   className='form-control form-control-sm w-100'
@@ -93,10 +119,68 @@ export class Login extends Component {
                   onChange={this.handleOnChange}/>
                   <Link to={"/forgot-password"}>Forgot Password?</Link>
         </div>
-        <div className="col-sm-5 mb-3">
+        <div >
         <button className='btn btn-primary btn-sm w-100' type='submit'>Login</button>
-        </div>
+        </div> */}
+        
+        <Grid item xs={12} className={classes.formMb}>
+        <TextField
+                  type='text'
+                  fullWidth
+                  name='username'
+                  label='Username'
+                  variant='outlined'
+                  value={username}
+                  onChange={this.handleOnChange}
+          />
+          
+        </Grid>
+        <Grid item xs={12} className={classes.formMb}>
+        <TextField
+            type='password'
+                  fullWidth
+                  name='password'
+                  label='Password'
+                  variant='outlined'
+                  value={password}
+                  onChange={this.handleOnChange}
+          />
+        </Grid>
+        
+          
+        <Grid container item>
+          <Grid item xs={6}>
+          <Link to={"/forgot-password"}>Forgot Password?</Link>
+          </Grid>
+          <Grid item xs={6}>
+          <Button fullWidth color='primary' variant='contained' type='submit'>Login</Button>
+          </Grid>
+        
+        
+        </Grid>
+        
+        
+        
+        
+        
+        
+        
+        </Grid>
         </form>
+      
+      <Grid item>
+      <Paper variant="outlined" elevation={3} className={classes.paper}>
+        <Typography color='primary'>
+        Don't have an account? <Link to={'/'} color='inherit'>Sign up.</Link>
+        </Typography>
+      </Paper>
+      
+      </Grid>
+              </Grid>
+        
+      
+
+      
       </Fragment>
     );
   }
@@ -109,4 +193,4 @@ export class Login extends Component {
   }
 }
 
-export default Login;
+export default withStyles(useStyles)(Login);

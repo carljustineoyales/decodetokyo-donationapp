@@ -4,6 +4,14 @@ import Navbar from '../components/Home/Navbar'
 import PaypalButton from '../components/Home/PaypalButton';
 import axios from 'axios';
 import {strapi} from '../components/functions'
+import {withStyles} from '@material-ui/core/styles';
+import {Grid} from '@material-ui/core';
+const useStyles = theme => ({
+  mainStyle:{
+    margin:theme.spacing(14),
+    height:'auto',
+  },
+})
 export class Donation extends Component {
 
   constructor(props) {
@@ -165,11 +173,12 @@ export class Donation extends Component {
   }
 
   render() {
+    const {classes} =this.props
     return (
       <Fragment>
         <Navbar/>
-        <main>
-          <div className='container'>
+        <main className={classes.mainStyle}>
+          
             {(this.state.errors.length > 0)
               ? <div className="alert alert-danger" role="alert">{this
                     .state
@@ -254,11 +263,11 @@ export class Donation extends Component {
                 </div>
               </div>
             </form>
-          </div>
+          
         </main>
       </Fragment>
     );
   }
 }
 
-export default Donation;
+export default withStyles(useStyles)(Donation);
