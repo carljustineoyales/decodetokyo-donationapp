@@ -11,7 +11,6 @@ export class CardListContextProvider extends Component {
     this.state={
       cards:[],
       isLoaded:false,
-      query:'',
     }
     this.handleOnChange = this.handleOnChange.bind(this)
   }
@@ -28,7 +27,7 @@ export class CardListContextProvider extends Component {
         //move to backend
         axios.get(`${strapi}/campaigns?verified=true&title=${this.query}`)
         .then(res=>{
-            this.query=''
+            // this.query=''
             this.setState({
               cards:res.data,
               isLoaded: true,

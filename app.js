@@ -13,8 +13,8 @@ const app = express();
 
 let decoded = '';
 let token = '';
-// const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
-const strapi = 'http://localhost:1337'
+const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
+// const strapi = 'http://localhost:1337'
 app.use(express.urlencoded({extended: true}));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -572,8 +572,8 @@ app.use('/createcampaign',  (req,res)=>{
         
       })
       .then(response=>{
-        console.log(response.data)
-        // return res.status(200).send(response.data)
+        // console.log(response.data)
+        return res.status(200).send(response.data)
       })
       .catch(err=>{
         res.status(400).send(err)
@@ -633,7 +633,7 @@ app.use('/registeruser',(req,res)=>{
   let invalidEmail = validator.isEmail(req.body.email)
   let emptyUsername = validator.isEmpty(req.body.username)
   let emptyPassword = validator.isEmpty(req.body.password)
-  let emptyCountry = validator.isEmpty(req.body.country)
+  // let emptyCountry = validator.isEmpty(req.body.country)
  
   if(emptyEmail && emptyUsername){
     error.push('Empty Email.')
@@ -641,25 +641,25 @@ app.use('/registeruser',(req,res)=>{
     error.push('Invalid Email.')
   }
 
-  if(req.body.country === 'Philippines'){
-    let emptyGcash = validator.isEmpty(req.body.gcash_number)
-    if(emptyGcash){
-      error.push('Empty Gcash.')
-    }
-  }else{
-    let emptyPaypal = validator.isEmpty(req.body.paypal_email)
-    if(emptyPaypal){
-      error.push('Empty Paypal.')
-    }
-  }
+  // if(req.body.country === 'Philippines'){
+  //   let emptyGcash = validator.isEmpty(req.body.gcash_number)
+  //   if(emptyGcash){
+  //     error.push('Empty Gcash.')
+  //   }
+  // }else{
+  //   let emptyPaypal = validator.isEmpty(req.body.paypal_email)
+  //   if(emptyPaypal){
+  //     error.push('Empty Paypal.')
+  //   }
+  // }
   
   if(emptyPassword){
     error.push('Empty Password.')
   }
   
-  if(emptyCountry){
-    error.push('Empty Country.')
-  }
+  // if(emptyCountry){
+  //   error.push('Empty Country.')
+  // }
   if(error.length <= 0){
     axios({
         url:`${strapi}/users`,
@@ -755,6 +755,11 @@ axios({
     zipcode: req.body.zipcode,
     bank_account: req.body.bank_account,
     bank_name: req.body.bank_name,
+    
+    address_state:req.body.addressState,
+paypal_email:req.body.paypal_email,
+gcash_number:req.body.gcash_number,
+account_name:req.body.account_name,
     done: req.body.done
     }
   })

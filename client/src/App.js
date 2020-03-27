@@ -23,23 +23,21 @@ import ResendEmailVerification from './pages/ResendEmailVerification'
 import axios from 'axios';
 import gcashToolTip from './components/Tooltip/gcashToolTip';
 import PaypalToolTip from './components/Tooltip/PaypalToolTip';
+import { MuiThemeProvider } from '@material-ui/core';
+
+
 class App extends Component {
 
-  
-  // Button = (props) => {
-  //   console.log(props)
-  //   return(
-  //     <button style={{height:'200px',width:'200px'}}>{props.name}</button>
-  //   )
-  // }
-
   showRoutes = () => {
+    console.log(this.props.done)
     switch (this.props.loggedin) {
       case true:
         return(
-          <Switch>
-          
-          <Route path="/dashboard/:id" component={Dashboard}/>
+          <>
+          {(this.props.done) ? (
+            <Switch>
+            
+            <Route path="/dashboard/:id" component={Dashboard}/>
           <Route path="/edit/:username" component={EditProfile}/>
           <Route path="/profile/:username" component={Profile}/>
           <Route path="/campaign/:id" component={SingleCard}/>
@@ -47,11 +45,29 @@ class App extends Component {
           <Route path="/donation/:id" component={Donation}/>
           <Route path="/checkout/:id" component={CheckOut}/>
           <Route path="/create-campaign" component={CreateCampaign}/>
-          <Route path="/personalinfo" component={PersonalInfo}/> 
-          <Redirect from='/login' to='/feed'/>
-          <Route path="/feed" component={Feed}/>
+          {/* <Route path='/' component={Home}/> */}
+          <Route path="/login" component={LoginPage}/>
+          {/* <Route path="/" component={Feed}/> */}
+          <Redirect from='/login' to='/' />
+          <Route path='/'>
+            <Feed />
+          </Route>
+          {/* <Redirect exact from='/login' to='/'/> */}
+          {/* <Redirect exact from='/' to='/feed'/> */}
+          
           
           </Switch>
+          ):
+          (
+            <>
+            {/* <Route path="/feed" component={Feed}/> */}
+            <Route path="/personalinfo" component={PersonalInfo}/> 
+            {/* <Route path="/feed" component={Feed}/> */}
+            <Redirect to='/personalinfo'/>
+            </>
+            )}
+          
+          </>
         )
         
         case false:
@@ -68,8 +84,8 @@ class App extends Component {
             <Route path="/reset-password" component={ResetPassword}/>
             <Route path="/resendemailverification" component={ResendEmailVerification}/>
             <Route path="/profile/:username" component={Profile}/>
-            <Route path="/gcashtooltip" component={gcashToolTip}/>
-            <Route path="/paypaltooltip" component={PaypalToolTip}/>
+            {/* <Route path="/gcashtooltip" component={gcashToolTip}/>
+            <Route path="/paypaltooltip" component={PaypalToolTip}/> */}
 
             </Switch>
           )
@@ -79,11 +95,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    // axios.post('/',{
-    //   headers:{
-    //     'Cookie':'access_token'
-    //   }
-    // })
+    
     if(!this.props.loggedin){
       axios({
         url:'/',
@@ -103,7 +115,9 @@ class App extends Component {
   }
   render() {
     return (
+      <MuiThemeProvider>
       <Fragment>
+      
       <RegistrationContext>
       <CardListContextProvider>
         <Router>
@@ -113,7 +127,9 @@ class App extends Component {
         </Router>
       </CardListContextProvider>
       </RegistrationContext>
+      
       </Fragment>
+      </MuiThemeProvider>
       // <this.Button name='title'/>
     );
   }

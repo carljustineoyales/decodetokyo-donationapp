@@ -6,6 +6,14 @@ import {strapi, getUserName,getId} from '../components/functions';
 import NotFound from './NotFound';
 import Success from './Success';
 import { LoggedInContext } from '../contexts/LoggedInContext';
+import {withStyles} from '@material-ui/core/styles';
+import {Grid} from '@material-ui/core';
+const useStyles = theme => ({
+  mainStyle:{
+    margin:theme.spacing(14),
+    height:'auto',
+  },
+})
 export class CheckOut extends Component {
   //AFTER SENDING THE REQUEST DELETE THE CAMPAIGN
   constructor(props) {
@@ -196,6 +204,7 @@ export class CheckOut extends Component {
 }
   
   render() {
+    const {classes} = this.props
     const {id,raised,title,currency,author,isSuccess} = this.state;
     return(
 <LoggedInContext.Consumer>{(context)=>{
@@ -206,12 +215,12 @@ export class CheckOut extends Component {
       return <Success/>
     } else {
       return (
-        <div>
+        <>
           <Navbar/>
-          <main>
-            <div className='container'>
+          <main className={classes.mainStyle}>
             
-            <button onClick={this.goBack}>Go Back</button>
+            
+            <button onClick={this.goBack} className='btn btn-secondary'>Go Back</button>
               <h1>Checkout</h1>
               <h4>Campaign Title: {title}</h4>
               <h4>Amount: {currency} {raised}</h4>
@@ -237,7 +246,7 @@ export class CheckOut extends Component {
               </div>
               </div>
               <div className='row mb-3'>
-              <div className='col-sm-12'>
+              <div className='col-sm-3'>
               {this.showInput()}
               </div>
               </div>
@@ -251,9 +260,9 @@ export class CheckOut extends Component {
               <strong>Important:</strong> You can checkout the funds raised by your campaign in this page.<br/>
               Your campaign will unable to gather more funds if you check out now.
               </p>
-            </div>
+           
           </main>
-        </div>
+        </>
       );
     }
   }else{
@@ -270,4 +279,4 @@ export class CheckOut extends Component {
   }
 }
 
-export default CheckOut;
+export default withStyles(useStyles)(CheckOut);
