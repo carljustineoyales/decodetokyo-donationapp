@@ -30,7 +30,7 @@ const useStyles = theme => ({
     paddingTop: '56.25%', // 16:9
   },
   avatar: {
-    backgroundColor: 'red',
+    backgroundColor: 'grey',
   },
 })
 export class CardItem extends Component {
@@ -124,11 +124,20 @@ export class CardItem extends Component {
 
 <Card className={classes.root}>
 <CardHeader
-  avatar={
+avatar=
+  {(author.avatar === null) ? (
+    
+      <Avatar className={classes.avatar}/>
+    
+  ):
+  (
+    
     <Avatar aria-label="recipe" className={classes.avatar} src={author.avatar.url}/>
       
     
-  }
+  
+  )}
+  
   
   title={<Link to={`/profile/${author.username}`}>{author.first_name} {author.last_name}</Link>}
   subheader={<Moment fromNow>{created_at}</Moment>}
