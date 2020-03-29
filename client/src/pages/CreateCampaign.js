@@ -216,10 +216,18 @@ export class CreateCampaign extends Component {
     axios.get(`${strapi}/users/?username=${this.state.username}`)
       .then(res=>{
         console.log(res.data)
-        this.setState({
-          name:`${res.data[0].first_name} ${res.data[0].last_name}`,
-          avatar:res.data[0].avatar.url
-        })
+        if(res.data[0].avatar === null){
+          this.setState({
+            name:`${res.data[0].first_name} ${res.data[0].last_name}`,
+            avatar:null
+          })
+        }else{
+          this.setState({
+            name:`${res.data[0].first_name} ${res.data[0].last_name}`,
+            avatar:res.data[0].avatar.url
+          })
+        }
+        
       })
     this.setState({
       open:true,
@@ -496,19 +504,21 @@ export class CreateCampaign extends Component {
         <Fade in={this.state.open}>
         <Card className={classes.root}>
 <CardHeader
-  avatar={
-    <Avatar aria-label="recipe" className={classes.avatar} src={this.state.avatar}/>
+  // avatar={
+  //   <Avatar aria-label="recipe" className={classes.avatar} src={this.state.avatar}/>
       
     
-  }
-  
+  // }
+  avatar={
+          (this.state.avatar === null) ? <Avatar className={classes.avatar}/> : <Avatar aria-label="recipe" className={classes.avatar} src={this.state.avatar} className={classes.large}/>
+        }
   title={<Link to={`#`}>{this.state.name}</Link>}
   subheader='Created few minutes ago'
 />
 <CardMedia
   className={classes.media}
   image={`${this.state.dataImg}`}
-  title="Paella dish"
+  title={`${title}`}
 />
 <CardContent>
   <Typography variant="h6" color="textPrimary" component="p">

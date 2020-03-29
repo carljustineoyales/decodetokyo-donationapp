@@ -13,8 +13,8 @@ const app = express();
 
 let decoded = '';
 let token = '';
-const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
-// const strapi = 'http://localhost:1337'
+// const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
+const strapi = 'http://localhost:1337'
 app.use(express.urlencoded({extended: true}));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -48,9 +48,9 @@ app.post('/api/form',(req,res)=> {
   let invalidEmail = validator.isEmail(req.body.email);
   let emptyMessage = validator.isEmpty(req.body.message);
 
-  if(emptyName){
-    error.push('Empty Name')
-  }
+  // if(emptyName){
+  //   error.push('Empty Name')
+  // }
   if(emptyEmail){
     error.push('Empty Email')
   }else if(!invalidEmail){
@@ -65,7 +65,7 @@ app.post('/api/form',(req,res)=> {
       const htmlEmail = `
         <h3>Contact Details</h3>
         <ul>
-        <li>Name: ${req.body.name}</li>
+        
         <li>Facebook or Email: ${req.body.email}</li>
         </ul>
         <p>${req.body.message}</p>
