@@ -9,6 +9,7 @@ import PersonalInfoForm from './PersonalInfoForm'
 import PaymentDetails from './PaymentDetails'
 import Confirm from './Confirm';
 
+
 const useStyles = theme => ({
   mainStyle:{
     width:'100vw',
@@ -163,8 +164,8 @@ export class PersonalInfo extends Component {
         })
       })
   }
-  render() {
-    // const {classes} = this.props
+
+  showForms = () => {
     const {step} = this.state;
     const {first_name,
     last_name,
@@ -191,29 +192,58 @@ export class PersonalInfo extends Component {
       paypal_email,
       gcash_number,
       country}
+    switch(step){
+      case 1:
+      
+      return (
+        <PersonalInfoForm nextStep={this.nextStep} values={values} handleOnChange={this.handleOnChange}/>
+        
+        );
+      case 2:
+      return(
+        <PaymentDetails nextStep={this.nextStep} prevStep={this.prevStep} values={values} handleOnChange={this.handleOnChange}/>
+      )
+      case 3:
+      return(
+        <Confirm nextStep={this.nextStep} prevStep={this.prevStep} values={values} handleOnSubmit={this.handleOnSubmit}/>
+      )
+      case 4:
+      return(
+        <h1>Success</h1>
+      )
+    }
+  }
+  render() {
+    const {classes} = this.props
+    
     return(
       <LoggedInContext.Consumer>{(context)=>{
         this.state.id = context.id
-        switch(step){
-          case 1:
+        return(
+          <>
+          <main className={classes.mainStyle}>
+          <Grid container>
+                <Grid item xs={6} className={classes.paperStyleBackground}>
+                  <div>
+                  <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
+                  <h4>Company Name</h4>
+                  </div>
+                </Grid>
+                
+                
+                <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
+                <div style={{width:'80%'}}>
+                {this.showForms()}
+                </div>
+                  
+                </Grid>
+                  
+                
+              </Grid>
           
-          return (
-            <PersonalInfoForm nextStep={this.nextStep} values={values} handleOnChange={this.handleOnChange}/>
-            
-            );
-          case 2:
-          return(
-            <PaymentDetails nextStep={this.nextStep} prevStep={this.prevStep} values={values} handleOnChange={this.handleOnChange}/>
-          )
-          case 3:
-          return(
-            <Confirm nextStep={this.nextStep} prevStep={this.prevStep} values={values} handleOnSubmit={this.handleOnSubmit}/>
-          )
-          case 4:
-          return(
-            <h1>Success</h1>
-          )
-        }
+          </main>
+          </>
+        )
             
     }}</LoggedInContext.Consumer>
     )

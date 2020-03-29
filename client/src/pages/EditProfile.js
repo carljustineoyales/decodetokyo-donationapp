@@ -68,7 +68,8 @@ export class EditProfile extends Component {
       bank_name: '',
       avatars: {},
       dataImg:'',
-      password:''
+      password:'',
+      address_state:''
     }
     this.handleOnChange = this
       .handleOnChange
@@ -113,21 +114,41 @@ export class EditProfile extends Component {
     })
     .then(res => {
       console.log(res.data)
-      this.setState({
-        id:res.data[0].id,
-        email: res.data[0].email,
-        gcash_number: res.data[0].gcash_number,
-        paypal_email: res.data[0].paypal_email,
-        first_name: res.data[0].first_name,
-        last_name: res.data[0].last_name,
-        address: res.data[0].address,
-        city: res.data[0].city,
-        country: res.data[0].country,
-        zipcode: res.data[0].zipcode,
-        bank_name: res.data[0].bank_name,
-        bank_account: res.data[0].bank_account,
-        avatar: res.data[0].avatar.url
-      })
+      if(res.data[0].avatar === null){
+        this.setState({
+          id:res.data[0].id,
+          email: res.data[0].email,
+          gcash_number: res.data[0].gcash_number,
+          paypal_email: res.data[0].paypal_email,
+          first_name: res.data[0].first_name,
+          last_name: res.data[0].last_name,
+          address: res.data[0].address,
+          city: res.data[0].city,
+          country: res.data[0].country,
+          address_state: res.data[0].address_state,
+          zipcode: res.data[0].zipcode,
+          bank_name: res.data[0].bank_name,
+          bank_account: res.data[0].bank_account,
+          avatar: ''
+        })
+      }else{
+        this.setState({
+          id:res.data[0].id,
+          email: res.data[0].email,
+          gcash_number: res.data[0].gcash_number,
+          paypal_email: res.data[0].paypal_email,
+          first_name: res.data[0].first_name,
+          last_name: res.data[0].last_name,
+          address: res.data[0].address,
+          city: res.data[0].city,
+          country: res.data[0].country,
+          zipcode: res.data[0].zipcode,
+          bank_name: res.data[0].bank_name,
+          bank_account: res.data[0].bank_account,
+          avatar: res.data[0].avatar.url
+        })
+      }
+      
     }).catch(err => {
       console.log(err.response.data.message)
     })
@@ -145,7 +166,8 @@ export class EditProfile extends Component {
       paypal_email,
       bank_account,
       bank_name,
-      password
+      password,
+      address_state
     } = this.state
     event.preventDefault();
     const data = {
@@ -159,7 +181,8 @@ export class EditProfile extends Component {
       paypal_email,
       bank_account,
       bank_name,
-      password
+      password,
+      address_state
     };
 //move to backend
     axios.put(`${strapi}/users/${this.state.id}`, {
@@ -221,7 +244,8 @@ export class EditProfile extends Component {
       bank_account,
       bank_name,
       avatar,
-      dataImg
+      dataImg,
+      address_state
     } = this.state
     console.log(dataImg)
     return (
@@ -334,13 +358,22 @@ export class EditProfile extends Component {
                 />
               </Grid>
               <Grid item sm={4}>
+                {/* <TextField
+                  label='State/Province'
+                  variant='outlined'
+                  fullWidth
+                  name='address_state'
+                  value={address_state}
+                  onChange={this.handleOnChange()}
+                    
+                /> */}
                 <TextField
                   label='State/Province'
                   variant='outlined'
                   fullWidth
-                  name='province'
+                  name='address_state'
                   onChange={this.handleOnChange()}
-                    // value={province}
+                    value={address_state}
                 />
               </Grid>
               <Grid item sm={4}>
