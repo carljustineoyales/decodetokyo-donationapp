@@ -115,9 +115,9 @@ return (
 <Box key={data.id}>
   {username !== this.props.match.params.username
     ?
-    (<Button color='secondary' onClick={this.goBack}>Go Back</Button>)
+    (<Button color='secondary' onClick={this.goBack}>Feed</Button>)
     : (<>
-      <Button  color='secondary' onClick={this.goBack}>Go Back</Button>
+      <Button  component='a' color='secondary' href='/feed'>Feed</Button>
       <Button
 variant='contained' color='primary'
       component={Link}
@@ -128,7 +128,7 @@ variant='contained' color='primary'
 }
 <CardHeader
         avatar={
-          (data.avatar === null) ? <Avatar className={classes.avatar}/> : <Avatar aria-label="recipe" className={classes.avatar} src={`${data.avatar.url}`} className={classes.large}/>
+          (data.avatar === null) ? <Avatar className={classes.avatar,classes.large}/> : <Avatar aria-label="recipe" className={classes.avatar} src={`${data.avatar.url}`} className={classes.large}/>
         }
        
         title={`${data.first_name} ${data.last_name}`}
@@ -144,7 +144,7 @@ variant='contained' color='primary'
     <br/>
     <Typography variant='h6'>
     Address: 
-    <Typography variant='body1' style={{fontSize:'12px'}}>{data.address} {data.city}, {data.zipcode}, {data.country}</Typography>
+    <Typography variant='body1' style={{fontSize:'12px'}}>{data.address}, {data.city},{data.address_state}, {data.zipcode}, {data.country}</Typography>
     </Typography>
     <br/>
     <Typography variant='h6'>

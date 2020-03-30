@@ -507,7 +507,8 @@ app.use('/resetpassword',(req,res)=>{
     res.status(200).send(response.data)
   })
   .catch(err=>{
-    res.send(err.response)
+    
+    res.status(400).send(err.response)
   })
 });
 
@@ -617,7 +618,10 @@ app.use('/changepassword', (req,res)=>{
   .then(response=>{
     res.status(200).send(response.data)
   })
-  .catch(err=>{res.send(err.response)})
+  .catch(err=>{
+    console.log(err.response.data.message)
+    res.status(400).send(err.response.data)
+  })
 })
 
 /**

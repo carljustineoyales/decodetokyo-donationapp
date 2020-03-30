@@ -72,7 +72,10 @@ export class ChangePassword extends Component {
         isSuccess:true
       })
     })
-    .catch(err=>{alert('This email does not exist.')})
+    .catch(err=>{
+      // console.log(err.response.data.message[0].messages[0].message)
+      alert(err.response.data.message[0].messages[0].message)
+    })
   }
   
   
