@@ -4,7 +4,8 @@ import axios from 'axios';
 import Navbar from '../components/Home/Navbar';
 import {strapi} from '../components/functions'
 import {withStyles} from '@material-ui/core/styles';
-import {Grid,Link} from '@material-ui/core';
+import {Redirect, Link} from 'react-router-dom';
+import {Grid, TextField,Button, Typography} from '@material-ui/core';
 const useStyles = theme => ({
   mainStyle:{
     width:'100vw',
@@ -88,7 +89,12 @@ export class ResetPassword extends Component {
       this.setState({
         isSuccess:true
       })
-      setTimeout(window.location.href='/login', 5000);
+      setTimeout(
+        // window.location.href='/login'
+        function() {
+          window.location.href='/login'
+      }
+        , 5000);
     })
     .catch(err=>console.log(err.response))
     } else {
@@ -111,15 +117,18 @@ export class ResetPassword extends Component {
               <Grid item xs={6} className={classes.paperStyleBackground}>
                 <div>
                 <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
-                <h4>Company Name</h4>
+                <h4>Share and Donate</h4>
                 </div>
               </Grid>
               
               
               <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
                 {/* <Login handleOnSuccess={handleOnSuccess} id={id}/>  */}
-                <h1>you've successfully changed your password please enter your new credentials to log in. Thank you!</h1>
-                <h5>Redirecting in 5 secs</h5>
+                <Typography variant='h5' style={{margin:'32px',fontSize:'32px'}}>
+                  you've successfully changed your password please enter your new credentials to log in. Thank you!
+                </Typography>
+                <br/>
+                <Typography variant='h6' style={{margin:'32px'}}>Redirecting to Sign In page in 5 secs</Typography>
               </Grid>
                 
               
@@ -152,18 +161,18 @@ export class ResetPassword extends Component {
                 <Grid item xs={6} className={classes.paperStyleBackground}>
                   <div>
                   <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
-                  <h4>Company Name</h4>
+                  <h4>Share and Donate</h4>
                   </div>
                 </Grid>
                 
                 
                 <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
                 <form onSubmit={this.handleOnSubmit}>
-          <label>New Password</label><br/>
-            <input type='password' name='password' onChange={this.handleOnChange}/><br/><br/>
-            <label>Confirm Password</label><br/>
-            <input type='password' name='passwordConfirmation' onChange={this.handleOnChange}/><br/><br/>
-            <button>Submit</button>
+          <br/>
+            <TextField variant='outlined' label='New Password' type='password' name='password' onChange={this.handleOnChange}/><br/><br/>
+            
+            <TextField variant='outlined' label='Confirm Password' type='password' name='passwordConfirmation' onChange={this.handleOnChange}/><br/><br/>
+            <Button variant='contained' fullWidth type='submit' color='primary'>Submit</Button>
           </form>
                   
                   

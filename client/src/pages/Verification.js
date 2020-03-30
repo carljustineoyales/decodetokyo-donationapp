@@ -15,13 +15,13 @@ export class Verification extends Component {
 
   resendVerification = () =>{
     axios({
-      url:'/resend',
+      url:'/resendverification',
       method:'post',
       data:{
         email:this.state.email
       }
     })
-      .then(res=>{console.log(res.data)})
+      .then(res=>{alert('Verification Sent')})
       .catch(err=>{console.log(err.response)})
   }
 

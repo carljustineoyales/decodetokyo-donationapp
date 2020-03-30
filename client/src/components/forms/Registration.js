@@ -84,13 +84,14 @@ export class Registration extends Component {
                 })
       }
     }
-    
+    let username = this.state.email.split('@')
+    console.log(username[0])
     
     const data ={
     paypal_email: this.state.paypal_email,
     gcash_number: this.state.gcash_number,
     email: this.state.email,
-    username: this.state.email,
+    username: username[0],
     password: this.state.password,
     confirmed:false,
     done:false,
@@ -112,7 +113,7 @@ export class Registration extends Component {
                 this.OnSuccess();
               })
               .catch(err=>{
-                
+                console.log(err.response.data[0].messages[0])
                 try {
                   if(!this.state.errors.includes(err.response.data[0].messages[0].message)){
                     this.state.errors.push(err.response.data[0].messages[0].message)
@@ -469,7 +470,7 @@ export class Registration extends Component {
       </Grid>
       
         
-        <Grid item sm={12}>
+        <Grid item xs={12}>
                 <TextField
                 id="outlined-password-input"
                 name='email'

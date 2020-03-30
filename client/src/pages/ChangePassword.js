@@ -3,7 +3,9 @@ import axios from 'axios';
 import {strapi} from '../components/functions'
 import Navbar from '../components/Home/Navbar';
 import {withStyles} from '@material-ui/core/styles';
-import {Grid,Link} from '@material-ui/core';
+import {Redirect, Link} from 'react-router-dom';
+import {Grid, TextField,Button, Typography} from '@material-ui/core';
+
 const useStyles = theme => ({
   mainStyle:{
     width:'100vw',
@@ -87,14 +89,16 @@ export class ChangePassword extends Component {
               <Grid item xs={6} className={classes.paperStyleBackground}>
                 <div>
                 <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
-                <h4>Company Name</h4>
+                  <h4>Share and Donate</h4>
                 </div>
               </Grid>
               
               
               <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
                 {/* <Login handleOnSuccess={handleOnSuccess} id={id}/>  */}
-                <h1>You will receive an email to reset your password in a few minutes. Thank you!</h1>
+                <Typography variant='h1' style={{margin:'32px',fontSize:'32px'}}>
+                You will receive an email to reset your password in a few minutes. Thank you!
+                </Typography>
                 
               </Grid>
                 
@@ -127,16 +131,16 @@ export class ChangePassword extends Component {
                 <Grid item xs={6} className={classes.paperStyleBackground}>
                   <div>
                   <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
-                  <h4>Company Name</h4>
+                  <h4>Share and Donate</h4>
                   </div>
                 </Grid>
                 
                 
                 <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
                 <form onSubmit={this.hanldeOnSubmit}>
-        <label>Email</label><br/>
-        <input type='email' name='email' onChange={this.handleOnChange}/><br/><br/>
-          <button>Reset Password</button>
+        
+        <TextField variant='outlined' label='Email' type='email' name='email' onChange={this.handleOnChange}/><br/><br/>
+          <Button variant='contained' color='primary' type='submit'>Reset Password</Button>
         </form>
                   
                   

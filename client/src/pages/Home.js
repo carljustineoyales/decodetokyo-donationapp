@@ -10,13 +10,13 @@ import { RegistrationContext } from '../contexts/RegistrationContext';
 import { LoggedInContext } from '../contexts/LoggedInContext';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { Paper } from '@material-ui/core';
+import { Paper ,Hidden} from '@material-ui/core';
 import { CardListContext } from '../contexts/CardListContext';
 
 const useStyles = theme => ({
   mainStyle:{
     margin:'100px 64px',
-    height:'70vh',
+    height:'auto',
     display:'flex',
     justifyContent:'center',
     alignItems:'center'
@@ -56,10 +56,12 @@ export class Home extends Component {
   alignItems="center"
   alignContent='center'>
         
-        <Grid item xl={6} lg={5}>
-            <About cards={context.cards}/>
+        <Grid item xl={6} md={6}>
+            <About cards={context.cards} />
           </Grid>
-          <Grid container item xl={4} lg={5}>
+          
+          <Grid container item xl={4} md={6}>
+         
             <UserForm/>
           </Grid>
         </Grid>

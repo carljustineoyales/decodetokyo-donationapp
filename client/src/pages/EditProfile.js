@@ -45,6 +45,7 @@ const useStyles = theme => ({
   large: {
     width: theme.spacing(10),
     height: theme.spacing(10),
+    
   },
 })
 
@@ -114,37 +115,30 @@ export class EditProfile extends Component {
     })
     .then(res => {
       console.log(res.data)
+      this.setState({
+        id:res.data[0].id,
+        email: res.data[0].email,
+        gcash_number: res.data[0].gcash_number,
+        paypal_email: res.data[0].paypal_email,
+        first_name: res.data[0].first_name,
+        last_name: res.data[0].last_name,
+        address: res.data[0].address,
+        city: res.data[0].city,
+        country: res.data[0].country,
+        zipcode: res.data[0].zipcode,
+        address_state: res.data[0].address_state,
+        bank_name: res.data[0].bank_name,
+        bank_account: res.data[0].bank_account,
+        // avatar: res.data[0].avatar.url
+      })
       if(res.data[0].avatar === null){
         this.setState({
-          id:res.data[0].id,
-          email: res.data[0].email,
-          gcash_number: res.data[0].gcash_number,
-          paypal_email: res.data[0].paypal_email,
-          first_name: res.data[0].first_name,
-          last_name: res.data[0].last_name,
-          address: res.data[0].address,
-          city: res.data[0].city,
-          country: res.data[0].country,
-          address_state: res.data[0].address_state,
-          zipcode: res.data[0].zipcode,
-          bank_name: res.data[0].bank_name,
-          bank_account: res.data[0].bank_account,
+          
           avatar: ''
         })
       }else{
         this.setState({
-          id:res.data[0].id,
-          email: res.data[0].email,
-          gcash_number: res.data[0].gcash_number,
-          paypal_email: res.data[0].paypal_email,
-          first_name: res.data[0].first_name,
-          last_name: res.data[0].last_name,
-          address: res.data[0].address,
-          city: res.data[0].city,
-          country: res.data[0].country,
-          zipcode: res.data[0].zipcode,
-          bank_name: res.data[0].bank_name,
-          bank_account: res.data[0].bank_account,
+          
           avatar: res.data[0].avatar.url
         })
       }
@@ -170,20 +164,38 @@ export class EditProfile extends Component {
       address_state
     } = this.state
     event.preventDefault();
-    const data = {
-      first_name,
-      last_name,
-      address,
-      city,
-      country,
-      zipcode,
-      gcash_number,
-      paypal_email,
-      bank_account,
-      bank_name,
-      password,
-      address_state
-    };
+    let data = {}
+    if(password.length <= 0){
+       data = {
+        first_name,
+        last_name,
+        address,
+        city,
+        country,
+        zipcode,
+        gcash_number,
+        paypal_email,
+        bank_account,
+        bank_name,
+        address_state
+      };
+    }else{
+       data = {
+            first_name,
+            last_name,
+            address,
+            city,
+            country,
+            zipcode,
+            gcash_number,
+            paypal_email,
+            bank_account,
+            bank_name,
+            password,
+            address_state
+          };
+    }
+    
 //move to backend
     axios.put(`${strapi}/users/${this.state.id}`, {
       headers: {
@@ -208,13 +220,15 @@ export class EditProfile extends Component {
           // 'Authorization': `Bearer ${withToken()}`
         }
       }).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         window.location.href = `/profile/${this.props.match.params.username}`
       }).catch(err => {
         console.log(err.response.data.message)
       })
     }).catch(err => {
       window.location.href = `/profile/${this.props.match.params.username}`
+      // console.log(data)
+      // console.log(err.response)
       console.log(err)
     })
   }
@@ -278,16 +292,18 @@ export class EditProfile extends Component {
               </Typography>
               <br/>
               <Grid container item direction='row' alignItems='center' spacing={2}>
-              <Grid item sm={2}>
+              <Grid item sm={3}>
               <Avatar alt={`${first_name} ${last_name}`} 
               // src="/static/images/avatar/1.jpg" 
               id="output_image"
               src={(dataImg !== '') ? `${dataImg}` : `${avatar}`}
               // src={dataImg}
               
-              className={classes.large} />
+              className={classes.large} 
+              
+              />
               </Grid>
-              <Grid item sm>
+              <Grid item sm={9}>
               <input
             accept="image/*"
             className={classes.input}

@@ -13,8 +13,8 @@ const app = express();
 
 let decoded = '';
 let token = '';
-const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
-// const strapi = 'http://localhost:1337'
+// const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
+const strapi = 'http://localhost:1337'
 app.use(express.urlencoded({extended: true}));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -75,15 +75,15 @@ app.post('/api/form',(req,res)=> {
         host:'smtp.ethereal.email',
         port:587,
         auth:{
-          user:'joey76@ethereal.email',
-          pass:'ugDvFjR5CpxPA58q2R'
+          user:'brandt99@ethereal.email',
+          pass:'1juUTawmPHVeSAWjM8'
         }
       })
   
       let mailOptions = {
         from:`${req.body.email}`,
-        to:'joey76@ethereal.email',
-        replyTo:'test@testaccount.com',
+        to:'brandt99@ethereal.email',
+        replyTo:'brandt99@ethereal.email',
         subject:'New Message',
         text:req.body.message,
         html:htmlEmail
@@ -677,7 +677,10 @@ app.use('/registeruser',(req,res)=>{
         .then(response=>{res.status(200).send(response.data)})
         .catch(err=>{console.log(err)})
       })
-      .catch(err=>{res.status(400).send(err.response.data.message)})
+      .catch(err=>{
+        console.log(err.response.data.message)
+        res.status(400).send(err.response.data.message)
+      })
   }else{
     res.status(400).send(error)
   }

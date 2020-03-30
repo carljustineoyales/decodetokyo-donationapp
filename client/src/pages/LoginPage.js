@@ -75,7 +75,7 @@ export class LoginPage extends Component {
                 <Grid item xs={6} className={classes.paperStyleBackground}>
                   <div>
                   <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
-                  <h4>Company Name</h4>
+                  <h4>Share and Donate</h4>
                   </div>
                 </Grid>
                 

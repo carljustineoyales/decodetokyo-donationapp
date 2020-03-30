@@ -4,7 +4,41 @@ import Footer from '../components/Home/Footer'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import validator from 'validator'
+import {withStyles} from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import { TextField,Button, Typography } from '@material-ui/core';
 
+const useStyles = theme => ({
+  mainStyle:{
+    width:'100vw',
+    height:'100vh',
+    margin:'0'
+  },
+  paperStyleBackground:{
+    background: 'rgb(0,152,131)',
+    background: 'linear-gradient(-45deg, rgba(0,152,131,1) 0%, rgba(0,192,99,1) 100%)',
+    borderRadius:'0',
+    height:'100vh',
+    display:'flex',
+    flowDirection:'column',
+    justifyContent:'center',
+    alignItems:'center',
+    color:'#fff',
+    textAlign:'center'
+  },
+  paperStyle:{
+    background:'white',
+    borderRadius:'0',
+    
+  },
+  linkStyle:{
+    color:'#fff',
+    "&:hover": {
+      textDecoration:'none',
+      color:'#fff',
+    }
+  }
+})
 export class ResendEmailVerification extends Component {
 
 
@@ -80,9 +114,10 @@ export class ResendEmailVerification extends Component {
   }
 
   render() {
+    const {classes} = this.props
     return (
       <>
-      <Navbar/>
+      {/* <Navbar/>
       <main>
         <div className='container'>
           <div className="row">
@@ -98,7 +133,7 @@ export class ResendEmailVerification extends Component {
             <h1>{this.state.email} is already verified please login <Link to={'login'}>here</Link></h1>
             </>
           ) : (
-            (this.state.isSuccess) ? (
+            (this.state.isSuccess) ? ( 
             <>
             <h1>Email Verification Sent to {this.state.email}</h1>
             <button onClick={this.handleOnClick}>Not Recieved?</button>
@@ -122,10 +157,71 @@ export class ResendEmailVerification extends Component {
           </div>
         </div>
       </main>
-      <Footer/>
+      <Footer/> */}
+      <main className={classes.mainStyle}>
+            
+              <Grid container>
+                <Grid item xs={6} className={classes.paperStyleBackground}>
+                  <div>
+                  <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
+                  <h4>Share and Donate</h4>
+                  </div>
+                </Grid>
+                
+               
+                <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
+                { (this.state.isSuccess) ? (<>
+                <Typography variant='h1' style={{fontSize:'32px'}}>
+                  Verification Sent
+                </Typography>
+                </>):(
+                  <>
+                  {(this.state.error === 'An internal server error occurred') ? (
+            <>
+            <h1>{this.state.email} not found please register first</h1>
+            <button onClick={this.handleOnClick}>Go back</button>
+            </>
+          ):((this.state.error === 'already.confirmed') ? (
+            <>
+            <h1>{this.state.email} is already verified please login <Link to={'login'}>here</Link></h1>
+            </>
+          ) : (
+            (this.state.isSuccess) ? ( 
+            <>
+            <h1>Email Verification Sent to {this.state.email}</h1>
+            <button onClick={this.handleOnClick}>Not Recieved?</button>
+            </>
+          ):(
+            <>
+            <h1>Your email is not yet verified</h1>
+            <div className='errors'>
+            <h3>
+              {this.state.inputError}
+            </h3>
+          </div>
+              <form onSubmit={this.handleOnSubmit}>
+                <TextField variant='outlined' label='Email' type='email' name='email' onChange={this.handleOnChange} value={this.state.email}/>
+                <br/><br/>
+                <Button variant='contained' color='primary' type='submit'>Resend Verification</Button>
+              </form>
+              </>
+          )))}
+                  </>
+                ) }
+                
+                  
+                  
+                </Grid>
+                  
+                
+              </Grid>
+              
+
+            
+          </main>
       </>
     );
   }
 }
 
-export default ResendEmailVerification;
+export default withStyles(useStyles)(ResendEmailVerification);
