@@ -24,7 +24,7 @@ export class CardList extends Component {
   justify="flex-start"
   alignItems="stretch">
                 {cards
-                  .reverse()
+                  
                   .map(card => (<Grid item sm={4}><Paper variant='outlined'><CardItem key={card.id} card={card} /></Paper></Grid>))}
               </Grid>
             );

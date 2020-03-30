@@ -25,11 +25,11 @@ export class CardListContextProvider extends Component {
     event.preventDefault();
       if(this.query.length > 0){
         //move to backend
-        axios.get(`${strapi}/campaigns?verified=true&title=${this.query}`)
+        axios.get(`${strapi}/campaigns?verified=true&title_contains=${this.query}`)
         .then(res=>{
             // this.query=''
             this.setState({
-              cards:res.data,
+              cards:res.data.reverse(),
               isLoaded: true,
             })
         })
@@ -50,9 +50,10 @@ export class CardListContextProvider extends Component {
       })
       .then(res=>{
         console.log(res.data)
+        let newData = res.data.reverse();
         if(this._isMounted){
           this.setState({
-            cards:res.data,
+            cards:newData,
             isLoaded: true,
           })
         }
