@@ -26,6 +26,9 @@ const useStyles = theme => ({
     height:'160px',
     overflow:'hidden'
   },
+  pd:{
+    padding:theme.spacing(2)
+  }
 })
 export class Profile extends Component {
 
@@ -33,9 +36,12 @@ export class Profile extends Component {
     super(props);
     this.state = {
       profile_data: [],
-      error: ''
+      error: '',
+      campaigns:[],
+      filteredCampaigns:[]
     }
     this.goBack = this.goBack.bind(this); 
+    this.handleOnChange = this.handleOnChange.bind(this)
   }
 
 
@@ -53,13 +59,18 @@ export class Profile extends Component {
     })
       .then(res => {
         console.log(res.data)
-        this.setState({profile_data: res.data})
+        this.setState({
+          profile_data: res.data,
+          campaigns:res.data[0].campaigns,
+          filteredCampaigns:res.data[0].campaigns,
+          
+        })
 
       })
       .catch(err => {
         console.log(err)
       })
-
+      
   }
 
   
@@ -68,6 +79,18 @@ export class Profile extends Component {
     this.props.history.goBack();
 }
 
+  handleOnChange = (event) => {
+    event.preventDefault();
+    console.log(event.target.value)
+    
+    let filteredCampaigns = this.state.campaigns
+    filteredCampaigns = filteredCampaigns.filter(campaign => {
+      return campaign.title.toLowerCase().search(event.target.value.toLowerCase()) !== -1
+    })
+    this.setState({
+      filteredCampaigns
+    })
+  }
 
   render() {
     const {classes} = this.props
@@ -83,8 +106,8 @@ return (
         <main className={classes.mainStyle}>
          
          
-          <Grid container spacing={10} sm={12}>
-            <Grid item sm={3}>
+          <Grid container sm={12}>
+            <Grid item sm={3} className={classes.pd}>
               <Card>
              
               {profile_data.map(data => (
@@ -110,7 +133,7 @@ variant='contained' color='primary'
        
         title={`${data.first_name} ${data.last_name}`}
         titleTypographyProps={{variant:'h5'}}
-        
+        subheader={`@${data.username}`}
         subheaderTypographyProps={{variant:'body1'}}
       />
       <Divider/>
@@ -119,12 +142,14 @@ variant='contained' color='primary'
         Personal Information
     </Typography>
     <br/>
-    <Typography variant='body1'>
-    Address: {data.address} {data.city}, {data.zipcode}, {data.country}
+    <Typography variant='h6'>
+    Address: 
+    <Typography variant='body1' style={{fontSize:'12px'}}>{data.address} {data.city}, {data.zipcode}, {data.country}</Typography>
     </Typography>
     <br/>
-    <Typography variant='body1'>
-    Email: {data.email}
+    <Typography variant='h6'>
+    Email: 
+    <Typography variant='body1' style={{fontSize:'12px'}}>{data.email}</Typography>
     </Typography>
     
     
@@ -135,9 +160,9 @@ variant='contained' color='primary'
 }
               </Card>
             </Grid>
-            <Grid container sm={9} spacing={4} direction='row' justify='space-around'>
+            <Grid container sm={9}  direction='row' justify='space-around' className={classes.pd}>
             
-            <Grid container item sm={12} spacing={2} direction='row'>
+            <Grid container item sm={12}  direction='row' style={{paddingBottom:'32px'}}>
               <Grid item sm={9} >
                 <Typography variant='h4'>
                 Created Campaigns
@@ -147,30 +172,29 @@ variant='contained' color='primary'
               </Grid>
               <Grid item sm={3}>
                 <TextField
-                  label='Search'
+                  label='Search Title'
                   variant='outlined'
                   type='text'
                   fullWidth
+                  onChange={this.handleOnChange}
                 />
                 
               </Grid>
             </Grid>
             
-            <Grid item container sm={12} spacing={4}>
+            <Grid item container sm={12} spacing={2}>
 
-            {profile_data.map(data => (
-              data
-                  .campaigns
-                  .map(campaign => (
+            {this.state.filteredCampaigns.map(campaign => (
+              <>
                     <Grid item sm={4}>
                     <Card key={campaign.id} variant='outlined' >
                     <CardMedia
-  className={classes.media}
-  
-  image={(campaign.image === null) ? 'https://fakeimg.pl/375x187' : `${campaign.image.url}`}
-  title={(campaign.image === null) ? '' : `${campaign.image.title}`}
-/>
-<CardContent>
+                        className={classes.media}
+                        
+                        image={(campaign.image === null) ? 'https://fakeimg.pl/375x187' : `${campaign.image.url}`}
+                        title={(campaign.image === null) ? '' : `${campaign.image.title}`}
+                      />
+                      <CardContent>
                       
                       <h3>{campaign.title}</h3>
                       <h5>{campaign.goal}</h5>
@@ -179,9 +203,9 @@ variant='contained' color='primary'
                         : (campaign.requested) ? <h5>Checked Out</h5> : (campaign.verified
                           ? <h5>Verified</h5>
                           : <h5>Pending</h5>)
-}
-</CardContent>
-<CardContent className={classes.desc}>
+                      }
+                      </CardContent>
+                      <CardContent className={classes.desc}>
                       {/* {(campaign.description.length > 50)
                         ? (
                           <p
@@ -202,12 +226,12 @@ variant='contained' color='primary'
                             wordBreak: 'break-word'
                           }}>{campaign.description}</p>
                         )
-} */}
-{campaign.description}
-</CardContent>
-<br/>
-<CardContent>
-{
+                            } */}
+                            {campaign.description}
+                            </CardContent>
+                            <br/>
+                            <CardContent>
+                            {
                         (loggedin && username === this.props.match.params.username) ? ((campaign.requested) ? 
                          '':( <Fragment>
                           <Link to={`/checkout/${campaign.id}`}>Checkout</Link><br/>
@@ -219,8 +243,9 @@ variant='contained' color='primary'
                       </CardContent>
                     </Card>
                     </Grid>
-                  ))
-            ))}
+                    </>
+                  )
+            )}
               
             </Grid>
             </Grid>

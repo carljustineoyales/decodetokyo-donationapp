@@ -68,12 +68,16 @@ export class NeedHelp extends Component {
       return (
         <>
         <Navbar/>
-        <main>
-            <div className='container'>
-            <h1>Ticket Sent</h1>
-            <p>create another ticket <a href='/help'>here</a> </p>
-            </div>
+        <main className={classes.mainStyle}>
+        <div style={{textAlign:'center'}}>
+
+        <Typography variant='h1' color='primary' className={classes.heading1}>
+        Ticket Sent
+          </Typography>
             
+            <p>create another ticket <a href='/help'>here</a> </p>
+            
+            </div>
             </main>
          
         </>

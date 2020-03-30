@@ -332,7 +332,7 @@ export class SingleCard extends Component {
         }
         
         title={`${first_name} ${last_name}`}
-        titleTypographyProps={{variant:'h4' }}
+        titleTypographyProps={{variant:'body1' }}
         subheader={`${username}`}
       />
       <Divider/>

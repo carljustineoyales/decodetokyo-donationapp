@@ -53,6 +53,7 @@ export class UserForm extends Component {
       if(!isSuccess){
         return (
       <Fragment>
+      
         <Registration login={this.login} success={isSuccess} handleOnSuccess={handleOnSuccess}/>
       </Fragment>
     );
