@@ -2,12 +2,19 @@ import React, {Component, Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { flexbox } from '@material-ui/system';
-import {Box,Input, TextField, Grid, Button} from '@material-ui/core';
+import {Box,Input, TextField, Grid, Button, withStyles} from '@material-ui/core';
 import validator from 'validator';
-
-export class Registration extends Component {
+import {Alert} from '@material-ui/lab';
+const useStyles = theme => ({
+  errors:{
+    width:'100%'
+  }
+  
+})
+class Registration extends Component {
 
   constructor(props) {
+    
     super(props);
     this.state = {
       paypal_email: '',
@@ -29,14 +36,14 @@ export class Registration extends Component {
       axiosError: '',
       sent: false,
       emailMatched:false,
-      show:false
+      show:false,
+      disable:true
     }
     this.handleOnChange = this
       .handleOnChange
       .bind(this)
     this.OnSuccess = this.OnSuccess.bind(this)
   }
-
 
   OnSuccess = () => {
     this.props.handleOnSuccess(this.state.email)
@@ -53,29 +60,7 @@ export class Registration extends Component {
                 })
       }
     }
-    // else{
-    //   if(this.state.country === 'Philippines'){
-    //     if(validator.isEmpty(this.state.gcash_number)){
-    //       console.log('empty gcash')
-    //       if(!this.state.errors.includes('Empty Gcash.')){
-    //         this.state.errors.push('Empty Gcash.');
-    //         this.setState({
-    //                   isLoading: true,
-    //                 })
-    //       }
-    //     }
-    //   }else{
-        
-    //     if(validator.isEmpty(this.state.paypal_email)){
-    //       if(!this.state.errors.includes('Empty Paypal.')){
-    //         this.state.errors.push('Empty Paypal.');
-    //         this.setState({
-    //                   isLoading: true,
-    //                 })
-    //       }
-    //     }
-    //   }
-    // }
+    
     if(validator.isEmpty(this.state.password)){
       if(!this.state.errors.includes('Empty Password.')){
         this.state.errors.push('Empty Password.');
@@ -88,14 +73,14 @@ export class Registration extends Component {
     console.log(username[0])
     
     const data ={
-    paypal_email: this.state.paypal_email,
-    gcash_number: this.state.gcash_number,
+    // paypal_email: this.state.paypal_email,
+    // gcash_number: this.state.gcash_number,
     email: this.state.email,
     username: username[0],
     password: this.state.password,
     confirmed:false,
     done:false,
-    country:this.state.country
+    // country:this.state.country
     }
     if(validator.isEmpty(this.state.email) && validator.isEmpty(this.state.confirmEmail)){
       this.state.errors.push('Empty Email.')
@@ -114,12 +99,18 @@ export class Registration extends Component {
               })
               .catch(err=>{
                 console.log(err.response.data[0].messages[0])
+                
                 try {
-                  if(!this.state.errors.includes(err.response.data[0].messages[0].message)){
-                    this.state.errors.push(err.response.data[0].messages[0].message)
-                  }else if(this.state.errors.includes(err.response.data[0].messages[0].message)){
-                    this.state.errors = this.state.errors.filter(item => item !== err.response.data[0].messages[0].message);
+                  if(err.response.data[0].messages[0].id === 'Auth.form.error.username.taken'){
+                    this.state.errors.push('Email already taken.')
+                  }else{
+                    if(!this.state.errors.includes(err.response.data[0].messages[0].message)){
+                      this.state.errors.push(err.response.data[0].messages[0].message)
+                    }else if(this.state.errors.includes(err.response.data[0].messages[0].message)){
+                      this.state.errors = this.state.errors.filter(item => item !== err.response.data[0].messages[0].message);
+                    }
                   }
+                  
                   
           
                   
@@ -152,175 +143,67 @@ export class Registration extends Component {
     }  
   }
 
-  showInputs = () => {
-    switch (this.state.country) {
-      case 'Philippines':
-        return (
-          <Fragment>
-          <div className="input-group input-group-sm mb-3">
-                <div className="input-group-prepend">
-                  <label className="input-group-text" for="paypal_email">Paypal</label>
-                </div>
-                <input
-                  className='form-control form-control-sm'
-                  type='text'
-                  placeholder='johndoe@email.com'
-                  name="paypal_email"
-                  id='paypal'
-                  value={this.state.paypal_email}
-                  onChange={this.handleOnChange}/>
-                <a
-                  href='#'
-                  className="d-inline-block"
-                  data-toggle="modal"
-                  name='gcash'
-                  // onClick={this.tooltip}
-                  data-target="#exampleModal"
-                  title='insert tooltip for gcash'>
-                  
-                  <img
-                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                    alt='gcash-help-icon'/>
-                </a>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        ...
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <div className=' mb-3'>
-              <div className="input-group input-group-sm">
-                <div className="input-group-prepend">
-                  <label className="input-group-text" for="gcash_number">GCash</label>
-                </div>
-                <input
-                  className='form-control form-control-sm'
-                  type='text'
-                  placeholder='+639XXXXXXXXX'
-                  name="gcash_number"
-                  id='gcash'
-                  value={this.state.gcash_number}
-                  onChange={this.handleOnChange}/>
-                <a
-                  href='#'
-                  className="d-inline-block"
-                  data-toggle="modal"
-                  name='gcash'
-                  // onClick={this.tooltip}
-                  data-target="#exampleModal"
-                  title='insert tooltip for gcash'>
-                  
-                  <img
-                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                    alt='gcash-help-icon'/>
-                </a>
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        ...
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <small className="form-text text-muted">
-                If you lived in the Philippines, you only need GCASH Number
-              </small>
-            </div>
-            
-          </Fragment>
-        )
-
-      default:
-        return (
-          <>
-          <div className="input-group input-group-sm mb-3">
-                <div className="input-group-prepend">
-                  <label className="input-group-text" for="paypal_email">Paypal</label>
-                </div>
-                <input
-                  className='form-control form-control-sm'
-                  type='text'
-                  placeholder='johndoe@email.com'
-                  name="paypal_email"
-                  id='paypal'
-                  value={this.state.paypal_email}
-                  onChange={this.handleOnChange}/>
-                <a
-                  href='#'
-                  className="d-inline-block"
-                  data-toggle="tooltip"
-                  
-
-                  onClick={this.tooltip}
-                  title='insert tooltip for paypal'>
-                  <img
-                  
-                    src="https://img.icons8.com/material-rounded/18/000000/help.png"
-                    alt='paypal-help-icon'/>
-                </a>
-              </div>
-          </>
-        )
-        break
-    }
-  }
+  
+  
 
   handleOnChange = (event) => {
     
     this.setState({
       [event.target.name]: event.target.value,
       
-    })
-
-  if(event.target.value !== '' || event.target.value !== null){
-    // if(event.target.name === 'country'){
-    //   if(this.state.errors.includes('Empty Country.')){
-    //     this.state.errors = this.state.errors.filter(item => item !== 'Empty Country.')
-    //   }
-    //   if(this.state.errors.includes('Empty Gcash.')){
-    //     this.state.errors = this.state.errors.filter(item => item !== 'Empty Gcash.')
-    //   }
-    // }
-    // if(event.target.name === 'gcash_number'){
-    //   if(this.state.errors.includes('Empty Gcash.')){
-    //     this.state.errors = this.state.errors.filter(item => item !== 'Empty Gcash.')
-    //   }
-    // }
+    });
     
-    // if(event.target.name === 'paypal_email'){
-    //   if(this.state.errors.includes('Empty Paypal.')){
-    //     this.state.errors = this.state.errors.filter(item => item !== 'Empty Paypal.')
-    //   }
-    // }
+  if(event.target.value !== '' || event.target.value !== null){
+    console.log(this.state.email.length)
     if(event.target.name === 'email'){
-      if(!validator.isEmpty(this.state.confirmEmail)){
-        if(event.target.value !== this.state.confirmEmail){
+      if(event.target.value.length === 0){
+        this.setState({
+          
+          disable:true,
+          errors:[]
+        })
+      }else{
+        
+        this.setState({
+          
+          disable:false
+        })
+        
+      }
+      
+      }
+      
+        if(!validator.isEmpty(this.state.confirmEmail)){
+          if(event.target.value !== this.state.confirmEmail){
+            if(!this.state.errors.includes('Email does not match.')){
+              this.state.errors.push('Email does not match.')
+  
+            }
+            this.setState({
+              emailMatched:false,
+              
+            })
+          }else{
+            this.setState({
+              emailMatched:true
+            })
+            if(this.state.errors.includes('Email does not match.')){
+              this.state.errors = this.state.errors.filter(item => item !== 'Email does not match.')
+            }
+          }
+        }
+        if(this.state.errors.includes('Empty Email.')){
+          this.state.errors = this.state.errors.filter(item => item !== 'Empty Email.')
+        }
+        if(this.state.errors.includes('Invalid Email.')){
+          this.state.errors = this.state.errors.filter(item => item !== 'Invalid Email.')
+        }
+        if(this.state.errors.includes('Email already taken.')){
+          this.state.errors = this.state.errors.filter(item => item !== 'Email already taken.')
+        }
+      }
+      if(event.target.name === 'confirmEmail'){
+        if(event.target.value !== this.state.email){
           if(!this.state.errors.includes('Email does not match.')){
             this.state.errors.push('Email does not match.')
           }
@@ -336,135 +219,40 @@ export class Registration extends Component {
           }
         }
       }
-      if(this.state.errors.includes('Empty Email.')){
-        this.state.errors = this.state.errors.filter(item => item !== 'Empty Email.')
-      }
-      if(this.state.errors.includes('Invalid Email.')){
-        this.state.errors = this.state.errors.filter(item => item !== 'Invalid Email.')
-      }
-      if(this.state.errors.includes('Email already taken.')){
-        this.state.errors = this.state.errors.filter(item => item !== 'Email already taken.')
-      }
-    }
-    if(event.target.name === 'confirmEmail'){
-      if(event.target.value !== this.state.email){
-        if(!this.state.errors.includes('Email does not match.')){
-          this.state.errors.push('Email does not match.')
-        }
-        this.setState({
-          emailMatched:false,
-        })
-      }else{
-        this.setState({
-          emailMatched:true
-        })
-        if(this.state.errors.includes('Email does not match.')){
-          this.state.errors = this.state.errors.filter(item => item !== 'Email does not match.')
+      if(event.target.name === 'password'){
+        if(this.state.errors.includes('Empty Password.')){
+          this.state.errors = this.state.errors.filter(item => item !== 'Empty Password.')
         }
       }
-    }
-    if(event.target.name === 'password'){
-      if(this.state.errors.includes('Empty Password.')){
-        this.state.errors = this.state.errors.filter(item => item !== 'Empty Password.')
-      }
-    }
-  }
-  }
-
   
-  render() {
+  
+  }
 
+  render() {
+    const {classes} = this.props
     return (
       
       <Fragment>
         
-        {(this.state.axiosError.length > 0)
-          ? <div className="alert alert-warning" role="alert">{this.state.axiosError}</div>
+       
+        <form>
+         
+    
+      <Grid container direction='row' alignContent='center' spacing={4} sm={12}>
+      <Grid item xs={12}>
+      {(this.state.axiosError.length > 0)
+          ? <Alert  severity="error" fullWidth className={classes.errors}>
+              {this.state.axiosError}
+            </Alert>
           : ''}
         {(this.state.errors.length > 0)
-          ? <div className="alert alert-danger" role="alert">{this
+          ? <Alert severity="error"  className={classes.errors}>{this
                 .state
                 .errors
                 .map(error => (
                   <div key={error.id}>{error}</div>
-                ))}</div>
+                ))}</Alert>
           : ''}
-        <form>
-          {/* <div className='row'>
-            <div className="col-sm">
-
-              <label htmlFor='country'>Country: <span className='red'>*</span></label>
-              <input type='text' name='country' id='country' className="form-control form-control-sm" value={this.state.country} onChange={this.handleOnChange}/>
-              
-            </div>
-          </div>
-          <div className='row'>
-
-            <div className='col-sm'>
-              <label htmlFor='country'>Payment: <span className='red'>*</span></label>
-              
-              {this.showInputs()}
-              
-            </div>
-          </div> */}
-
-          {/* <div className='row'>
-            <div className="col-sm">
-              <label htmlFor='email'>Facebook or Email <span className='red'>*</span></label>
-
-              <input
-                className='form-control form-control-sm'
-                type='text'
-                placeholder='johndoe'
-                name="email"
-                id='email'
-                onChange={this.handleOnChange}/>
-
-            </div>
-            <div className="col-sm">
-
-              <label htmlFor='confirmemail'>Confirm Email</label>
-              <input
-                className='form-control form-control-sm'
-                type='email'
-                placeholder='johndoe@email.com'
-                name="confirmEmail"
-                id='confirm email'
-                onChange={this.handleOnChange}/>
-
-            </div>
-            
-
-          </div>
-          
-          <div className='row'>
-          <div className="col-sm">
-
-            <label htmlFor='password'>Password <span className='red'>*</span></label>
-            <input
-              className='form-control form-control-sm'
-              type='password'
-              placeholder='********'
-              name="password"
-              id='password'
-              onChange={this.handleOnChange}/>
-            </div>
-
-          </div>
-
-          
-          <div className='row'>
-            <div className="col-sm">
-              <Link to="/help">Need Help?</Link>
-            </div>
-            <div className="col-sm">
-              <button className='btn btn-primary w-100' onClick={this.continue}>Continue</button>
-            </div>
-
-          </div> */}
-    
-      <Grid container direction='row' alignContent='center' spacing={4} sm={12}>
-      <Grid item>
       <h1>Sign Up</h1>
         <p>Register to create a campaign</p>
       </Grid>
@@ -479,6 +267,7 @@ export class Registration extends Component {
                 autoComplete="current-password"
                 variant="outlined"
                 fullWidth
+                
                 onChange={this.handleOnChange}
               />
         </Grid>
@@ -491,7 +280,10 @@ export class Registration extends Component {
               autoComplete="current-password"
               variant="outlined"
               fullWidth
+              
+              value={this.state.confirmEmail}
               onChange={this.handleOnChange}
+              disabled={this.state.disable}
             />
         </Grid>
         <Grid item xs={12}>
@@ -525,4 +317,4 @@ export class Registration extends Component {
   
 }
 
-export default Registration;
+export default withStyles(useStyles)(Registration);

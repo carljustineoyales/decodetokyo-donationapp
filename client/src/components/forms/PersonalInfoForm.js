@@ -10,7 +10,9 @@ class PersonalInfoForm extends Component {
     return (
       
       <>
+      <form onSubmit={this.continue}>
       <Grid container item  spacing={2} direction='row' justify='center' alignContent='center' xs={12}>
+      
       <Grid item xs={6}>
       <TextField
         label='First Name'
@@ -89,10 +91,13 @@ class PersonalInfoForm extends Component {
       />
       </Grid>
       <Grid item container justify='flex-end'>
-      <Button color='primary' variant='contained' onClick={this.continue}>Continue</Button>
-
+      <Button color='primary' variant='contained' type='submit' >Continue</Button>
+      
       </Grid>
+      
+
      </Grid>
+     </form>
       
       
       

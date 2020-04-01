@@ -8,8 +8,11 @@ import { Grid, Card, CardHeader, Avatar, Divider,Typography,CardContent,TextFiel
 import {withStyles} from '@material-ui/core/styles'
 const useStyles = theme => ({
   mainStyle:{
-    margin:theme.spacing(14),
+    margin:theme.spacing(10),
     height:'auto',
+    [theme.breakpoints.down('md')]:{
+      margin:theme.spacing(8,0,0,0)
+    }
   },
   avatar: {
     backgroundColor: 'grey',
@@ -107,7 +110,7 @@ return (
          
          
           <Grid container sm={12}>
-            <Grid item sm={3} className={classes.pd}>
+            <Grid item lg={3} md={12} className={classes.pd}>
               <Card>
              
               {profile_data.map(data => (
@@ -160,17 +163,17 @@ variant='contained' color='primary'
 }
               </Card>
             </Grid>
-            <Grid container sm={9}  direction='row' justify='space-around' className={classes.pd}>
+            <Grid container lg={9} md={12} sm={12}  direction='row' justify='space-around' className={classes.pd}>
             
-            <Grid container item sm={12}  direction='row' style={{paddingBottom:'32px'}}>
-              <Grid item sm={9} >
+            <Grid container item sm={12} spacing={2}  direction='row' style={{paddingBottom:'32px'}}>
+              <Grid item md={8} xs={12} >
                 <Typography variant='h4'>
                 Created Campaigns
                 </Typography>
                 
                 
               </Grid>
-              <Grid item sm={3}>
+              <Grid item md={4} xs={12}>
                 <TextField
                   label='Search Title'
                   variant='outlined'
@@ -182,21 +185,22 @@ variant='contained' color='primary'
               </Grid>
             </Grid>
             
-            <Grid item container sm={12} spacing={2}>
+            <Grid item container lg={12} sm={12} spacing={2}>
 
             {this.state.filteredCampaigns.map(campaign => (
               <>
-                    <Grid item sm={4}>
+                    <Grid item lg={4} md={6} sm={12} xs={12}>
                     <Card key={campaign.id} variant='outlined' >
                     <CardMedia
                         className={classes.media}
                         
                         image={(campaign.image === null) ? 'https://fakeimg.pl/375x187' : `${campaign.image.url}`}
                         title={(campaign.image === null) ? '' : `${campaign.image.title}`}
+                        
                       />
                       <CardContent>
                       
-                      <h3>{campaign.title}</h3>
+                      <h4>{campaign.title}</h4>
                       <h5>{campaign.goal}</h5>
                       {(campaign.deleted)
                         ? <h5>Deleted</h5>

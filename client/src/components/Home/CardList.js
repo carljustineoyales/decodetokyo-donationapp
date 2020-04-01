@@ -25,7 +25,7 @@ export class CardList extends Component {
   alignItems="stretch">
                 {cards
                   
-                  .map(card => (<Grid item sm={4}><Paper variant='outlined'><CardItem key={card.id} card={card} /></Paper></Grid>))}
+                  .map(card => (<Grid item md={4} xs={12}><Paper variant='outlined'><CardItem key={card.id} card={card} /></Paper></Grid>))}
               </Grid>
             );
             }else{
