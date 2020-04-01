@@ -7,11 +7,24 @@ import NotFound from './NotFound';
 import Success from './Success';
 import { LoggedInContext } from '../contexts/LoggedInContext';
 import {withStyles} from '@material-ui/core/styles';
-import {Grid} from '@material-ui/core';
+import {Grid, Typography,MenuItem,TextField,Button} from '@material-ui/core';
+const modeOfPayment = [
+  {
+    value: 'gcash',
+    label: 'Gcash',
+  },
+  {
+    value: 'paypal',
+    label: 'Paypal',
+  },
+];
 const useStyles = theme => ({
   mainStyle:{
     margin:theme.spacing(14),
     height:'auto',
+    [theme.breakpoints.down('sm')]:{
+      margin:theme.spacing(14,2,8,2),
+    }
   },
 })
 export class CheckOut extends Component {
@@ -38,8 +51,10 @@ export class CheckOut extends Component {
       isSuccess:false
       
     }
+    this.handleOnChange = this.handleOnChange.bind(this)
     this.handeOnSubmit = this.handeOnSubmit.bind(this)
     this.showInput = this.showInput.bind(this)
+
     this.goBack = this.goBack.bind(this); 
   }
 
@@ -77,7 +92,8 @@ export class CheckOut extends Component {
     
   }
 
-  handleOnChange =  event => {
+  handleOnChange = event => {
+    console.log(event)
     this.setState({
       [event.target.name]: event.target.value,
       errors:[]
@@ -87,11 +103,11 @@ export class CheckOut extends Component {
   showInput = () => {
     switch(this.state.modeOfPayment){
       case 'gcash':
-        return(<input type='text' name='gcash' className='form-control form-control-sm' value={this.state.gcash} onChange={this.handleOnChange} placeholder='GCASH no.'/>);
+        return(<TextField type='text' name='gcash' value={this.state.gcash} onChange={this.handleOnChange} label='GCASH no.' variant='outlined'/>);
       case 'paypal':
-        return(<input type='email' name='paypal' className='form-control form-control-sm' value={this.state.paypal} onChange={this.handleOnChange} placeholder='Paypal Email'/>);
+        return(<TextField type='email' name='paypal' value={this.state.paypal} onChange={this.handleOnChange} label='Paypal Email'  variant='outlined'/>);
       case 'smartpadala':
-        return(<input type='text' name='smartpadala' className='form-control form-control-sm' value={this.state.smartpadala} onChange={this.handleOnChange} placeholder='Smart Padala Agent no.'/>);
+        return(<TextField type='text' name='smartpadala' value={this.state.smartpadala} onChange={this.handleOnChange} label='Smart Padala Agent no.'  variant='outlined'/>);
       default:
         return('');
     }
@@ -219,8 +235,9 @@ export class CheckOut extends Component {
           <Navbar/>
           <main className={classes.mainStyle}>
             
-            
-            <button onClick={this.goBack} className='btn btn-secondary'>Go Back</button>
+          <Grid container>
+              <Grid item sm={12}>
+              <button onClick={this.goBack} className='btn btn-secondary'>Go Back</button>
               <h1>Checkout</h1>
               <h4>Campaign Title: {title}</h4>
               <h4>Amount: {currency} {raised}</h4>
@@ -232,8 +249,12 @@ export class CheckOut extends Component {
                   <div key={error.id}>{error}</div>
                 ))}</div>
           : ''}
-              <form onSubmit={this.formValidation}>
-              <div className='row my-3'>
+          {raised <= -1 ? (
+            <h2>You dont have funds</h2>
+          ): (
+            
+            <form onSubmit={this.formValidation}>
+              {/* <div className='row my-3'>
               <div className='col-sm-5'>
               <label htmlFor='country'>Mode of Payment:</label>
                 <select 
@@ -254,12 +275,40 @@ export class CheckOut extends Component {
               <div className='col'>
               <button className='btn btn-primary'>Request Check Out</button>
               </div>
-              </div>
+              </div> */}
+              <br/>
+              
+              <TextField
+          
+          select
+          label="Select"
+          name='modeOfPayment'
+          value={this.state.modeOfPayment}
+          onChange={this.handleOnChange}
+          helperText="Please select your currency"
+          variant="outlined"
+          
+        >
+          {modeOfPayment.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </TextField>
+        <br/><br/>
+        {this.showInput()}
+        <br/><br/>
+        <Button type='submit' color='primary' variant='contained'>Request Check Out</Button>
               </form>
+          )}
+              
               <p>
               <strong>Important:</strong> You can checkout the funds raised by your campaign in this page.<br/>
               Your campaign will unable to gather more funds if you check out now.
               </p>
+           
+              </Grid>
+            </Grid>
            
           </main>
         </>

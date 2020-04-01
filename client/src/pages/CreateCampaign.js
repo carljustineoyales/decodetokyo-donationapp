@@ -9,6 +9,7 @@ import validator from 'validator';
 import Moment from 'react-moment'
 import {Grid,Button,TextField,MenuItem,Backdrop,Fade, Card, CardHeader, Avatar, CardMedia,CardContent,Typography } from '@material-ui/core'
 import {withStyles} from '@material-ui/core/styles';
+import {Alert} from '@material-ui/lab'
 import Modal from '@material-ui/core/Modal';
 
 
@@ -35,7 +36,9 @@ const currencies = [
 const useStyles = theme => ({
   root: {
     width: '30%',
-    
+    [theme.breakpoints.down('sm')]:{
+      width:'90vw',
+    }
   },
   desc:{
     height:'160px',
@@ -52,7 +55,8 @@ const useStyles = theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width:'100%'
+    width:'100%',
+    
   },
   
   media: {
@@ -270,11 +274,11 @@ export class CreateCampaign extends Component {
               <h1>Create A Campaign</h1><br/> */}
               
         {(this.state.errors.length > 0)
-          ? <div className="alert alert-danger" role="alert">{this
+          ? <div >{this
                 .state
                 .errors
                 .map(error => (
-                  <div key={error.id}>{error}</div>
+                  <Alert severity="error" key={error.id}>{error}</Alert>
                 ))}</div>
           : ''}
               {/* <form onSubmit={this.onFormSubmit}>
@@ -470,11 +474,11 @@ export class CreateCampaign extends Component {
                         value={values.goalFund}
                         />
                   </Grid>
-                  <Grid item xs={12} sm={9}>
+                  <Grid item xs={12} sm={12} md={9}>
                   <Link to="/help">Need Help?</Link>
                   
                   </Grid>
-                  <Grid item container spacing={2} xs={12} sm={3}>
+                  <Grid item container spacing={2} xs={12} sm={12} md={3}>
                           <Grid item sm={6} >
                           <Button color='primary' variant='outlined'  fullWidth type='button' onClick={this.handleOpen}>Preview</Button>
                           </Grid>

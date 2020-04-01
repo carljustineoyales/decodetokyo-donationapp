@@ -4,12 +4,18 @@ import Navbar from '../components/Home/Navbar';
 import { LoggedInContext } from '../contexts/LoggedInContext';
 import { Link } from 'react-router-dom';
 import {withStyles} from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography,Hidden } from '@material-ui/core';
 
 const useStyles = theme => ({
   mainStyle:{
     margin:theme.spacing(14),
     height:'auto',
+    overflow:'hidden',
+    
+    [theme.breakpoints.down('sm')]:{
+      margin:theme.spacing(10,0,0,0),
+      // marginTop:theme.spacing(4),
+    }
   },
   headeing1:{
     fontSize:'32px'
@@ -38,11 +44,13 @@ export class Feed extends Component {
                   <CardList/>
                   </>
                   ) : ''} */}
-                  
+                  <Hidden mdDown>
                   <Typography variant='h1' className={classes.headeing1}>
                     Explore Campaigns
                   </Typography>
+                  
                   <br/>
+                  </Hidden>
                   <CardList/>
               </main>
             </div>

@@ -10,15 +10,24 @@ import {withStyles} from '@material-ui/core/styles';
 const useStyles = theme => ({
   root:{
     // backgroundColor:'grey',
-    width:'100%'
+    width:'auto'
   },
   mainStyle:{
     margin:theme.spacing(14),
     height:'auto',
+    [theme.breakpoints.down('md')]:{
+      margin:theme.spacing(10,0,0,0),
+      // marginTop:theme.spacing(4),
+    }
   },
   media: {
     height: 0,
     paddingTop: '50%', 
+    [theme.breakpoints.down('md')]:{
+      paddingTop: '50%', 
+      width:'auto'
+      // marginTop:theme.spacing(4),
+    }
   },
   avatar: {
     backgroundColor: 'grey',
@@ -26,11 +35,19 @@ const useStyles = theme => ({
   large: {
     width: theme.spacing(10),
     height: theme.spacing(10),
+    
   },
   link:{
     color:'white',
     '&:hover':{
       color:'white'
+    }
+  },
+  gridSpace:{
+    padding:theme.spacing(2),
+    [theme.breakpoints.down('md')]:{
+      padding:theme.spacing(0)
+      // marginTop:theme.spacing(4),
     }
   }
 })
@@ -213,6 +230,7 @@ export class SingleCard extends Component {
         gcash_number,
         bank_name,
         bank_account,
+        account_name
       },
       username,
       currency,
@@ -230,8 +248,8 @@ export class SingleCard extends Component {
 <main className={classes.mainStyle}>
 
   
-  <Grid container spacing={3}>
-    <Grid container item spacing={2}>
+  <Grid container spacing={4}>
+    <Grid container item spacing={2} >
       <Grid item>
       <Button 
       // onClick={this.goBack} 
@@ -252,8 +270,8 @@ export class SingleCard extends Component {
     
     
     </Grid>
-    <Grid item container spacing={6}>
-       <Grid item xs={9}>
+    <Grid item container  xs={12} >
+       <Grid item lg={9} xs={12} className={classes.gridSpace}>
         <Card className={classes.root} variant='outlined'>
 
         <CardMedia
@@ -323,7 +341,7 @@ export class SingleCard extends Component {
 
         </Card>
        </Grid>
-       <Grid item xs={3}>
+       <Grid item lg={3} className={classes.gridSpace}>
         <Card className={classes.root}>
         <CardHeader
         avatar={
@@ -358,7 +376,7 @@ export class SingleCard extends Component {
           Bank Name: {bank_name}
         </Typography>
         <Typography variant='body1'>
-          Account Name: {first_name} {last_name}
+          Account Name: {account_name}
         </Typography>
         <br/>
         <Typography variant='h5'>

@@ -2,18 +2,26 @@ import React, {Component, Fragment} from 'react';
 
 import {Redirect, Link} from 'react-router-dom';
 import {withToken,getdone} from '../components/functions'
-
+import Navbar from '../components/Home/Navbar'
 
 import Login from '../components/Home/Login';
 import { LoggedInContext } from '../contexts/LoggedInContext';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { Hidden } from '@material-ui/core';
 
 const useStyles = theme => ({
   mainStyle:{
     width:'100vw',
     height:'100vh',
-    margin:'0'
+    margin:'0',
+    [theme.breakpoints.down('md')]:{
+      display:'flex',
+     justifyContent:'center',
+     alignContent:'center',
+     height:'100vh',
+    
+    }
   },
   paperStyleBackground:{
     background: 'rgb(0,152,131)',
@@ -68,19 +76,22 @@ export class LoginPage extends Component {
           this.state.done = done;
           return(
             <Fragment>
-          {/* <Navbar/> */}
+            <Hidden lgUp>
+          <Navbar/>
+          </Hidden>
           <main className={classes.mainStyle}>
             
               <Grid container>
-                <Grid item xs={6} className={classes.paperStyleBackground}>
+              <Hidden mdDown>
+                <Grid item lg={6} className={classes.paperStyleBackground}>
                   <div>
                   <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
                   <h4>Share and Donate</h4>
                   </div>
                 </Grid>
                 
-                
-                <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
+                </Hidden>
+                <Grid container item lg={6} md={12} sm={8} direction='row' justify='center' alignContent='center'>
                   <Login handleOnSuccess={handleOnSuccess} id={id}/> 
                   
                   

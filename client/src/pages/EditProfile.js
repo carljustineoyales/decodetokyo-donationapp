@@ -4,7 +4,7 @@ import axios from 'axios';
 import {strapi, getId, getUserName, withToken} from '../components/functions'
 import {Link} from 'react-router-dom';
 import {withStyles} from '@material-ui/core/styles';
-import { Grid, Typography,Button,Divider, TextField, MenuItem, Avatar } from '@material-ui/core';
+import { Grid, Typography,Button,Divider, TextField, MenuItem, Avatar,Hidden } from '@material-ui/core';
 const countries = [
   {
     value: 'Philippines',
@@ -27,6 +27,18 @@ const useStyles = theme => ({
   mainStyle:{
     margin:theme.spacing(14),
     height:'auto',
+    [theme.breakpoints.down('md')]:{
+      margin:theme.spacing(14,0,8,0),
+      
+    }
+  },
+  flexGrid:{
+    [theme.breakpoints.down('md')]:{
+      display:'flex',
+      flexDirection:'column',
+      justifyContent:'center',
+      alignContent:'center'
+    }
   },
   headeing1:{
     fontSize:'32px'
@@ -66,6 +78,7 @@ export class EditProfile extends Component {
       paypal_email: '',
       error: '',
       bank_account: '',
+      account_name:'',
       bank_name: '',
       avatars: {},
       dataImg:'',
@@ -129,6 +142,7 @@ export class EditProfile extends Component {
         address_state: res.data[0].address_state,
         bank_name: res.data[0].bank_name,
         bank_account: res.data[0].bank_account,
+        account_name:res.data[0].account_name
         // avatar: res.data[0].avatar.url
       })
       if(res.data[0].avatar === null){
@@ -160,6 +174,7 @@ export class EditProfile extends Component {
       paypal_email,
       bank_account,
       bank_name,
+      account_name,
       password,
       address_state
     } = this.state
@@ -177,6 +192,7 @@ export class EditProfile extends Component {
         paypal_email,
         bank_account,
         bank_name,
+        account_name,
         address_state
       };
     }else{
@@ -191,6 +207,7 @@ export class EditProfile extends Component {
             paypal_email,
             bank_account,
             bank_name,
+            account_name,
             password,
             address_state
           };
@@ -257,6 +274,7 @@ export class EditProfile extends Component {
       paypal_email,
       bank_account,
       bank_name,
+      account_name,
       avatar,
       dataImg,
       address_state
@@ -267,7 +285,8 @@ export class EditProfile extends Component {
         <Navbar/>
         <main className={classes.mainStyle}>
         <Grid container direction='row'>
-          <Grid item sm={4} >
+        <Hidden mdDown>
+          <Grid item lg={4} sm={12} >
             <div className={classes.fixed}>
             <Typography>
           <Button value='personalinfo' onClick={this.scrollToview}>Personal Information</Button>
@@ -281,7 +300,8 @@ export class EditProfile extends Component {
             </div>
           
           </Grid>
-          <Grid item container sm={8} direction='column' >
+          </Hidden>
+          <Grid item container lg={8} md={12} sm={12} className={classes.flexGrid}>
           <form onSubmit={this.handleOnSubmit} style={{width:'60%'}}>
           
           
@@ -471,8 +491,18 @@ export class EditProfile extends Component {
                   label='Account No.'
                   variant='outlined'
                   fullWidth
-                  name='bank_name'
+                  name='bank_account'
                     value={bank_account}
+                    onChange={this.handleOnChange()}
+                />
+              </Grid>
+              <Grid item sm={12}>
+                <TextField
+                  label='Account Name'
+                  variant='outlined'
+                  fullWidth
+                  name='account_name'
+                    value={account_name}
                     onChange={this.handleOnChange()}
                 />
               </Grid>

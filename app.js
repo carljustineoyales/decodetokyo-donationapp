@@ -13,8 +13,8 @@ const app = express();
 
 let decoded = '';
 let token = '';
-const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
-// const strapi = 'http://localhost:1337'
+// const strapi = 'https://limitless-brushlands-81295.herokuapp.com'
+const strapi = 'http://localhost:1337'
 app.use(express.urlencoded({extended: true}));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -61,29 +61,28 @@ app.post('/api/form',(req,res)=> {
   }
 
   if(error.length <= 0){
-    nodemailer.createTestAccount((err,account)=>{
+    // nodemailer.createTestAccount((err,account)=>{
       const htmlEmail = `
         <h3>Contact Details</h3>
-        <ul>
-        
-        <li>Facebook or Email: ${req.body.email}</li>
-        </ul>
+        <p>Facebook or Email: ${req.body.email}</p>
+        <h3>Message</h3>
         <p>${req.body.message}</p>
       `
   
       let transporter = nodemailer.createTransport({
-        host:'smtp.ethereal.email',
-        port:587,
+        // host:'smtp.ethereal.email',
+        service:'gmail',
+        // port:587,
         auth:{
-          user:'brandt99@ethereal.email',
-          pass:'1juUTawmPHVeSAWjM8'
+          user:'oyales1128@gmail.com',
+          pass:'babynicole0527'
         }
       })
   
       let mailOptions = {
         from:`${req.body.email}`,
-        to:'brandt99@ethereal.email',
-        replyTo:'brandt99@ethereal.email',
+        to:'oyales1128@gmail.com',
+        replyTo:'oyales1128@gmail.com',
         subject:'New Message',
         text:req.body.message,
         html:htmlEmail
@@ -97,7 +96,7 @@ app.post('/api/form',(req,res)=> {
         // console.log('Message sent: %s',info.message);
         res.status(200).send('Message Sent')
         console.log('Message URL: %s', nodemailer.getTestMessageUrl(info))
-      })
+      // })
     })
   }else{
     res.status(400).send(error)

@@ -15,16 +15,29 @@ import { CardListContext } from '../contexts/CardListContext';
 
 const useStyles = theme => ({
   mainStyle:{
-    margin:'100px 64px',
+    overflow:'hidden',
+    margin:theme.spacing(10,2,10,2),
     height:'auto',
     display:'flex',
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    [theme.breakpoints.up('md')]:{
+      height:'100vh',
+      margin:theme.spacing(3),
+    }
   },
   paperStyle:{
     padding:theme.spacing(1),
     background:'transparent',
     
+  },
+  flexGrid:{
+    display:'flex',
+    justifyContent:'space-evenly',
+    alignItems:'center',
+    [theme.breakpoints.down('sm')]:{
+      justifyContent:'flex-start'
+    }
   }
 })
 
@@ -51,16 +64,14 @@ export class Home extends Component {
         <Navbar/>
       <main className={classes.mainStyle}>
         
-        <Grid container spacing={2} direction="row"
-  justify="space-evenly"
-  alignItems="center"
-  alignContent='center'>
+        <Grid container spacing={2} className={classes.flexGrid}
+        >
         
-        <Grid item xl={6} md={6}>
+        <Grid item lg={6} md={6} sm={12}>
             <About cards={context.cards} />
           </Grid>
           
-          <Grid container item xl={4} md={6}>
+          <Grid container item lg={4} md={6} sm={12}>
          
             <UserForm/>
           </Grid>

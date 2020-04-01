@@ -5,12 +5,23 @@ import PaypalButton from '../components/Home/PaypalButton';
 import axios from 'axios';
 import {strapi} from '../components/functions'
 import {withStyles} from '@material-ui/core/styles';
-import {Grid} from '@material-ui/core';
+import {Grid,TextField,Button,InputAdornment} from '@material-ui/core';
 const useStyles = theme => ({
   mainStyle:{
     margin:theme.spacing(14),
-    height:'auto',
+    height:'100%',
+    display:'flex',
+    flexDirection:'column',
+    justifyContent:'flex-start',
+    alignContent:'center',
+    
+    [theme.breakpoints.down('md')]:{
+      margin:theme.spacing(14,0,8,0),
+    }
   },
+  mb:{
+    marginBottom:theme.spacing(8)
+  }
 })
 export class Donation extends Component {
 
@@ -130,7 +141,7 @@ export class Donation extends Component {
   }
 
   showPaypal = event => {
-
+    
     event.preventDefault();
     this.setState({isLoading: true, noError: false})
     if (this.state.first_name.length > 0 && this.state.last_name.length > 0 && this.state.email.length > 0) {
@@ -170,6 +181,7 @@ export class Donation extends Component {
         this.removeItem('enter email')
       }
     }
+    console.log('showpaypal function')
   }
 
   render() {
@@ -178,7 +190,16 @@ export class Donation extends Component {
       <Fragment>
         <Navbar/>
         <main className={classes.mainStyle}>
-          
+        {(this.state.errors.length > 0)
+              ? <div className="alert alert-danger" role="alert">{this
+                    .state
+                    .errors
+                    .map(error => (
+                      <div key={error.id}>{error}</div>
+                    ))}</div>
+              : ''}
+             
+{/*           
             {(this.state.errors.length > 0)
               ? <div className="alert alert-danger" role="alert">{this
                     .state
@@ -196,7 +217,7 @@ export class Donation extends Component {
             }}>
               Go back</Link>
             <form onSubmit={this.showPaypal}>
-              {/* <form action='http://localhost:4000/pay' method='post'> */}
+              
               <div className='row'>
                 <div className='col-sm-6'>
                   <div className='col-sm-12 mb-3'>
@@ -242,14 +263,7 @@ export class Donation extends Component {
                         onChange={this.handleOnChange}/>
                     </div>
                   </div>
-                  <div className='col-sm-12 mb-3'>
-                    <input
-                      type='checkbox'
-                      className='form-check-input'
-                      name='anonymous'
-                      onClick={this.handleOnClick}/>
-                    <label htmlFor='anonymous'>Hide name from everyone except for the admin</label>
-                  </div>
+                  
                   <button className='btn btn-primary mb-3'>Submit</button>
                 </div>
                 <div className='col-sm-6'>
@@ -262,8 +276,79 @@ export class Donation extends Component {
                   </div>
                 </div>
               </div>
-            </form>
+            </form> */}
+            <Link
+              className={classes.mb}
+              to={`/campaign/${this.props.match.params.id}`}
+              >
+              Go back</Link>
+              <br/>
+          <Grid container spacing={4}>
           
+            <Grid container item md={6}>
+            
+              <form onSubmit={this.showPaypal} style={{width:'100%'}}>
+              
+              
+                <TextField 
+                  type='text'
+                  name='first_name'
+                  label='First Name'
+                  variant='outlined'
+                  required
+                  fullWidth
+                  onChange={this.handleOnChange}
+                />
+                <br/>
+                <br/>
+                <TextField 
+                  type='text'
+                  name='last_name'
+                  label='Last Name'
+                  variant='outlined'
+                  required
+                  fullWidth
+                  onChange={this.handleOnChange}
+                />
+                <br/>
+                <br/>
+                
+                <TextField 
+                  type='email'
+                  name='email'
+                  label='Email'
+                  variant='outlined'
+                  required
+                  fullWidth
+                  onChange={this.handleOnChange}
+                />
+                <br/>
+                <br/>
+                <TextField 
+                  id='amount'
+                  type='number'
+                  name='amount'
+                  label='Amount'
+                  variant='outlined'
+                  required
+                  fullWidth
+                  onChange={this.handleOnChange}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">{this.state.currency}</InputAdornment>,
+                  }}
+                /><br/>
+                <br/>
+                <Button type='submit' color='primary' variant='contained' fullWidth>Submit</Button>
+              </form>
+            </Grid>
+            <Grid item md={6}>
+              <h4>Paypal</h4>
+              <p>Click submit to show paypal buttons</p>
+              {this.state.noError
+                ? <PaypalButton data={this.state} saveTransaction={this.saveTransaction}/>
+                : null}
+            </Grid>
+          </Grid>
         </main>
       </Fragment>
     );

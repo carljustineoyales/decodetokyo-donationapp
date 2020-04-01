@@ -5,13 +5,15 @@ export class About extends Component {
   render() {
     
     return (
-      <>
+ 
+      <div>
       <h1>Share and Donate</h1>
       <p>We have <span>{this.props.cards.length}</span> on going campaigns who needs your support</p>
       <Hidden smDown>
         <img src={svg} width='80%'/>
         </Hidden>
-      </>
+        </div>
+      
     );
   }
 }

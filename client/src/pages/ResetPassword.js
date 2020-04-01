@@ -5,12 +5,19 @@ import Navbar from '../components/Home/Navbar';
 import {strapi} from '../components/functions'
 import {withStyles} from '@material-ui/core/styles';
 import {Redirect, Link} from 'react-router-dom';
-import {Grid, TextField,Button, Typography} from '@material-ui/core';
+import {Grid, TextField,Button, Typography,Hidden} from '@material-ui/core';
 const useStyles = theme => ({
   mainStyle:{
     width:'100vw',
     height:'100vh',
-    margin:'0'
+    margin:'0',
+    [theme.breakpoints.down('md')]:{
+      display:'flex',
+     justifyContent:'center',
+     alignContent:'center',
+     height:'100vh',
+    
+    }
   },
   paperStyleBackground:{
     background: 'rgb(0,152,131)',
@@ -110,7 +117,9 @@ export class ResetPassword extends Component {
     if (isSuccess) {
       return(
         <>
-        {/* <Navbar/> */}
+        <Hidden lgUp>
+        <Navbar/>
+        </Hidden>
         <main className={classes.mainStyle}>
             
             <Grid container>
@@ -122,7 +131,7 @@ export class ResetPassword extends Component {
               </Grid>
               
               
-              <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
+              <Grid container item lg={6} md={12} sm={8} direction='row' justify='center' alignContent='center'>
                 {/* <Login handleOnSuccess={handleOnSuccess} id={id}/>  */}
                 <Typography variant='h5' style={{margin:'32px',fontSize:'32px'}}>
                   you've successfully changed your password please enter your new credentials to log in. Thank you!
@@ -143,7 +152,9 @@ export class ResetPassword extends Component {
     } else {
       return (
         <>
-        {/* <Navbar/> */}
+        <Hidden lgUp>
+        <Navbar/>
+        </Hidden>
         {/* <main>
             <div className='container'>
           <form onSubmit={this.handleOnSubmit}>
@@ -158,20 +169,22 @@ export class ResetPassword extends Component {
           <main className={classes.mainStyle}>
             
               <Grid container>
+              <Hidden mdDown>
                 <Grid item xs={6} className={classes.paperStyleBackground}>
                   <div>
                   <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
                   <h4>Share and Donate</h4>
                   </div>
                 </Grid>
+                </Hidden>
                 
-                
-                <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
-                <form onSubmit={this.handleOnSubmit}>
+                <Grid container item lg={6} md={12} sm={8} direction='row' justify='center' alignContent='center'>
+                <form onSubmit={this.handleOnSubmit} style={{width:'50%'}}>
+                <Typography variant='h4'>Reset Password</Typography>
           <br/>
-            <TextField variant='outlined' label='New Password' type='password' name='password' onChange={this.handleOnChange}/><br/><br/>
+            <TextField variant='outlined' fullWidth label='New Password' type='password' name='password' onChange={this.handleOnChange}/><br/><br/>
             
-            <TextField variant='outlined' label='Confirm Password' type='password' name='passwordConfirmation' onChange={this.handleOnChange}/><br/><br/>
+            <TextField variant='outlined' fullWidth label='Confirm Password' type='password' name='passwordConfirmation' onChange={this.handleOnChange}/><br/><br/>
             <Button variant='contained' fullWidth type='submit' color='primary'>Submit</Button>
           </form>
                   

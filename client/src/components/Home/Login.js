@@ -9,10 +9,10 @@ import {withStyles} from '@material-ui/core/styles'
 const useStyles = theme => ({
   
   mb:{
-    marginBottom:'5em'
+    marginBottom:theme.spacing(6)
   },
   formMb:{
-    marginBottom:'2em'
+    marginBottom:theme.spacing(3)
   },
   paper: {
     padding: theme.spacing(2),
@@ -89,7 +89,7 @@ export class Login extends Component {
   } else {
     return (
       <Fragment>
-      <Grid container item direction='column' justify='center' xs={6}>
+      <Grid container item direction='column' justify='center' md={6} xs={8}>
       {(this.state.error === "Auth.form.error.invalid") ? (<div>Identifier or password invalid.</div>):((this.state.error === "Auth.form.error.email.provide") ? (<div>Please provide your username or your e-mail.</div>) : '')}
       <Grid item className={classes.mb}>
         <h1>Welcome</h1>
@@ -148,11 +148,11 @@ export class Login extends Component {
         </Grid>
         
           
-        <Grid container item>
-          <Grid item xs={6}>
+        <Grid container spacing={2} item>
+          <Grid item sm={6} xs={12}>
           <Link to={"/forgot-password"}>Forgot Password?</Link>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item sm={6} xs={12}>
           <Button fullWidth color='primary' variant='contained' type='submit'>Login</Button>
           </Grid>
         

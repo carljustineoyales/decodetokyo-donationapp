@@ -7,7 +7,9 @@ const useStyles = theme => ({
   mainStyle:{
     margin:theme.spacing(14),
     height:'auto',
-    
+    [theme.breakpoints.down('sm')]:{
+      margin:theme.spacing(14,1,8,1),
+    }
   },
   heading1:{
     fontSize:'48px',
@@ -102,7 +104,7 @@ export class NeedHelp extends Component {
           </Typography>
           <br/>
           <br/>
-              <Grid container  spacing={2} lg={6} >
+              <Grid container  spacing={2} lg={6} sm={12} direction='column'>
                 <Grid item sm={12}>
                 <TextField variant='outlined' type='email' fullWidth label='Email' required name='email' onChange={this.handleOnChange}/>
                 </Grid>
@@ -120,7 +122,7 @@ export class NeedHelp extends Component {
                 <Grid item sm={12}>
 
                 </Grid>
-                <Grid item md={12} sm={12}>
+                <Grid item lg={12} sm={12}>
                   <Button type='submit' fullWidth variant='contained' color='primary'>Submit</Button>
                 </Grid>
               </Grid>
