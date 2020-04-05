@@ -156,6 +156,53 @@ class Registration extends Component {
   if(event.target.value !== '' || event.target.value !== null){
     console.log(this.state.email.length)
     if(event.target.name === 'email'){
+      if(!validator.isEmpty(this.state.confirmEmail)){
+        console.log('confirm email',!validator.isEmpty(this.state.confirmEmail))
+        if(event.target.value !== this.state.confirmEmail){
+          if(!this.state.errors.includes('Email does not match.')){
+            this.state.errors.push('Email does not match.')
+
+          }
+          this.setState({
+            emailMatched:false,
+            
+          })
+        }else{
+          this.setState({
+            emailMatched:true
+          })
+          if(this.state.errors.includes('Email does not match.')){
+            this.state.errors = this.state.errors.filter(item => item !== 'Email does not match.')
+          }
+        }
+      }
+      if(this.state.errors.includes('Empty Email.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Empty Email.')
+      }
+      if(this.state.errors.includes('Invalid Email.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Invalid Email.')
+      }
+      if(this.state.errors.includes('Email already taken.')){
+        this.state.errors = this.state.errors.filter(item => item !== 'Email already taken.')
+      }
+    }
+    if(event.target.name === 'confirmEmail'){
+      if(event.target.value !== this.state.email){
+        if(!this.state.errors.includes('Email does not match.')){
+          this.state.errors.push('Email does not match.')
+        }
+        this.setState({
+          emailMatched:false,
+        })
+      }else{
+        this.setState({
+          emailMatched:true
+        })
+        if(this.state.errors.includes('Email does not match.')){
+          this.state.errors = this.state.errors.filter(item => item !== 'Email does not match.')
+        }
+      }
+    }
       if(event.target.value.length === 0){
         this.setState({
           
@@ -173,52 +220,7 @@ class Registration extends Component {
       
       }
       
-        if(!validator.isEmpty(this.state.confirmEmail)){
-          if(event.target.value !== this.state.confirmEmail){
-            if(!this.state.errors.includes('Email does not match.')){
-              this.state.errors.push('Email does not match.')
-  
-            }
-            this.setState({
-              emailMatched:false,
-              
-            })
-          }else{
-            this.setState({
-              emailMatched:true
-            })
-            if(this.state.errors.includes('Email does not match.')){
-              this.state.errors = this.state.errors.filter(item => item !== 'Email does not match.')
-            }
-          }
-        }
-        if(this.state.errors.includes('Empty Email.')){
-          this.state.errors = this.state.errors.filter(item => item !== 'Empty Email.')
-        }
-        if(this.state.errors.includes('Invalid Email.')){
-          this.state.errors = this.state.errors.filter(item => item !== 'Invalid Email.')
-        }
-        if(this.state.errors.includes('Email already taken.')){
-          this.state.errors = this.state.errors.filter(item => item !== 'Email already taken.')
-        }
-      }
-      if(event.target.name === 'confirmEmail'){
-        if(event.target.value !== this.state.email){
-          if(!this.state.errors.includes('Email does not match.')){
-            this.state.errors.push('Email does not match.')
-          }
-          this.setState({
-            emailMatched:false,
-          })
-        }else{
-          this.setState({
-            emailMatched:true
-          })
-          if(this.state.errors.includes('Email does not match.')){
-            this.state.errors = this.state.errors.filter(item => item !== 'Email does not match.')
-          }
-        }
-      }
+        
       if(event.target.name === 'password'){
         if(this.state.errors.includes('Empty Password.')){
           this.state.errors = this.state.errors.filter(item => item !== 'Empty Password.')
