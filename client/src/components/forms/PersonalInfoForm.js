@@ -1,5 +1,22 @@
 import React, { Component } from 'react';
 import {TextField,Button, Grid} from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles'
+const useStyles = theme => ({
+  btngrid:{
+    display:'flex',
+    justifyContent:'flex-end',
+    // [theme.breakpoints.down('sm')]:{
+    //   justifyContent:'center',
+      
+    // }
+  },
+  btn:{
+    [theme.breakpoints.down('sm')]:{
+      width:'100%'
+    }
+    
+  }
+})
 class PersonalInfoForm extends Component {
   continue = e => {
     e.preventDefault();
@@ -7,13 +24,14 @@ class PersonalInfoForm extends Component {
   }
   render() {
     const {values, handleOnChange} = this.props
+    const {classes} = this.props
     return (
       
       <>
       <form onSubmit={this.continue}>
-      <Grid container item  spacing={2} direction='row' justify='center' alignContent='center' xs={12}>
+      <Grid container item  spacing={2} direction='row' justify='center' alignContent='center' md={12} >
       
-      <Grid item xs={6}>
+      <Grid item md={6} xs={12}>
       <TextField
         label='First Name'
         required
@@ -24,7 +42,7 @@ class PersonalInfoForm extends Component {
         defaultValue={values.first_name}
       />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item md={6} xs={12}>
       <TextField
         label='Last Name'
         required
@@ -35,7 +53,7 @@ class PersonalInfoForm extends Component {
         defaultValue={values.last_name}
       />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item md={12} xs={12}>
       <TextField
         label='Address'
         required
@@ -46,7 +64,7 @@ class PersonalInfoForm extends Component {
         defaultValue={values.address}
       />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
       <TextField
         label='City'
         required
@@ -57,7 +75,7 @@ class PersonalInfoForm extends Component {
         defaultValue={values.city}
       />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
       <TextField
         label='State'
         required
@@ -68,7 +86,7 @@ class PersonalInfoForm extends Component {
         defaultValue={values.addressState}
       />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
       <TextField
         label='Zip Code'
         required
@@ -79,7 +97,7 @@ class PersonalInfoForm extends Component {
         defaultValue={values.zipcode}
       />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item md={12} xs={12}>
       <TextField
         label='Country'
         required
@@ -90,8 +108,8 @@ class PersonalInfoForm extends Component {
         defaultValue={values.country}
       />
       </Grid>
-      <Grid item container justify='flex-end'>
-      <Button color='primary' variant='contained' type='submit' >Continue</Button>
+      <Grid item md={12} xs={12} className={classes.btngrid}>
+      <Button color='primary' variant='contained' className={classes.btn}   type='submit' >Continue</Button>
       
       </Grid>
       
@@ -111,4 +129,4 @@ class PersonalInfoForm extends Component {
   }
 }
 
-export default PersonalInfoForm;
+export default withStyles(useStyles)(PersonalInfoForm);
