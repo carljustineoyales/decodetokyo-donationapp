@@ -368,7 +368,7 @@ export class Navbar extends Component {
                   : ''
                 }
                 <Typography variant="p"  noWrap >
-                  <Link className={classes.navLink} href={`/profile/${username}`}>Profile</Link>
+                  <Link className={classes.navLink} href={`/profile/${id}`}>Profile</Link>
                 </Typography>
                 <Typography variant="p"  noWrap >
                   <Link className={classes.navLink} component='button' onClick={this.handleLogout}>Sign Out</Link>
@@ -426,7 +426,7 @@ export class Navbar extends Component {
                 }
                  
                 <MenuItem onClick={this.handleClose}>
-                <Link  href={`/profile/${username}`}>Profile</Link>
+                <Link  href={`/profile/${id}`}>Profile</Link>
                 </MenuItem>
                 <MenuItem onClick={this.handleClose}>
                 <Link component='button' onClick={this.handleLogout}>Sign Out</Link>

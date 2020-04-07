@@ -420,7 +420,7 @@ app.use('/deletesinglecampaign',(req,res)=>{
  */
 app.use('/getuserprofile',(req,res)=>{
   axios({
-    url:`${strapi}/users/?username=${req.body.username}`,
+    url:`${strapi}/users/?id=${req.body.id}`,
     method:'get',
     withCredentials:true
   })
@@ -438,7 +438,7 @@ app.use('/getuserprofile',(req,res)=>{
 
 app.use('/editprofile',(req,res)=>{
   axios({
-    url:`${strapi}/users/?username=${req.body.username}`,
+    url:`${strapi}/users/?id=${req.body.id}`,
     method:'get',
     withCredentials:true
   })

@@ -77,6 +77,7 @@ export class CreateCampaign extends Component {
       reference: Math.floor(Math.random() * 31415926),
       username: '',
       images: {},
+      id:'',
       currency:'USD',
       isSuccess:false,
       response:{},
@@ -143,7 +144,7 @@ export class CreateCampaign extends Component {
       }
     }
     
-    axios.get(`${strapi}/users/?username=${this.state.username}`).then(res => {
+    axios.get(`${strapi}/users/?id=${this.state.id}`).then(res => {
 
       this.setState({
         author: {
@@ -217,7 +218,7 @@ export class CreateCampaign extends Component {
 
   handleOpen = (event) => {
     event.preventDefault();
-    axios.get(`${strapi}/users/?username=${this.state.username}`)
+    axios.get(`${strapi}/users/?id=${this.state.id}`)
       .then(res=>{
         console.log(res.data)
         if(res.data[0].avatar === null){
@@ -258,8 +259,8 @@ export class CreateCampaign extends Component {
     const values = { title, description, goalFund };
     return(
 <LoggedInContext.Consumer>{(context)=>{
-      const {username,loggedin} = context;
-      this.state.username = username
+      const {id,loggedin} = context;
+      this.state.id = id
         if (isSuccess) {
       return (
             <Success/>

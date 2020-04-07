@@ -38,8 +38,8 @@ class App extends Component {
             <Switch>
             
             <Route path="/dashboard/:id" component={Dashboard}/>
-          <Route path="/edit/:username" component={EditProfile}/>
-          <Route path="/profile/:username" component={Profile}/>
+          <Route path="/edit/:id" component={EditProfile}/>
+          <Route path="/profile/:id" component={Profile}/>
           <Route path="/campaign/:id" component={SingleCard}/>
           <Route path="/help" component={NeedHelp}/>
           <Route path="/donation/:id" component={Donation}/>
@@ -83,7 +83,7 @@ class App extends Component {
             <Route path="/forgot-password" component={ChangePassword}/>
             <Route path="/reset-password" component={ResetPassword}/>
             <Route path="/resendemailverification" component={ResendEmailVerification}/>
-            <Route path="/profile/:username" component={Profile}/>
+            <Route path="/profile/:id" component={Profile}/>
             {/* <Route path="/gcashtooltip" component={gcashToolTip}/>
             <Route path="/paypaltooltip" component={PaypalToolTip}/> */}
 
