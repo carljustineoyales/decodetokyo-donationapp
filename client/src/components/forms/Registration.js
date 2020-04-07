@@ -69,14 +69,14 @@ class Registration extends Component {
                 })
       }
     }
-    let username = this.state.email.split('@')
-    console.log(username[0])
+    let username = this.state.email
+    // console.log(username[0])
     
     const data ={
     // paypal_email: this.state.paypal_email,
     // gcash_number: this.state.gcash_number,
     email: this.state.email,
-    username: username[0],
+    username: username,
     password: this.state.password,
     confirmed:false,
     done:false,

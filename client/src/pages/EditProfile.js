@@ -123,7 +123,7 @@ export class EditProfile extends Component {
       method:'post',
       withCredentials:true,
       data:{
-        username:this.props.match.params.username
+        id:this.props.match.params.id
       }
     })
     .then(res => {
@@ -158,7 +158,12 @@ export class EditProfile extends Component {
       }
       
     }).catch(err => {
-      console.log(err.response.data.message)
+      try {
+        console.log(err.response.data.message)
+      } catch (error) {
+        console.log(err)
+      }
+      
     })
   }
 
@@ -238,12 +243,12 @@ export class EditProfile extends Component {
         }
       }).then(res => {
         // console.log(res.data)
-        window.location.href = `/profile/${this.props.match.params.username}`
+        window.location.href = `/profile/${this.props.match.params.id}`
       }).catch(err => {
         console.log(err.response.data.message)
       })
     }).catch(err => {
-      window.location.href = `/profile/${this.props.match.params.username}`
+      window.location.href = `/profile/${this.props.match.params.id}`
       // console.log(data)
       // console.log(err.response)
       console.log(err)

@@ -57,7 +57,7 @@ export class Profile extends Component {
       method:'post',
       withCredentials:true,
       data:{
-        username:this.props.match.params.username
+        id:this.props.match.params.id
       }
     })
       .then(res => {
@@ -103,6 +103,9 @@ export class Profile extends Component {
     return(
 <LoggedInContext.Consumer>{(LoggedInContext)=>{
   const {username,loggedin} = LoggedInContext
+  console.log(LoggedInContext.id)
+  console.log(this.props.match.params.id)
+  console.log((LoggedInContext.id.toString() === this.props.match.params.id))
 return (
       <Fragment>
         <Navbar/>
@@ -116,18 +119,19 @@ return (
               {profile_data.map(data => (
 
 <Box key={data.id}>
-  {username !== this.props.match.params.username
+  {(LoggedInContext.id.toString() === this.props.match.params.id)
     ?
-    (<Button color='secondary' onClick={this.goBack}>Feed</Button>)
-    : (<>
+    
+    (<>
       <Button  component='a' color='secondary' href='/feed'>Feed</Button>
       <Button
 variant='contained' color='primary'
       component={Link}
       style={{color:'white'}}
-      to={`/edit/${this.props.match.params.username}`}
+      to={`/edit/${this.props.match.params.id}`}
       >Edit Profile</Button>
-    </>)
+    </>):
+    (<Button color='secondary' onClick={this.goBack}>Feed</Button>)
 }
 <CardHeader
         avatar={
@@ -136,7 +140,7 @@ variant='contained' color='primary'
        
         title={`${data.first_name} ${data.last_name}`}
         titleTypographyProps={{variant:'h5'}}
-        subheader={`@${data.username}`}
+        subheader={`id: ${data.id}`}
         subheaderTypographyProps={{variant:'body1'}}
       />
       <Divider/>

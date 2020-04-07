@@ -84,7 +84,7 @@ avatar=
   )}
   
   
-  title={<strong><Link component='a' className={classes.link} href={`/profile/${author.username}`}>{author.first_name} {author.last_name}</Link></strong>}
+  title={<strong><Link component='a' className={classes.link} href={`/profile/${author.id}`}>{author.first_name} {author.last_name}</Link></strong>}
   subheader={<Moment fromNow>{created_at}</Moment>}
 />
 <CardMedia
