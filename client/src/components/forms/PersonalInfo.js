@@ -3,7 +3,7 @@ import axios from 'axios';
 import Navbar from '../Home/Navbar';
 import { LoggedInContext } from '../../contexts/LoggedInContext';
 import validator from 'validator';
-import { Grid, TextField, Button, Paper, Typography,Link } from '@material-ui/core';
+import { Grid, TextField, Button, Paper, Typography,Link,Hidden } from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
 import PersonalInfoForm from './PersonalInfoForm'
 import PaymentDetails from './PaymentDetails'
@@ -14,7 +14,22 @@ const useStyles = theme => ({
   mainStyle:{
     width:'100vw',
     height:'100vh',
-    margin:'0'
+    margin:'0',
+    [theme.breakpoints.down('md')]:{
+      
+      display:'flex',
+     justifyContent:'center',
+     alignContent:'center',
+     height:'100vh',
+    
+    },
+    [theme.breakpoints.down('sm')]:{
+      padding:theme.spacing(4,0,0,0),
+      display:'flex',
+     justifyContent:'center',
+     alignContent:'center',
+     height:'100vh',
+    }
   },
   paperStyleBackground:{
     background: 'rgb(0,152,131)',
@@ -222,16 +237,20 @@ export class PersonalInfo extends Component {
         return(
           <>
           <main className={classes.mainStyle}>
+          <Hidden smUp>
+            <Navbar/>
+          </Hidden>
           <Grid container>
-                <Grid item xs={6} className={classes.paperStyleBackground}>
+          <Hidden smDown>
+                <Grid item md={6} className={classes.paperStyleBackground}>
                   <div>
                   <h1><Link className={classes.linkStyle} to={'/'}>Logo</Link></h1>
                   <h4>Company Name</h4>
                   </div>
                 </Grid>
+                </Hidden>
                 
-                
-                <Grid container item xs={6} direction='row' justify='center' alignContent='center'>
+                <Grid container item md={6} sm={12} direction='row' justify='center' alignContent='center'>
                 <div style={{width:'80%'}}>
                 {this.showForms()}
                 </div>

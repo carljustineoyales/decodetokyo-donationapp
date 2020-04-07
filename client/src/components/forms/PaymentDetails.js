@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import {TextField,Button, Grid, Divider} from '@material-ui/core'
+import {TextField,Button, Grid, Divider, Hidden} from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles'
+const useStyles = theme => ({
+  btn:{
+    [theme.breakpoints.down('sm')]:{
+      width:'100%'
+    }
+  }
+})
 class PaymentDetails extends Component {
   continue = e => {
     e.preventDefault();
@@ -11,10 +19,11 @@ class PaymentDetails extends Component {
   }
   render() {
     const {values, handleOnChange} = this.props
+    const {classes} = this.props
     return (
       <>
-      <Grid container item  spacing={2} direction='row' justify='center' alignContent='center' xs={12}>
-      <Grid item xs={6}>
+      <Grid container item  spacing={2} direction='row' justify='center' alignContent='center' md={12}>
+      <Grid item md={6} xs={12}>
       <TextField
         label='Bank Name'
         fullWidth
@@ -24,7 +33,7 @@ class PaymentDetails extends Component {
         defaultValue={values.bank_name}
       />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item md={6} xs={12}>
       <TextField
         label='Bank Account'
         fullWidth
@@ -34,7 +43,7 @@ class PaymentDetails extends Component {
         defaultValue={values.bank_account}
       />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item md={12} xs={12}>
       <TextField
         label='Account Name'
         fullWidth
@@ -44,7 +53,7 @@ class PaymentDetails extends Component {
         defaultValue={values.account_name}
       />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item md={12} xs={12}>
       
       <Divider/>
       <br/>
@@ -58,7 +67,7 @@ class PaymentDetails extends Component {
         defaultValue={values.paypal_email}
       />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item md={12} xs={12}>
       <Divider/>
       <br/>
       <TextField
@@ -71,14 +80,22 @@ class PaymentDetails extends Component {
         defaultValue={values.gcash_number}
       />
       </Grid>
-      <Grid container item xs={6} justify='flex-start'>
-      <Button color='primary' variant='outlined' onClick={this.prev}>Back</Button>
+      <Hidden mdUp>
+      <Grid container item md={6} xs={12} justify='flex-end'>
+      <Button color='primary'  variant='contained' className={classes.btn} onClick={this.continue}>Continue</Button>
 
       </Grid>
-      <Grid container item xs={6} justify='flex-end'>
-      <Button color='primary'  variant='contained' onClick={this.continue}>Continue</Button>
+      </Hidden>
+      <Grid container item md={6} xs={12} justify='flex-start'>
+      <Button color='primary' variant='outlined' className={classes.btn} onClick={this.prev}>Back</Button>
 
       </Grid>
+      <Hidden smDown>
+      <Grid container item md={6} xs={12} justify='flex-end'>
+      <Button color='primary'  variant='contained' className={classes.btn} onClick={this.continue}>Continue</Button>
+
+      </Grid>
+      </Hidden>
         
       
      
@@ -90,4 +107,4 @@ class PaymentDetails extends Component {
   }
 }
 
-export default PaymentDetails;
+export default withStyles(useStyles)(PaymentDetails);
