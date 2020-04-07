@@ -4,6 +4,7 @@ import {Redirect, Link} from 'react-router-dom';
 import {strapi, withToken} from '../functions'
 import { LoggedInContext } from '../../contexts/LoggedInContext';
 import { Grid, TextField, Button, Paper, Typography } from '@material-ui/core';
+import {Alert} from '@material-ui/lab'
 import {withStyles} from '@material-ui/core/styles'
 // import { bake_cookie } from 'sfcookies'; 
 const useStyles = theme => ({
@@ -90,7 +91,7 @@ export class Login extends Component {
     return (
       <Fragment>
       <Grid container item direction='column' justify='center' md={6} xs={8}>
-      {(this.state.error === "Auth.form.error.invalid") ? (<div>Identifier or password invalid.</div>):((this.state.error === "Auth.form.error.email.provide") ? (<div>Please provide your username or your e-mail.</div>) : '')}
+      {(this.state.error === "Auth.form.error.invalid") ? (<Alert  severity="error">Email or password invalid.</Alert>):((this.state.error === "Auth.form.error.email.provide") ? (<Alert  severity="error">Fields cannot be empty.</Alert>) : '')}
       <Grid item className={classes.mb}>
         <h1>Welcome</h1>
         </Grid>
